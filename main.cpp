@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     cout << "Czeœæ trochê todo zmieni³em!" << endl;
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 5; i++)
         cout << "Po co sie ograniczac? Po nic!!!" << endl;
     cout << yuo() << endl;
 
