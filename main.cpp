@@ -5,7 +5,6 @@ using namespace std;
 int main()
 {
     cout << "Czeœæ trochê to zmieni³em!" << endl;
-    cout << "Witaj, odpowiadam ci!" << endl;
 
     sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
     sf::CircleShape shape(100.f);
