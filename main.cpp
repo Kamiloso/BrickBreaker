@@ -5,7 +5,7 @@ using namespace std;
 int main()
 {
     cout << "Czeœæ trochê to zmieni³em!" << endl;
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 2; i++)
         cout << "Po co sie ograniczac? Po nic!!!" << endl;
 
     sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
