@@ -1,60 +1,39 @@
-# Visual Studio
-.vs/
-.vscode/
-.idea/
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# User-specific files
+# Temporary and Visual Studio-specific files
+*.suo
 *.user
 *.userosscache
-*.suo
-*.userprefs
+*.sln.docstates
 
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Dd]evelopment/
-[Dd]ebug_x64/
-[Dd]ebug_x86/
-[Dd]evelopment_x64/
-[Dd]evelopment_x86/
-Release/
-Release_x64/
-Release_x86/
-x64/
-x86/
+# IntelliSense database and project cache files
+*.VC.db
+*.VC.opendb
 
-# User-specific build directories
-obj/
-bin/
+# Compilation output files
+*.exe
+*.dll
+*.obj
+*.lib
+*.pdb
+*.ilk
+*.exp
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Visual Studio-generated directories (e.g., temporary files)
+.vs/
 
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-Makefile
-cmake_install.cmake
+# Build directories (Debug and Release)
+[Bb]in/
+[Oo]bj/
+x64/Debug/
+x64/Release/
 
-# VS for Mac
+# Visual Studio Code settings (if used)
 .vscode/
-.idea/
 
-# Backup files
-*.bak
-*.swp
-*.swo
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Log files
+*.log
