@@ -1,8 +1,6 @@
 ﻿  main.cpp
-  Trwa generowanie kodu
+  Generating code
   Previous IPDB was built with incompatible compiler, fall back to full compilation.
   All 14 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Zakończono generowanie kodu
-  BrickBreaker.vcxproj -> C:\Users\julia\Documents\GitHub\BrickBreaker\Release\BrickBreaker.exe
-  'pwsh.exe' is not recognized as an internal or external command,
-  operable program or batch file.
+  Finished generating code
+  BrickBreaker.vcxproj -> C:\Users\lenovo\Documents\GitHub\BrickBreaker\Release\BrickBreaker.exe

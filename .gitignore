@@ -58,6 +58,8 @@ cmake_install.cmake
 *.msi
 *.msm
 *.msp
+
+# Other files
 .vs/BrickBreaker/v17/.suo
 .vs/BrickBreaker/v17/Browse.VC.db
 .vs/BrickBreaker/v17/DocumentLayout.backup.json
