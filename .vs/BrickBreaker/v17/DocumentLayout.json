@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\lenovo\\Documents\\GitHub\\BrickBreaker\\",
+  "WorkspaceRootPath": "C:\\Users\\julia\\Documents\\GitHub\\BrickBreaker\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C8221D97-CD13-43F9-92E0-1BC5B45B2AB5}|BrickBreaker.vcxproj|C:\\Users\\lenovo\\Documents\\GitHub\\BrickBreaker\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{C8221D97-CD13-43F9-92E0-1BC5B45B2AB5}|BrickBreaker.vcxproj|C:\\Users\\julia\\Documents\\GitHub\\BrickBreaker\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{C8221D97-CD13-43F9-92E0-1BC5B45B2AB5}|BrickBreaker.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -20,9 +20,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "C:\\Users\\lenovo\\Documents\\GitHub\\BrickBreaker\\main.cpp",
+              "DocumentMoniker": "C:\\Users\\julia\\Documents\\GitHub\\BrickBreaker\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
-              "ToolTip": "C:\\Users\\lenovo\\Documents\\GitHub\\BrickBreaker\\main.cpp",
+              "ToolTip": "C:\\Users\\julia\\Documents\\GitHub\\BrickBreaker\\main.cpp",
               "RelativeToolTip": "main.cpp",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAABFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
