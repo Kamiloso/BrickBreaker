@@ -15,18 +15,19 @@ public:
 	void drawCircle(float pos_x, float pos_y, float r, sf::Color color = sf::Color::Black);
 	void drawRectangle(float pox_x, float pos_y, float wx, float wy, sf::Color color = sf::Color::Black);
 
-private:
 	const sf::Vector2u small_resolution = { 1280,720 };
 	const sf::VideoMode big_resolution = sf::VideoMode::getFullscreenModes()[0];
 	const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
-	string title = "";
-	bool fullscreen = false;
+private:
+
 	sf::RenderWindow window;
 	sf::ContextSettings settings;
 
-	void setFullScreen(bool full);
+	string title = "";
+	bool fullscreen = true;
 
+	void makeWindow(bool full); // Creates or recreates window
 	void eventHandling(); // Handles window events
 	void update(); // Runs game logic
 	void render(); // Renders graphics

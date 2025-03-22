@@ -4,7 +4,7 @@ GameWindow::GameWindow(string _title, sf::ContextSettings _settings)
 {
 	title = _title;
 	settings = _settings;
-	setFullScreen(false);
+	makeWindow(fullscreen);
 }
 
 void GameWindow::run()
@@ -36,7 +36,7 @@ void GameWindow::drawRectangle(float pos_x, float pos_y, float wx, float wy, sf:
 	window.draw(shape);
 }
 
-void GameWindow::setFullScreen(bool full)
+void GameWindow::makeWindow(bool full)
 {
 	fullscreen = full;
 	if (fullscreen)
@@ -96,7 +96,7 @@ void GameWindow::eventHandling()
 			
 			if (event.key.code == sf::Keyboard::F11 || event.key.code == sf::Keyboard::F)
 			{
-				setFullScreen(!fullscreen);
+				makeWindow(!fullscreen);
 			}
 		}
 	}
