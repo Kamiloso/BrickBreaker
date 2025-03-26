@@ -1,0 +1,26 @@
+# Changelog
+
+17-03-2025
+
+### Added
+- Game window ("GameWindow.h")
+- Window scaling and fullscreen
+- Event handling
+- Main game loop
+- HD and Full HD resolutions 
+
+25-03-2025
+
+### Added
+- Scene system ("Scene.h")
+- Base class for scene objects ("SceneObject.h")
+- File with constants ("common.h")
+
+26-03-2025
+
+### Added
+- SceneObject event system
+- Game loop finished along with void update(float delta_time) method
+
+### Changed
+- Scene system changed to better cooperate with Scene constructors & destructors

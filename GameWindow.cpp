@@ -1,39 +1,36 @@
 #include "GameWindow.h"
-#include "Scene.h"
-#include "SceneObject.h"
+#include "MainMenu.h"
+#include "LevelMenu.h"
+#include "GameScene.h"
 
 GameWindow::GameWindow(string _title, sf::ContextSettings _settings)
 {
 	title = _title;
 	settings = _settings;
 	makeWindow(fullscreen);
-
-	scenes.push_back(new Scene()); // ID = 0 : : Main Menu
-	scenes.push_back(new Scene()); // ID = 1 : : Level Menu
-	scenes.push_back(new Scene()); // ID = 2 : : Game Scene
-
-	scenes[0]->addObject(new TempCircle(200, 200, 60, sf::Color::Magenta));
-	scenes[1]->addObject(new TempCircle(RX / 2, RY / 2, 100, sf::Color::Red));
-	scenes[2]->addObject(new TempCircle(RX - 200, RY - 200, 140, sf::Color::Cyan));
+	setScene(0);
 }
 
 GameWindow::~GameWindow()
 {
-	for (Scene* scene : scenes)
-		delete scene;
+	delete scene;
 }
 
 void GameWindow::run()
 {
-	while (true) {
-		eventHandling();
+	sf::Clock clock;
+	float delta_time = 0.0f;
+
+	while (true)
+	{
+		eventHandling(); // handle window & game events
 		if (!window.isOpen()) {
 			//saveAllNow();
 			break;
 		}
-		update();
-		render();
-		//std::this_thread::sleep_for(std::chrono::milliseconds(500)); // VERY TEMPORARY!!!
+		delta_time = clock.restart().asSeconds();
+		update(delta_time); // update game logic
+		render(); // render screen
 	}
 }
 
@@ -53,15 +50,32 @@ void GameWindow::drawRectangle(float pos_x, float pos_y, float wx, float wy, sf:
 	window.draw(shape);
 }
 
-void GameWindow::setScene(size_t scene_id)
+sf::RenderWindow& GameWindow::getRenderWindow()
 {
-	if (current_scene >= 0 && current_scene < scenes.size())
-		current_scene = scene_id;
-	else
-		throw invalid_argument("Wrong scene ID");
+	return window;
 }
 
-size_t GameWindow::getScene() const
+void GameWindow::setScene(int scene_id)
+{
+	delete scene; // ok even if scene is nullptr
+	switch (scene_id)
+	{
+	case 0: // Main Menu
+		scene = new MainMenu();
+		break;
+	case 1: // Level Menu
+		scene = new LevelMenu();
+		break;
+	case 2: // Game Scene
+		scene = new GameScene();
+		break;
+	default:
+		throw std::invalid_argument("Invalid scene ID");
+	}
+	current_scene = scene_id;
+}
+
+int GameWindow::getScene() const
 {
 	return current_scene;
 }
@@ -109,6 +123,7 @@ void GameWindow::makeWindow(bool full)
 
 void GameWindow::eventHandling()
 {
+	// Window events
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
@@ -129,30 +144,37 @@ void GameWindow::eventHandling()
 			{
 				makeWindow(!fullscreen);
 			}
+		}
+	}
 
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				if (getScene() != 2)
-					setScene(getScene() + 1);
-				else
-					setScene(0);
-			}
+	// Game events
+	vector<int> scene_events = scene->getEvents();
+	for (int& event_id : scene_events)
+	{
+		switch (event_id)
+		{
+		case 1: // next scene
+			setScene((getScene() + 1) % 3);
+			return;
 		}
 	}
 }
 
-void GameWindow::update()
+void GameWindow::update(float delta_time)
 {
-	
+	if (current_scene == last_frame_scene)
+		scene->update(delta_time);
+	else
+		last_frame_scene = current_scene;
 }
 
 void GameWindow::render()
 {
 	// Clear window
-	window.clear(sf::Color(100, 100, 100)); // Gray
+	window.clear(sf::Color(100, 100, 100)); // gray
 
 	// Render scene
-	scenes[current_scene]->drawScene(this);
+	scene->drawScene(this);
 
 	// Safety resolution bars
 	drawRectangle(-2000, 0, 4000, 9999, sf::Color::Black);

@@ -9,6 +9,26 @@ Scene::~Scene()
 	object_list.clear();
 }
 
+void Scene::update(float delta_time)
+{
+	for (SceneObject* object : object_list)
+		object->update(delta_time);
+}
+
+vector<int> Scene::getEvents()
+{
+	vector<int> return_vector = {};
+
+	for (SceneObject* object : object_list)
+	{
+		int event_id = object->getEvent();
+		if (event_id != 0)
+			return_vector.push_back(event_id);
+	}
+
+	return return_vector;
+}
+
 void Scene::addObject(SceneObject* new_ptr)
 {
 	object_list.push_back(new_ptr);

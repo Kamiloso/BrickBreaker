@@ -133,19 +133,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameWindow.cpp" />
+    <ClCompile Include="LevelMenu.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="LevelMenu.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Log.txt" />
+    <Text Include="Changelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
