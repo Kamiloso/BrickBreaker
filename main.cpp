@@ -7,8 +7,8 @@ int main()
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    GameWindow GameWindow("Plate Ball Brick - Pre Alpha", settings);
-    GameWindow.run(); // Game loop
+    GameWindow game_window("Plate Ball Brick - Pre Alpha", settings);
+    game_window.run(); // Game loop
 
     return 0;
 }
