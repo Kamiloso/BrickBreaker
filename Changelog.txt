@@ -21,6 +21,7 @@
 ### Added
 - SceneObject event system
 - Game loop finished along with void update(float delta_time) method
+- 3 scene foundations
 
 ### Changed
 - Scene system changed to better cooperate with Scene constructors & destructors
