@@ -1,0 +1,10 @@
+# Changelog
+
+17-03-2025
+
+### Added
+- Game window ("GameWindow.h")
+- Window scaling and fullscreen
+- Event handling
+- Main game loop
+- HD and Full HD resolutions 
