@@ -8,4 +8,5 @@ class LevelMenu : public Scene
 {
 public:
 	LevelMenu();
+	void sceneUpdate(float delta_time) override;
 };

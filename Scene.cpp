@@ -11,8 +11,14 @@ Scene::~Scene()
 
 void Scene::update(float delta_time)
 {
+	sceneUpdate(delta_time);
+
 	for (SceneObject* object : object_list)
 		object->update(delta_time);
+
+	for (SceneObject* object : objects_to_delete)
+		deleteObjectByPointer(object);
+	objects_to_delete.clear();
 }
 
 vector<int> Scene::getEvents()
@@ -29,9 +35,15 @@ vector<int> Scene::getEvents()
 	return return_vector;
 }
 
-void Scene::addObject(SceneObject* new_ptr)
+SceneObject* Scene::addObject(SceneObject* new_ptr)
 {
 	object_list.push_back(new_ptr);
+	return new_ptr;
+}
+
+void Scene::markToDelete(SceneObject* old_ptr)
+{
+	objects_to_delete.push_back(old_ptr);
 }
 
 bool Scene::deleteObjectByPointer(SceneObject* old_ptr)

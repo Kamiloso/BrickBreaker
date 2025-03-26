@@ -1,9 +1,16 @@
 #include "MainMenu.h"
 #include "SceneObject.h"
+#include "Rectangle.h"
 
 MainMenu::MainMenu()
 {
-	addObject(new TempCircle(200, 200, 60, sf::Color::Magenta));
+	for(int x = 45; x <= RX; x += 90)
+		addObject(new Rectangle(x, 200, 90, 90, 10, sf::Color::White));
+
 	addObject(new TempCircle(RX / 2, RY / 2, 100, sf::Color::Red));
-	addObject(new TempCircle(RX - 200, RY - 200, 140, sf::Color::Cyan));
+}
+
+void MainMenu::sceneUpdate(float delta_time)
+{
+
 }
