@@ -156,6 +156,19 @@ void GameWindow::eventHandling()
 		case 1: // next scene
 			setScene((getScene() + 1) % 3);
 			return;
+
+		case 2: // quit
+			window.close();
+			return;
+
+		case 1000: // jump to scene
+		case 1001:
+		case 1002:
+			setScene(event_id - 1000);
+			return;
+
+		default:
+			throw exception("Invalid event ID");
 		}
 	}
 }

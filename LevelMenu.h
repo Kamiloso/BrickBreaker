@@ -4,6 +4,10 @@
 
 using namespace std;
 
+// ---------------------||
+// Level selection menu ||
+// ---------------------||
+
 class LevelMenu : public Scene
 {
 public:

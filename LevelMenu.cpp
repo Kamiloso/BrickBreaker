@@ -10,5 +10,10 @@ LevelMenu::LevelMenu()
 
 void LevelMenu::sceneUpdate(float delta_time)
 {
-
+	for (SceneObject* object : object_list)
+	{
+		TempCircle* temp_circle = dynamic_cast<TempCircle*>(object);
+		if (temp_circle != nullptr)
+			temp_circle->step(delta_time);
+	}
 }

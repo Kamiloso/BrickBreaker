@@ -1,18 +1,18 @@
 #include "SceneObject.h"
 #include "GameWindow.h"
 
-sf::Vector2<float> SceneObject::getPosition()
+vector<float> SceneObject::getPosition() const
 {
-	return sf::Vector2<float>(x, y);
+	return vector<float>{x, y};
 }
 
-void SceneObject::setPosition(sf::Vector2<float> _position)
+void SceneObject::setPosition(float _x, float _y)
 {
-	x = _position.x;
-	y = _position.y;
+	x = _x;
+	y = _y;
 }
 
-float SceneObject::getRotation()
+float SceneObject::getRotation() const
 {
 	return rot;
 }
@@ -28,9 +28,23 @@ void TempCircle::draw(GameWindow* game_window)
 	game_window->drawCircle(x, y, r - 20, color);
 }
 
-void TempCircle::update(float delta_time)
+void TempCircle::earlyUpdate(float delta_time)
 {
-	x += 100 * delta_time;
+	// here you can do something right before sceneUpdate(), for example
+	// it is the last moment to access data from the last frame
+
+	float last_x = x;
+	float last_y = y;
+}
+
+void TempCircle::lateUpdate(float delta_time)
+{
+	// it executes right after sceneUpdate() and is a good place to
+	// update graphics, as rendering starts right after execution of it
+
+	static unsigned char static_color_modifier = 0;
+	static_color_modifier++;
+	color = sf::Color(static_color_modifier, static_color_modifier + 100, static_color_modifier + 200);
 }
 
 int TempCircle::getEvent()
@@ -47,4 +61,9 @@ int TempCircle::getEventToScene()
 		return 1;
 	else
 		return 0;
+}
+
+void TempCircle::step(float delta_time)
+{
+	x += delta_time * 100;
 }

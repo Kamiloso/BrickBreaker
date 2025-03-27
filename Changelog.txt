@@ -7,7 +7,7 @@
 - Window scaling and fullscreen
 - Event handling
 - Main game loop
-- HD and Full HD resolutions 
+- HD and Full HD resolutions
 
 25-03-2025
 
@@ -25,3 +25,17 @@
 
 ### Changed
 - Scene system changed to better cooperate with Scene constructors & destructors
+
+### Known bugs (to fix)
+- delta_time is being counted even when game loop stops (for example when you hold and move your window)
+
+27-03-2025
+
+### Added
+
+- Added class comments
+- Draw method supports layers from now
+
+### Changed
+
+- Game loop improved for better cooperation

@@ -4,6 +4,10 @@
 
 using namespace std;
 
+// --------------------------------||
+// Starting scene called main menu ||
+// --------------------------------||
+
 class MainMenu : public Scene
 {
 public:

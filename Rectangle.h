@@ -2,6 +2,10 @@
 
 #include "SceneObject.h"
 
+// ---------------------------------||
+// The basic rectangle scene object ||
+// ---------------------------------||
+
 class Rectangle : public SceneObject
 {
 public:

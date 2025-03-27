@@ -6,19 +6,6 @@ Scene::~Scene()
 	// Destory all objects on a scene
 	for (SceneObject* object : object_list)
 		delete object;
-	object_list.clear();
-}
-
-void Scene::update(float delta_time)
-{
-	sceneUpdate(delta_time);
-
-	for (SceneObject* object : object_list)
-		object->update(delta_time);
-
-	for (SceneObject* object : objects_to_delete)
-		deleteObjectByPointer(object);
-	objects_to_delete.clear();
 }
 
 vector<int> Scene::getEvents()
@@ -33,6 +20,25 @@ vector<int> Scene::getEvents()
 	}
 
 	return return_vector;
+}
+
+void Scene::update(float delta_time)
+{
+	// Early update
+	for (SceneObject* object : object_list)
+		object->earlyUpdate(delta_time);
+
+	// Global scene update
+	sceneUpdate(delta_time);
+
+	// Late update
+	for (SceneObject* object : object_list)
+		object->lateUpdate(delta_time);
+
+	// Delayed object deletion
+	for (SceneObject* object : objects_to_delete)
+		deleteObjectByPointer(object);
+	objects_to_delete.clear();
 }
 
 SceneObject* Scene::addObject(SceneObject* new_ptr)
@@ -62,6 +68,14 @@ bool Scene::deleteObjectByPointer(SceneObject* old_ptr)
 
 void Scene::drawScene(GameWindow* game_window)
 {
+	std::map<int, std::vector<SceneObject*>> layers;
+
 	for (SceneObject* object : object_list)
-		object->draw(game_window);
+		layers[object->layer].push_back(object);
+
+	for (auto it = layers.begin(); it != layers.end(); ++it)
+	{
+		for (SceneObject* object : it->second)
+			object->draw(game_window);
+	}
 }

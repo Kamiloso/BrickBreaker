@@ -10,6 +10,10 @@ class Scene;
 
 using namespace std;
 
+// ----------------------------------------------------------------||
+// The main class, that manages the whole game and window settings ||
+// ----------------------------------------------------------------||
+
 class GameWindow final
 {
 public:

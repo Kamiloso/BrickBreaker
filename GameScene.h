@@ -6,6 +6,10 @@ class SceneObject;
 
 using namespace std;
 
+// --------------------||
+// The main game scene ||
+// --------------------||
+
 class GameScene : public Scene
 {
 public:
