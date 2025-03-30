@@ -19,6 +19,12 @@
     <Filter Include="Scripts\SceneObjects\Base">
       <UniqueIdentifier>{4f0eab43-0f6b-4c99-a86d-d0f0d0ce12f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{5ed5c4b2-e91a-4b35-863e-d2a9aae5fbd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Fonts">
+      <UniqueIdentifier>{7d7ab901-79b8-41d5-bcc4-789a0663ece0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -43,6 +49,12 @@
       <Filter>Scripts\SceneObjects\Base</Filter>
     </ClCompile>
     <ClCompile Include="Rectangle.cpp">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,8 +83,19 @@
     <ClInclude Include="Rectangle.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="PTSans-Bold.ttf">
+      <Filter>Assets\Fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

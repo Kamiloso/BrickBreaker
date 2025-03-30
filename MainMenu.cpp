@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 #include "SceneObject.h"
-#include "Rectangle.h"
+#include "Button.h"
 
 MainMenu::MainMenu()
 {
@@ -8,6 +8,8 @@ MainMenu::MainMenu()
 		addObject(new Rectangle(x, 200, 90, 90, 10, sf::Color::White));
 
 	addObject(new TempCircle(RX / 2, RY / 2, 150, sf::Color::Red));
+
+	addObject(new Button(RX / 2, RY / 2, 400, 100, sf::Color::Cyan, L"PLAY"));
 }
 
 void MainMenu::sceneUpdate(float delta_time)
