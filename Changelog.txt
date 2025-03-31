@@ -7,7 +7,6 @@
 - Window scaling and fullscreen
 - Event handling
 - Main game loop
-- HD and Full HD resolutions
 
 25-03-2025
 
@@ -39,3 +38,11 @@
 ### Changed
 
 - Game loop improved for better cooperation
+
+31-03-2025
+
+### Added
+
+- Button class
+- Text class
+- Pseudo main menu
