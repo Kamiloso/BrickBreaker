@@ -2,17 +2,13 @@
 #include "GameWindow.h"
 #include "Text.h"
 
+#include <iostream>
+
 Button::Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, const wstring& _text, int _layer)
-	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, sf::Color::Black, _layer)
+	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, sf::Color::Black, _layer), color_default(_button_color)
 {
 	// Create internal text
-	internal_text = new Text(x, y, _text, 0.6f * (wy - 20.0f), color_bold);
-
-	// Set button colors
-	color_default = _button_color;
-	color_highlighted = sf::Color::Cyan;
-	color_pressed = sf::Color::Yellow;
-	color_disabled = sf::Color::Black;
+	internal_text = new Text(x, y, _text, (int)(0.6f * (wy - 20.0f)), color_bold);
 }
 
 Button::~Button()
@@ -26,16 +22,79 @@ void Button::setEvent(int _event_id, bool _to_window)
 	to_window = _to_window;
 }
 
+void Button::earlyUpdate(float delta_time)
+{
+	// Button click logic
+	if (event_id == 0)
+	{
+		button_state = Disabled;
+	}
+	else if (game_window_ptr != nullptr) // only if pointer available
+	{
+		sf::Vector2i pixel_pos = sf::Mouse::getPosition(game_window_ptr->getRenderWindow()); // Mouse position
+		sf::Vector2f mouse_pos = game_window_ptr->getRenderWindow().mapPixelToCoords(pixel_pos); // Conversion to world coordinates
+
+		bool is_in_area_now = (
+			mouse_pos.x >= x - wx / 2 && mouse_pos.x <= x + wx / 2 &&
+			mouse_pos.y >= y - wy / 2 && mouse_pos.y <= y + wy / 2
+		);
+		bool is_clicked_now = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+		if (is_holding)
+		{
+			if (is_clicked_now)
+			{
+				button_state = Pressed;
+			}
+			else
+			{
+				if (is_in_area_now)
+				{
+					// Do not highlight, one frame delay sometimes needed
+					was_pressed = true;
+				}
+				else
+				{
+					button_state = Default;
+				}
+				is_holding = false;
+			}
+		}
+		else
+		{
+			if (is_in_area_now)
+			{
+				if (!is_clicked && is_clicked_now)
+				{
+					button_state = Pressed;
+					is_holding = true;
+				}
+				else
+				{
+					if (is_clicked_now)
+					{
+						button_state = Default;
+					}
+					else
+					{
+						button_state = Highlighted;
+					}
+				}
+			}
+			else
+			{
+				button_state = Default;
+			}
+		}
+
+		is_clicked = is_clicked_now;
+	}	
+}
+
 void Button::lateUpdate(float delta_time)
 {
 	// Change button colors right before scene drawing
-	switch (button_state)
-	{
-	case Default: color = color_default; break;
-	case Highlighted: color = color_highlighted; break;
-	case Pressed: color = color_pressed; break;
-	case Disabled: color = color_disabled; break;
-	}
+	color = getButtonColor(color_default, button_state);
 }
 
 void Button::draw(GameWindow* game_window)
@@ -43,6 +102,7 @@ void Button::draw(GameWindow* game_window)
 	game_window->drawRectangle(x, y, wx, wy, color_bold);
 	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, color);
 	internal_text->draw(game_window);
+	game_window_ptr = game_window; // holy set ptr
 }
 
 int Button::getEventToScene()
@@ -55,6 +115,44 @@ int Button::getEvent()
 {
 	if (!to_window) return 0; // if not this event type, return 0
 	return getRawEvent();
+}
+
+void Button::setPosition(float _x, float _y)
+{
+	x = _x;
+	y = _y;
+	internal_text->setPosition(x, y);
+}
+
+sf::Color Button::getButtonColor(const sf::Color& base_color, ButtonState state)
+{
+	switch (state) {
+	case ButtonState::Default:
+		return base_color;
+
+	case ButtonState::Highlighted:
+		return sf::Color(
+			static_cast<sf::Uint8>(base_color.r * 0.86f),
+			static_cast<sf::Uint8>(base_color.g * 0.86f),
+			static_cast<sf::Uint8>(base_color.b * 0.86f),
+			base_color.a
+		);
+
+	case ButtonState::Pressed:
+		return sf::Color(
+			static_cast<sf::Uint8>(base_color.r * 0.72f),
+			static_cast<sf::Uint8>(base_color.g * 0.72f),
+			static_cast<sf::Uint8>(base_color.b * 0.72f),
+			base_color.a
+		);
+
+	case ButtonState::Disabled:
+		sf::Uint8 gray = static_cast<sf::Uint8>(
+			(0.299f * base_color.r + 0.587f * base_color.g + 0.114f * base_color.b) * 0.85f
+			);
+		return sf::Color(gray, gray, gray, base_color.a);
+	}
+	return base_color;
 }
 
 int Button::getRawEvent()

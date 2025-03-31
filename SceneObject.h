@@ -22,9 +22,9 @@ public:
 	virtual int getEventToScene() { return 0; } // sends event to scene manager if necessary
 
 	vector<float> getPosition() const;
-	void setPosition(float _x, float _y);
+	virtual void setPosition(float _x, float _y);
 	float getRotation() const;
-	void setRotation(float _rot);
+	virtual void setRotation(float _rot);
 
 	const int layer;
 
