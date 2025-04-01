@@ -4,9 +4,6 @@ using namespace std;
 
 int main()
 {
-    // Pre-Load assets
-    GameWindow::getFont(); // pre-load font
-
     // Window settings
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;

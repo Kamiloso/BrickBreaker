@@ -24,7 +24,6 @@ public:
 	void drawCircle(float pos_x, float pos_y, float r, sf::Color color);
 	void drawRectangle(float pox_x, float pos_y, float wx, float wy, sf::Color color);
 	sf::RenderWindow& getRenderWindow(); // returns 'window' reference for drawing more complex shapes
-	static sf::Font& getFont(); // returns game font
 	int getScene() const;
 
 	const sf::Vector2u small_resolution = { RX,RY };

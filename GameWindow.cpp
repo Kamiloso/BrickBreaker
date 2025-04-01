@@ -55,20 +55,6 @@ sf::RenderWindow& GameWindow::getRenderWindow()
 	return window;
 }
 
-sf::Font& GameWindow::getFont()
-{
-	static bool configured = false;
-	static sf::Font font;
-
-	if (!configured)
-	{
-		font.loadFromFile("PTSans-Bold.ttf");
-		configured = true;
-	}
-	
-	return font;
-}
-
 void GameWindow::setScene(int scene_id)
 {
 	delete scene; // ok even if scene is nullptr

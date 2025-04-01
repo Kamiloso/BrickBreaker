@@ -12,7 +12,7 @@ void Text::draw(GameWindow* game_window)
 	sf::RenderWindow& render = game_window->getRenderWindow();
 
 	sf::Text text1;
-	text1.setFont(GameWindow::getFont());
+	text1.setFont(Text::getFont());
 	text1.setString(text);
 	text1.setCharacterSize(font * 2);
 	text1.setScale(0.5f, 0.5f);
@@ -24,4 +24,18 @@ void Text::draw(GameWindow* game_window)
 	text1.setPosition(x, y);
 
 	render.draw(text1);
+}
+
+sf::Font& Text::getFont()
+{
+	static bool configured = false;
+	static sf::Font font;
+
+	if (!configured)
+	{
+		font.loadFromFile("PTSans-Bold.ttf");
+		configured = true;
+	}
+
+	return font;
 }

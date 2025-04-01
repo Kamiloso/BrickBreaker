@@ -15,6 +15,8 @@ public:
 	Text(float _x, float _y, const wstring& _text, int _font, sf::Color _color = sf::Color::Black, int _layer = 25);
 	void draw(GameWindow* game_window) override;
 
+	static sf::Font& getFont(); // returns game font
+
 protected:
 	wstring text;
 	int font;

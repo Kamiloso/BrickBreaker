@@ -26,11 +26,6 @@ void MainMenu::sceneUpdate(float delta_time)
 {
 	for (SceneObject* object : object_list)
 	{
-		// TempCircle movement
-		TempCircle* temp_circle = dynamic_cast<TempCircle*>(object);
-		if (temp_circle != nullptr)
-			temp_circle->step(delta_time);
-
 		// Button scene event reactions
 		Button* button = dynamic_cast<Button*>(object);
 		if (button != nullptr)
