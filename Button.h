@@ -23,7 +23,6 @@ public:
 	~Button();
 	void setEvent(int _event_id, bool _to_window); // specifies button event and how publish it after clicking
 	void earlyUpdate(float delta_time) override;
-	void lateUpdate(float delta_time) override;
 	void draw(GameWindow* game_window) override;
 	int getEventToScene() override;
 	int getEvent() override;
@@ -36,8 +35,7 @@ protected:
 	GameWindow* game_window_ptr = nullptr; // game window for access when needed
 
 	// Class variables
-	ButtonState button_state = Default; // which color to set? (only affects visuals)
-	sf::Color color_default;
+	ButtonState button_state = Disabled; // which color to set? (only affects visuals)
 	bool to_window = false; // send event to window class?
 	int event_id = 0; // which event to send?
 	bool was_pressed = false; // was recently pressed?

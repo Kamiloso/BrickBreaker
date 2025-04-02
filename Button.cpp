@@ -5,7 +5,7 @@
 #include <iostream>
 
 Button::Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, const wstring& _text, int _layer)
-	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, sf::Color::Black, _layer), color_default(_button_color)
+	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, sf::Color::Black, _layer)
 {
 	// Create internal text
 	internal_text = new Text(x, y, _text, (int)(0.6f * (wy - 20.0f)), color_bold);
@@ -20,6 +20,11 @@ void Button::setEvent(int _event_id, bool _to_window)
 {
 	event_id = _event_id;
 	to_window = _to_window;
+
+	if (event_id == 0)
+		button_state = Disabled;
+	else
+		button_state = Default;
 }
 
 void Button::earlyUpdate(float delta_time)
@@ -91,16 +96,10 @@ void Button::earlyUpdate(float delta_time)
 	}	
 }
 
-void Button::lateUpdate(float delta_time)
-{
-	// Change button colors right before scene drawing
-	color = getButtonColor(color_default, button_state);
-}
-
 void Button::draw(GameWindow* game_window)
 {
 	game_window->drawRectangle(x, y, wx, wy, color_bold);
-	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, color);
+	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, getButtonColor(color, button_state));
 	internal_text->draw(game_window);
 	game_window_ptr = game_window; // holy set ptr
 }
