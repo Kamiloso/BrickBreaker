@@ -34,12 +34,12 @@ private:
 
 	sf::RenderWindow window;
 	sf::ContextSettings settings;
+	InputData main_input_data;
 
 	string title = "";
 	bool fullscreen = true;
 
 	Scene* scene = nullptr;
-	int last_frame_scene = -1;
 	int current_scene = 0;
 
 	void makeWindow(bool full); // Creates or recreates window

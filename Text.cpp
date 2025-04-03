@@ -26,6 +26,11 @@ void Text::draw(GameWindow* game_window)
 	render.draw(text1);
 }
 
+void Text::changeText(const wstring& _text)
+{
+	text = _text;
+}
+
 sf::Font& Text::getFont()
 {
 	static bool configured = false;

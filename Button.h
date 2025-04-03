@@ -32,7 +32,6 @@ public:
 
 protected:
 	Text* internal_text; // internal text scene object (access and management only from this class)
-	GameWindow* game_window_ptr = nullptr; // game window for access when needed
 
 	// Class variables
 	ButtonState button_state = Disabled; // which color to set? (only affects visuals)

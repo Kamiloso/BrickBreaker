@@ -1,5 +1,6 @@
 #include "SceneObject.h"
 #include "GameWindow.h"
+#include "common.h"
 
 vector<float> SceneObject::getPosition() const
 {
@@ -20,6 +21,11 @@ float SceneObject::getRotation() const
 void SceneObject::setRotation(float _rot)
 {
 	rot = _rot;
+}
+
+void SceneObject::updateInputData(const InputData* _input_data)
+{
+	input_data = _input_data;
 }
 
 void TempCircle::draw(GameWindow* game_window)

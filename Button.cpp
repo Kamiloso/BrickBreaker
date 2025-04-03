@@ -30,20 +30,18 @@ void Button::setEvent(int _event_id, bool _to_window)
 void Button::earlyUpdate(float delta_time)
 {
 	// Button click logic
-	if (event_id == 0)
+	if (event_id != 0 && input_data != nullptr)
 	{
-		button_state = Disabled;
-	}
-	else if (game_window_ptr != nullptr) // only if pointer available
-	{
-		sf::Vector2i pixel_pos = sf::Mouse::getPosition(game_window_ptr->getRenderWindow()); // Mouse position
-		sf::Vector2f mouse_pos = game_window_ptr->getRenderWindow().mapPixelToCoords(pixel_pos); // Conversion to world coordinates
+		sf::Vector2f mouse_pos = {
+			input_data->mouse_x,
+			input_data->mouse_y
+		};
 
 		bool is_in_area_now = (
 			mouse_pos.x >= x - wx / 2 && mouse_pos.x <= x + wx / 2 &&
 			mouse_pos.y >= y - wy / 2 && mouse_pos.y <= y + wy / 2
-		);
-		bool is_clicked_now = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+			);
+		bool is_clicked_now = input_data->click_left;
 
 		if (is_holding)
 		{
@@ -93,7 +91,7 @@ void Button::earlyUpdate(float delta_time)
 		}
 
 		is_clicked = is_clicked_now;
-	}	
+	}
 }
 
 void Button::draw(GameWindow* game_window)
@@ -101,7 +99,6 @@ void Button::draw(GameWindow* game_window)
 	game_window->drawRectangle(x, y, wx, wy, color_bold);
 	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, getButtonColor(color, button_state));
 	internal_text->draw(game_window);
-	game_window_ptr = game_window; // holy set ptr
 }
 
 int Button::getEventToScene()

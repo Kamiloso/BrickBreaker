@@ -31,6 +31,7 @@ void GameWindow::run()
 		delta_time = clock.restart().asSeconds();
 		update(delta_time); // update game logic
 		render(); // render screen
+		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
@@ -73,6 +74,7 @@ void GameWindow::setScene(int scene_id)
 		throw std::invalid_argument("Invalid scene ID");
 	}
 	current_scene = scene_id;
+	scene->inputPropagate(&main_input_data); // propagate input pointer to scene
 }
 
 int GameWindow::getScene() const
@@ -123,6 +125,10 @@ void GameWindow::makeWindow(bool full)
 
 void GameWindow::eventHandling()
 {
+	// Anytime input reset
+	main_input_data.click_left_start = false;
+	main_input_data.space_start = false;
+
 	// Window events
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -144,8 +150,46 @@ void GameWindow::eventHandling()
 			{
 				makeWindow(!fullscreen);
 			}
+
+			// From there input send things
+
+			if (event.key.code == sf::Keyboard::Space)
+			{
+				main_input_data.space_start = true;
+				main_input_data.space_now = true;
+			}
+		}
+		if (event.type == sf::Event::KeyReleased)
+		{
+			if (event.key.code == sf::Keyboard::Space)
+			{
+				main_input_data.space_now = false;
+			}
+		}
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Button::Left)
+			{
+				main_input_data.click_left_start = true;
+				main_input_data.click_left_now = true;
+			}
+		}
+		if (event.type == sf::Event::MouseButtonReleased)
+		{
+			if (event.mouseButton.button == sf::Mouse::Button::Left)
+			{
+				main_input_data.click_left_now = false;
+			}
 		}
 	}
+
+	// Input to send
+	sf::Vector2i pixel_pos = sf::Mouse::getPosition(window); // Mouse position
+	sf::Vector2f mouse_pos = window.mapPixelToCoords(pixel_pos); // Conversion to world coordinates
+	main_input_data.mouse_x = mouse_pos.x;
+	main_input_data.mouse_y = mouse_pos.y;
+	main_input_data.click_left = main_input_data.click_left_start || main_input_data.click_left_now;
+	main_input_data.space = main_input_data.space_start || main_input_data.space_now;
 
 	// Game events
 	vector<int> scene_events = scene->getEvents();
@@ -175,10 +219,7 @@ void GameWindow::eventHandling()
 
 void GameWindow::update(float delta_time)
 {
-	if (current_scene == last_frame_scene)
-		scene->update(delta_time);
-	else
-		last_frame_scene = current_scene;
+	scene->update(delta_time); // I think it may be ok
 }
 
 void GameWindow::render()

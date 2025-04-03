@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Changelog.txt" />
+    <Text Include="Instrukcje-PL.txt" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="PTSans-Bold.ttf" />

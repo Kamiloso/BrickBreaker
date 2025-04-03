@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 class GameWindow;
+struct InputData;
 
 using namespace std;
 
@@ -26,10 +27,13 @@ public:
 	float getRotation() const;
 	virtual void setRotation(float _rot);
 
+	virtual void updateInputData(const InputData* _input_data); // set input_data pointer (connect object to input)
+
 	const int layer;
 
 protected:
 	float x, y, rot;
+	const InputData* input_data = nullptr; // input data from current frame
 };
 
 // -------------------------------------------------------||

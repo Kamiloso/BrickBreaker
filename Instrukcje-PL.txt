@@ -1,0 +1,201 @@
+
+--- ### Ogólne wskazówki z C++ i nie tylko ### ---
+	
+0. PODSTAWY OBIEKTOWOŒCI - jeœli którekolwiek z wymienionych tutaj pojêæ jest ci obce, poczytaj
+	o nim i wróæ:
+		a) Klasa, obiekt
+		b) Konstruktor, destruktor
+		c) Dziedziczenie i polimorfizm, zw³aszcza pojêcia:
+			- kaskadowe wywo³ywanie konstruktorów / destruktorów w hierarchii dziedziczenia
+			- metoda wirtualna i u¿ycie frazy override
+			- metoda czysto wirtualna
+			- gdzie dodawaæ wirtualny destruktor?
+		f) WskaŸniki, zw³aszcza do obiektów w hierarchii dziedziczenia z polimorfizmem
+		g) Dynamiczne zarz¹dzanie pamiêci¹ za pomoc¹ new i delete / delete[]
+		h) Hermetyzacja danych: public, private, protected
+
+1. DYNAMIC CAST - s³u¿y do konwersji wskaŸnika klasy bazowej do wskaŸnika klasy pochodnej.
+	Jest to pomocne, gdy chcemy odwo³aæ siê do metod specyficznych np. dla przycisku,
+	a mamy dostêpny tylko do wskaŸnika SceneObject:
+
+	```
+	SceneObject* unknown_ptr = new Button(...);
+	Button* button_ptr = dynamic_cast<Button*>(unknown_ptr);
+	unknown_ptr->setEvent(...); // ja nie wiem, o co Panu chodzi
+	button_ptr->setEvent(...); // no i teraz wszystko jasne
+	```
+
+	Jeœli konwersja siê nie uda, to zwraca nullptr. Dlatego przydaje siê do sprawdzania, czy
+	obiekt jest danego typu
+
+2. NAG£ÓWKI I PLIKI CPP - ¿eby unikn¹æ b³êdów linkera, staramy siê w nag³ówkach deklarowaæ
+	tylko tzw. incomplete declarations, a w plikach CPP importujemy potrzebne nag³ówki.
+	Czasem trzeba w nag³ówku zaimportowaæ ca³y plik H np. gdy tworzymy klasê pochodn¹ i
+	potrzebujemy klasy bazowej.
+
+	```
+	class Button; // incomplete
+	#include "MyHeader.h" // complete, vulnerable to include errors
+	```
+
+3. PORZ¥DEK W NASZYCH PLIKACH - staramy siê dla ka¿dej klasy tworzyæ osobny plik i odpowiednio
+	gospodarowaæ folerami (filtrami) w Visual Studio. Do folderu Base dajemy klasê bazow¹ z
+	danego drzewka hierarchii, a poza nim klasy pochodne.
+
+	UWAGA: Foldery w Visual Studio s¹ sztucznym tworem, a wszystkie pliki s¹ w rzeczywistoœci
+	w jednym miejscu.
+
+	Jeœli dodajemy jakiekolwiek dependencies np. textury, czcionki itp. to wrzucamy je
+	do folderu Assets, a nastêpnie kopiujemy do folderu Release/ z projektu (z plikiem .exe)
+	jeœli plik ten nie mo¿e siê uruchomiæ bez tego pliku. Trzeba wejœæ w plik bezpoœrednio,
+	a nie z Visual Studio, ¿eby to sprawdziæ.
+
+	Dbajmy o prawa autorskie. Wszelkie licencje dajemy do folderu Release/Licenses/ i
+	podpisujemy, czego ta licencja dotyczy.
+
+--- ### Dokumentacja kodu ### ---
+
+1. Przy tworzeniu wa¿nej klasy, mo¿emy dodaæ tu jej dokumentacjê
+
+2. Klasa GameWindow - reprezentuje okno gry. Zawiera game loop i handling eventów
+	typu window (z inputu oraz obiektów ze sceny). W switchu mo¿emy tworzyæ nowe
+	eventy, dodaj¹c nowe case. Metoda run() odpowiada za utrzymanie game loop w ryzach.
+	Ka¿da klatka mo¿e mieæ inny odstêp czasowy od poprzedniej i do tego s³u¿y parametr delta_time,
+	czasem przekazywany w argumencie polimorficznie dziedziczonej przez obiekt / scenê funkcji.
+
+3. Oto schemat dzia³ania game loop w odpowiedniej kolejnoœci dla jednej klatki:
+
+	a) eventHandling - zbieranie eventów ze sceny np. chêæ zmiany sceny b¹dŸ wyjœcia z gry
+
+		- eventy typu okna, czyli np. wciœniêcie przycisku na klawiaturze, zamkniêcie okna
+
+		- zbieranie i wysy³anie inputu do struktury InputData (implementacja w common.h)
+
+		- eventy pochodz¹ce bezpoœrednio z obiektów, implementacja indywidualna w ramach ka¿dego obiektu
+			: tu nastêpuje np. zmiana sceny
+
+
+	b) update - zmiany dokonywane na scenie, zwykle przez nadpisywanie metod wirtualnych w klasach
+
+		- Dla ka¿dego obiektu na scenie: earlyUpdate() ---> wczesne zmiany wewn¹trzobiektowe
+
+		- Jedno dla ka¿dej sceny: sceneUpdate() ---> zmiany, bior¹ce pod uwagê wiele obiektów.
+		  Tu zapewne bêdziemy umieszczaæ wiêkszoœæ logiki.
+			WA¯NE: Twórzmy metody w klasach pochodnych po SceneObject i je wywo³ujmy przez wskaŸniki
+			       zamiast operowaæ na zmiennych publicznych
+
+		- Dla ka¿dego obiektu na scenie: lateUpdate() ---> póŸne zmiany wewn¹trzobiektowe
+
+		- OpóŸnione usuwanie obiektów, oznaczonych do usuniêcia
+
+
+	c) render - renderowanie sceny
+
+		- Rysowanie wszystkich obiektów wed³ug ich const layers (niskie na dole, wysokie na górze)
+
+4. Struktura projektu
+
+	a) Klasa GameWindow to g³ówne okno gry. Nadzowuje sceny i eventy, które póŸniej przesy³a do scen.
+	   Zbiera te¿ input i umieszcza w klasie InputData, do której wskaŸnik jest dostêpny z poziomu klasy
+	   bazowej SceneObject.
+
+	b) Klasa Scene to klasa bazowa dla ka¿dej sceny. Nadzoruje obiekty na scenie i dba o zwalnianie
+	   pamiêci po ich / jej zniszczeniu. Posiada kilka przydatnych metod do nadzoru obiektami np.
+
+		- Konstruktor dla ka¿dej klasy dziedzicz¹cej z Scene : mo¿na tu umieœciæ tworzenie
+		  obiektów na scenie i inne dzia³ania wstêpne np. inicjalizacjê swoich zmiennych ró¿nymi wartoœciami
+
+		- Destruktor dla ka¿dej klasy dziedzicz¹cej z Scene : wywo³uje siê przy niszczeniu sceny
+		  czyli przy wyjœciu lub prze³¹czaniu scen
+
+		- Czysto wirtualna metoda sceneUpdate(float delta_time), któr¹ trzeba nadpisaæ. Wywo³uje
+		  siê po earlyUpdate i przed lateUpdate dla obiektów. W niej dajemy centraln¹ logikê danej klatki.
+		  Oczywiœcie mo¿emy tworzyæ dowolne metody i zmienne w ramach klasy pochodnej, a nawet
+		  w³asne klasy i obiekty, ¿eby dbaæ o modularnoœæ kodu. Po prostu w tej metodzie powinien
+		  znaleŸæ siê mechanizm zarz¹dzaj¹cy tym wszystkim.
+
+		- addObject(SceneObject*) : przypisuje dymanicznie utworzony obiekt dziedzicz¹cy z
+		  SceneObject do sceny i zwraca wskaŸnik do niego (czyli w zasadzie argument w postaci
+		  wskaŸnika do klasy bazowej)
+			WA¯NE: Mo¿na wywo³ywaæ tê metodê w konstruktorach Scene, ale te¿ dynamicznie z poziomu
+			sceneUpdate(), ale w tym drugim przypadku, w pierwszej klatce istnieja obiektu
+			POMIJANE JEST wywo³anie earlyUpdate() dla tego obiektu (poniewa¿ zosta³ utworzony po nim).
+			Nie mo¿na tworzyæ obiektów z poziomu innych obiektów na scenie, mo¿na tylko z poziomu sceny.
+
+		- markToDelete(SceneObject*) : oznacza obiekt do usuniêcia i usuwa go, gdy jest to mo¿liwe, to
+		  znaczy bezpoœrednio po lateUpdate() i przed renderowaniem
+
+		- niekoniecznie metoda, ale mo¿na odwo³aæ siê do wektora object_list, który zawiera wszystkie
+		  obiekty obecne na scenie (ich wskaŸniki). Mo¿na po tym wektorze iterowaæ np. w taki sposób:
+
+		  ```
+		  for(SceneObject* object : object_list)
+		  {
+			  MyClass* myclass = dynamic_cast<MyClass*>(object);
+			  if(myclass != nullptr)
+				  object->myMethod();
+		  }
+		  ```
+
+		  UWAGA: Lepiej nie zmieniaæ struktury wektora, bo zarz¹dza nim klasa bazowa sceny.
+
+	    - oczywiœcie mo¿na dodawaæ nowe obiekty dziedzicz¹ce po podstawowej scenie, ale
+		  trzeba te¿ wtedy odpowiednio dostosowaæ mechanizm zmian scen w klasie GameWindow
+
+	c) SceneObject - klasa bazowa dla ka¿dego obiektu, który mo¿na umieœciæ na scenie. Zalecane
+	   jest dla ka¿dego typu obiektu, który chcemy utworzyæ tworzenie osobnej klasy. Mo¿na
+	   te¿ dziedziczyæ po klasach pochodnych np. Button dziedziczy po Rectangle.
+
+	    - w konstruktorze podajemy pozycjê i warstwê, na której bêdzie siê obiekt rysowa³ np.
+		  przycisk ma domyœlnie warstwê 20, a tekst 25, najlepiej jest w konstruktorze autorskim
+		  zaimplementowaæ mo¿liwoœæ zmiany tych parametrów
+
+		- oczywiœcie dziedzicz¹c mo¿emy dowolnie rozrastaæ klasê bazow¹
+
+		- znajdziemy w klasie takie metody, jak czytanie i ustawianie pozycji, a tak¿e to
+		  samo dla rotacji. Obecnie rotacja nic nie robi, ale mo¿na zaimplementowaæ jej dzia³anie
+		  w klasach pochodnych.
+
+		[nadpisz metody samodzielnie w klasie pochodnej, jeœli ich potrzebujesz]
+
+			- draw(...) rysuje obiekt na podstawie game_window (mo¿na uzyskaæ dostêp do okna SFML
+			  metod¹ game_window.getRenderWindow())
+
+			- earlyUpdate(...) i lateUpdate(...) s³u¿¹ do aktualizowania obiektów w obrêbie ich samych
+			  w zale¿noœci od tego, czy chcemy to zrobiæ przed, czy po sceneUpdate.
+			  UWAGA: Po stworzeniu obiektu wewn¹trz sceneUpdate, earlyUpdate mo¿e siê dla niego
+			         nie wykonaæ!
+
+			- getEvent() i getEventToScene() to dwie metody, zwracaj¹ce ID eventu, domyœlnie 0.
+			  Pierwsza odnosi siê do eventów okna (w GameWindow) a druga do eventów sceny. Eventy s³u¿¹
+			  do przekazywania infromacji do sceny, czy okna, jeœli chcemy przekazaæ, ¿e obiekt zrobi³
+			  coœ konkretnego (przyk³adowo klikniêcie przycisku, aby zmieniæ scenê). Klasa powinna sama
+			  dbaæ o to, kiedy zwraca jaki event i za pomoc¹ jakiej metody. Okno regularnie co klatkê
+			  w eventHandling wywo³uje metodê getEvent() dla ka¿dego obiektu na scenie i odpowiednio
+			  na niego reaguje. Scenie natomiast samemu trzeba zaimplementowaæ mechanizm wywo³ywania
+			  metody getEventToScene(), najlepiej co klatkê na pocz¹tku sceneUpdate(). W tym przypadku
+			  mo¿na siê ograniczyæ i wywo³ywaæ tê metodê tylko dla obiektów, które œledzimy.
+
+			- mo¿emy nadpisywaæ zmiany pozycji i rotacji tak, aby przemieœciæ równie¿ wszystkie dzieci
+			  obiektu
+
+		A w kwestii dzieci obiektu... Mo¿na wewn¹trz obiektu utworzyæ dynamicznie obiekty klas
+		dziedzicz¹cych z SceneObject, ale nale¿y pamiêtaæ o zwalnianiu pamiêci i o tym, ¿e tak
+		utworzone obiekty bêd¹ tzw. "kalekami" zale¿nymi od rodzica pod ka¿dym wzglêdem. Samo siê
+		nie narysuj¹, samo siê nie wywo³a u nich lateUpdate() itd. bo scena ich nie bêdzie widzieæ.
+		To na roli rodzica spoczywa wtedy wykonanie wszystkich tych rzeczy. Przyk³ad implementacji
+		obiektu-kaleki znajdziesz w klasie Button. internal_text to w³aœnie obiekt kaleka, czyli
+		tekst, który jest dzieckiem przycisku. Przycisk zarz¹dza wszystkimi elementami, które s¹
+		mu potrzebne np. to on go rysuje z w³asnej metody draw. Przy bardziej z³o¿onych sytuacjach
+		musia³by te¿ przekazywaæ eventy przycisków dalej do sceny / okna. Mo¿na zastosowaæ
+		ten mechanizm np. do stworzenia klasy formularza. Formularz mo¿e siê przemieszczaæ, a ma
+		do siebie przytwierdzone przyciski, których eventy s¹ przekazywane w³aœnie przez formularz.
+
+	 d) Button - przycisk, nie bêdê siê tu bardzo rozwleka³. Wa¿ne jest to, jak go utworzyæ.
+	    Trzeba utworzyæ przycisk za pomoc¹ konstruktora parametrycznego jako nowy obiekt,
+		wywo³aæ na nim metodê Button::setEvent() z odpowiednimi parametrami w zale¿noœci od
+		tego, jak chcemy, aby przycisk siê zachowywa³. A nastêpnie oczywiœcie wrzuciæ go do
+		metody addObject, gdy tworzymy przycisk z poziomu sceny. Rzecz jasna mo¿na go te¿ zrobiæ
+		jako dziecko innej klasy, ale to tylko dygresja. Jeœli nie wywo³amy metody
+		setEvent(), to przycisk stanie siê szary i nie bêdzie mo¿na go u¿yæ. Przydatne np.
+		do zrobienia zablokowanych poziomów.
