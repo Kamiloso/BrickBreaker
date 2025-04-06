@@ -20,7 +20,7 @@ void Text::draw(GameWindow* game_window)
 
 	sf::FloatRect textBounds = text1.getLocalBounds();
 
-	text1.setOrigin(textBounds.width / 2, textBounds.height / 2 + text1.getCharacterSize() / 4.3f);
+	text1.setOrigin(textBounds.width / 2 + text1.getCharacterSize() / 16.3f, textBounds.height / 2 + text1.getCharacterSize() / 4.3f);
 	text1.setPosition(x, y);
 
 	render.draw(text1);

@@ -9,6 +9,13 @@ constants for the project.
 constexpr int RX = 1280;	// physical screen width (not resolution)
 constexpr int RY = 720;		// physical screen height (not resolution)
 
+// GAMEPLAY CONSTANTS
+constexpr int BRICKS_X = 10;	// how many bricks there can be horizontally
+constexpr int BRICKS_Y = 20;	// how many bricks there can be vertically
+
+// MENU CONSTANTS
+constexpr int LEVELS = 40;	// amount of levels
+
 // SIMPLE STRUCTURES
 struct InputData
 {

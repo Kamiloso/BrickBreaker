@@ -25,6 +25,9 @@
     <Filter Include="Assets\Fonts">
       <UniqueIdentifier>{7d7ab901-79b8-41d5-bcc4-789a0663ece0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\LevelManagement">
+      <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="Grid.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="LevelGetter.cpp">
+      <Filter>Scripts\LevelManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -112,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Scripts\SceneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelGetter.h">
+      <Filter>Scripts\LevelManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
