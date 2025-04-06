@@ -20,6 +20,10 @@ MainMenu::MainMenu()
 	button3 = dynamic_cast<Button*>(
 		addObject(new Button(RX / 2, RY / 2 + 170, 400, 100, sf::Color::Cyan, L"EXIT"))
 		); button3->setEvent(2, true);
+
+	button4 = dynamic_cast<Button*>(
+		addObject(new Button(200,50, 400, 100, sf::Color::Cyan, L"PLAY"))
+		); button4->setEvent(1002, true);
 }
 
 void MainMenu::sceneUpdate(float delta_time)
