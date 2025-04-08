@@ -4,8 +4,8 @@
 
 #include <iostream>
 
-Button::Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, const wstring& _text, int _layer)
-	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, sf::Color::Black, _layer)
+Button::Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, sf::Color _bold_color, const wstring& _text, int _layer)
+	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, _bold_color, _layer)
 {
 	// Create internal text
 	internal_text = new Text(x, y, _text, (int)(0.6f * (wy - 20.0f)), color_bold);

@@ -2,6 +2,8 @@
 
 #include "Scene.h"
 
+class Rectangle;
+class Star;
 class Button;
 class Text;
 
@@ -18,8 +20,10 @@ public:
 	void sceneUpdate(float delta_time) override;
 
 private:
-	Text* title;
-	Button* button1;
-	Button* button2;
-	Button* button3;
+	Rectangle* background;
+	Star* star1;
+	Button* levels;
+	Button* endless_btn;
+	Button* instruction_btn;
+	Button* exit_btn;
 };

@@ -2,24 +2,47 @@
 #include "SceneObject.h"
 #include "Button.h"
 #include "Text.h"
+#include "Rectangle.h"
+#include "Star.h"
+#include <random>
 
 MainMenu::MainMenu()
 {
-	title = dynamic_cast<Text*>(
-		addObject(new Text(RX / 2, RY / 2 - 250, L"Brick, Ball, Plate - Alpha 0.1", 80))
+	// Tlo
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> distRX(0, RX);
+	uniform_int_distribution<> distRY(0, RY);
+	uniform_int_distribution<> distNumOfStars(80, 105);
+
+	for (int i = 0; i < distNumOfStars(gen); i++) {
+		addObject(new Star(distRX(gen), distRY(gen), 1, &gen, 1));
+	}
+	
+	background = dynamic_cast<Rectangle*>(
+		addObject(new Rectangle(RX / 2, RY / 2, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	button1 = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2, RY / 2 - 70, 400, 100, sf::Color::Cyan, L"MOVE BUTTON"))
-		); button1->setEvent(1, false);
+		addObject(new Text(RX / 2, RY / 2 - 200, L"BRICK BALL PLATE", 80, sf::Color(255, 255, 255)));
+		addObject(new Text(RX / 2, RY / 2 - 115, L"Alpha 0.1", 80, sf::Color(255, 255, 255)));
+	
+	// Przyciski menu
+	levels = dynamic_cast<Button*>(
+		addObject(new Button(RX / 2 - 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"LEVELS"))
+		); levels->setEvent(1001, true);
 
-	button2 = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2, RY / 2 + 50, 400, 100, sf::Color::Cyan, L"CHANGE SCENE"))
-		); button2->setEvent(1001, true);
+	endless_btn = dynamic_cast<Button*>(
+		addObject(new Button(RX / 2 + 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"ENDLESS"))
+		); endless_btn->setEvent(1002, true);
 
-	button3 = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2, RY / 2 + 170, 400, 100, sf::Color::Cyan, L"EXIT"))
-		); button3->setEvent(2, true);
+	instruction_btn = dynamic_cast<Button*>(
+		addObject(new Button(RX / 2 - 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"INSTRUCTION"))
+		); 
+	//instruction_btn->setEvent(2, true);
+
+	exit_btn = dynamic_cast<Button*>(
+		addObject(new Button(RX / 2 + 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"EXIT"))
+		); exit_btn->setEvent(2, true);
 }
 
 void MainMenu::sceneUpdate(float delta_time)

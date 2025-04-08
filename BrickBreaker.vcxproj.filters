@@ -57,6 +57,9 @@
     <ClCompile Include="Text.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Star.cpp">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -87,6 +90,9 @@
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
+      <Filter>Scripts\SceneObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Star.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
   </ItemGroup>
