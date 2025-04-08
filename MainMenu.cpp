@@ -16,7 +16,7 @@ MainMenu::MainMenu()
 	uniform_int_distribution<> distNumOfStars(80, 105);
 
 	for (int i = 0; i < distNumOfStars(gen); i++) {
-		addObject(new Star(distRX(gen), distRY(gen), 1, &gen, 1));
+		addObject(new Star(distRX(gen), distRY(gen), 2, &gen, 1));
 	}
 	
 	background = dynamic_cast<Rectangle*>(
@@ -28,20 +28,20 @@ MainMenu::MainMenu()
 	
 	// Przyciski menu
 	levels = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 - 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"LEVELS"))
+		addObject(new Button(RX / 2 - 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"LEVELS"))
 		); levels->setEvent(1001, true);
 
 	endless_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 + 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"ENDLESS"))
+		addObject(new Button(RX / 2 + 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"ENDLESS"))
 		); endless_btn->setEvent(1002, true);
 
 	instruction_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 - 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"INSTRUCTION"))
+		addObject(new Button(RX / 2 - 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"INSTRUCTION"))
 		); 
 	//instruction_btn->setEvent(2, true);
 
 	exit_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 + 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(41, 33, 33), L"EXIT"))
+		addObject(new Button(RX / 2 + 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT"))
 		); exit_btn->setEvent(2, true);
 }
 
