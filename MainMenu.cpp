@@ -43,6 +43,7 @@ MainMenu::MainMenu()
 	exit_btn = dynamic_cast<Button*>(
 		addObject(new Button(RX / 2 + 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT"))
 		); exit_btn->setEvent(2, true);
+
 }
 
 void MainMenu::sceneUpdate(float delta_time)

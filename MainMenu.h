@@ -21,7 +21,6 @@ public:
 
 private:
 	Rectangle* background;
-	Star* star1;
 	Button* levels;
 	Button* endless_btn;
 	Button* instruction_btn;
