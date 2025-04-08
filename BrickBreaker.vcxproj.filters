@@ -60,11 +60,9 @@
     <ClCompile Include="Text.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Star.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
-=======
     <ClCompile Include="Ball.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
@@ -80,7 +78,6 @@
     <ClCompile Include="LevelGetter.cpp">
       <Filter>Scripts\LevelManagement</Filter>
     </ClCompile>
->>>>>>> bdea98b83c036de70475904dcb79470ca0f10180
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -113,11 +110,9 @@
     <ClInclude Include="Text.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Star.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
-=======
     <ClInclude Include="Ball.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
@@ -133,7 +128,6 @@
     <ClInclude Include="LevelGetter.h">
       <Filter>Scripts\LevelManagement</Filter>
     </ClInclude>
->>>>>>> bdea98b83c036de70475904dcb79470ca0f10180
   </ItemGroup>
   <ItemGroup>
     <Text Include="Changelog.txt" />
