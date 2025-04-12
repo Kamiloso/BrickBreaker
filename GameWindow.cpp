@@ -20,17 +20,25 @@ void GameWindow::run()
 {
 	sf::Clock clock;
 	float delta_time = 0.0f;
+	const float MAX_DELTA_TIME = 0.1f; // less then 10 FPS --> slow down the game
 
 	while (true)
 	{
 		eventHandling(); // handle window & game events
-		if (!window.isOpen()) {
-			//saveAllNow();
+		if (!window.isOpen())
 			break;
-		}
+
 		delta_time = clock.restart().asSeconds();
+
+		if (delta_time > MAX_DELTA_TIME) // anti-bar-hold-pause
+			delta_time = MAX_DELTA_TIME;
+
+		if (game_pause)
+			delta_time = 0.0f;
+
 		update(delta_time); // update game logic
 		render(); // render screen
+
 		//std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
@@ -56,7 +64,12 @@ sf::RenderWindow& GameWindow::getRenderWindow()
 	return window;
 }
 
-void GameWindow::setScene(int scene_id)
+void GameWindow::setPause(bool enable)
+{
+	game_pause = enable;
+}
+
+void GameWindow::setScene(int scene_id, int parameter)
 {
 	delete scene; // ok even if scene is nullptr
 	switch (scene_id)
@@ -68,13 +81,18 @@ void GameWindow::setScene(int scene_id)
 		scene = new LevelMenu();
 		break;
 	case 2: // Game Scene
-		scene = new GameScene();
+		scene = new GameScene(parameter);
 		break;
 	default:
 		throw std::invalid_argument("Invalid scene ID");
 	}
 	current_scene = scene_id;
 	scene->inputPropagate(&main_input_data); // propagate input pointer to scene
+}
+
+bool GameWindow::isPause() const
+{
+	return game_pause;
 }
 
 int GameWindow::getScene() const
@@ -127,45 +145,13 @@ void GameWindow::eventHandling()
 {
 	// Anytime input reset
 	main_input_data.click_left_start = false;
-	main_input_data.space_start = false;
+	main_input_data.escape_start = false;
 
 	// Window events
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
-		{
-			window.close();
-			return;
-		}
-		if (event.type == sf::Event::KeyPressed)
-		{
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				window.close();
-				return;
-			}
-			
-			if (event.key.code == sf::Keyboard::F11 || event.key.code == sf::Keyboard::F)
-			{
-				makeWindow(!fullscreen);
-			}
-
-			// From there input send things
-
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				main_input_data.space_start = true;
-				main_input_data.space_now = true;
-			}
-		}
-		if (event.type == sf::Event::KeyReleased)
-		{
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				main_input_data.space_now = false;
-			}
-		}
+		// MOUSE
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			if (event.mouseButton.button == sf::Mouse::Button::Left)
@@ -181,6 +167,35 @@ void GameWindow::eventHandling()
 				main_input_data.click_left_now = false;
 			}
 		}
+
+		// KEYS
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::F11 || event.key.code == sf::Keyboard::F)
+			{
+				makeWindow(!fullscreen);
+			}
+
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				main_input_data.escape_start = true;
+				main_input_data.escape_now = true;
+			}
+		}
+		if (event.type == sf::Event::KeyReleased)
+		{
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				main_input_data.escape_now = false;
+			}
+		}
+
+		// OTHER EVENTS
+		if (event.type == sf::Event::Closed)
+		{
+			window.close();
+			return;
+		}
 	}
 
 	// Input to send
@@ -189,31 +204,29 @@ void GameWindow::eventHandling()
 	main_input_data.mouse_x = mouse_pos.x;
 	main_input_data.mouse_y = mouse_pos.y;
 	main_input_data.click_left = main_input_data.click_left_start || main_input_data.click_left_now;
-	main_input_data.space = main_input_data.space_start || main_input_data.space_now;
+	main_input_data.escape = main_input_data.escape_start || main_input_data.escape_now;
+	main_input_data.game_window = this; // Game window reference add
 
 	// Game events
 	vector<int> scene_events = scene->getEvents();
 	for (int& event_id : scene_events)
 	{
-		switch (event_id)
-		{
-		case 1: // next scene
+		if (event_id == 1) // next scene
 			setScene((getScene() + 1) % 3);
-			return;
 
-		case 2: // quit
+		else if(event_id == 2) // window close
 			window.close();
-			return;
 
-		case 1000: // jump to scene
-		case 1001:
-		case 1002:
+		else if (event_id >= 1000 && event_id < 1999) // set scene by ID
 			setScene(event_id - 1000);
-			return;
 
-		default:
-			throw exception("Invalid event ID");
-		}
+		else if (event_id >= 2000 && event_id < 2999) // set menu scene with parameter (local screen)
+			setScene(0, event_id - 2000);
+
+		else if (event_id >= 3000 && event_id < 3999) // set game scene with parameter (level ID)
+			setScene(2, event_id - 3000);
+
+		else throw exception("Invalid event ID");
 	}
 }
 

@@ -1,8 +1,8 @@
 #include "Ball.h"
 #include "GameWindow.h"
 
-Ball::Ball(float pos_x, float pos_y, float _r, sf::Color _color,int _layer)
-	: SceneObject(pos_x, pos_y,_layer), r(_r), color(_color) {}
+Ball::Ball(float pos_x, float pos_y, float _r, int _layer)
+	: SceneObject(pos_x, pos_y,_layer), r(_r), color(sf::Color::Green) {}
 
 void Ball::draw(GameWindow* game_window)
 {
@@ -18,7 +18,7 @@ void Ball::step(float delta_time)
 int Ball::getEventToScene()
 {
 	if (y >= RY + r)
-		return 1;
+		return 3;
 	else
 		return 0;
 }

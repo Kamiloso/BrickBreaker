@@ -5,7 +5,7 @@
 class Ball : public SceneObject
 {
 public:
-	Ball(float pos_x, float pos_y, float _r, sf::Color _color,int _layer);
+	Ball(float pos_x, float pos_y, float _r, int _layer = 14);
 	void draw(GameWindow* game_window) override;
 	int getEventToScene();
 	void step(float delta_time);
