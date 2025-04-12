@@ -1,18 +1,15 @@
 #pragma once
+#include "Circle.h"
 
-#include "SceneObject.h"
-#include <vector>
-class Ball : public SceneObject
+class Ball : public Circle
 {
 public:
-	Ball(float pos_x, float pos_y, float _r, int _layer = 14);
-	void draw(GameWindow* game_window) override;
-	int getEventToScene();
+	Ball(float _x, float _y, float _vx, float _vy, int _layer = 12);
 	void step(float delta_time);
+	void setVelocityByAngle(float angle, float magnitude);
+
 protected:
-	float vx = 0;
-	float vy = 200;
-	float r;
-	sf::Color color;
+	float vx;
+	float vy;
 };
 

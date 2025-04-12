@@ -15,8 +15,8 @@ constexpr int CX = RX / 2;  // screen middle
 constexpr int CY = RY / 2;  // screen middle
 
 // GAMEPLAY CONSTANTS
-constexpr int BRICKS_X = 10;	// how many bricks there can be horizontally
-constexpr int BRICKS_Y = 20;	// how many bricks there can be vertically
+constexpr int BRICKS_X = 7;		// how many bricks there can be horizontally
+constexpr int BRICKS_Y = 13;	// how many bricks there can be vertically
 constexpr float BRICK_WX = 100;	// brick size in x coordinates
 constexpr float BRICK_WY = 50;	// brick size in y coordinates
 

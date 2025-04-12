@@ -1,19 +1,17 @@
 #include "LevelMenu.h"
-#include "SceneObject.h"
+#include "Text.h"
+#include "Button.h"
 
 LevelMenu::LevelMenu()
 {
-	addObject(new TempCircle(200, 200, 60, sf::Color::Red));
-	addObject(new TempCircle(RX / 2, RY / 2, 100, sf::Color::Magenta));
-	addObject(new TempCircle(RX - 200, RY - 200, 140, sf::Color::Yellow));
+	addObject(new Text(CX, CY - 60, L"This scene should never display!", 80));
+
+	Button* back_and_forget = new Button(CX, CY + 60, 500, 100, sf::Color::White, sf::Color::Black, L"BACK AND FORGET");
+	addObject(back_and_forget);
+	back_and_forget->setEvent(1000, true);
 }
 
 void LevelMenu::sceneUpdate(float delta_time)
 {
-	for (SceneObject* object : object_list)
-	{
-		TempCircle* temp_circle = dynamic_cast<TempCircle*>(object);
-		if (temp_circle != nullptr)
-			temp_circle->step(delta_time);
-	}
+	// whis function should be empty
 }

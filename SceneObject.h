@@ -35,24 +35,3 @@ protected:
 	float x, y, rot;
 	const InputData* input_data = nullptr; // input data from current frame
 };
-
-// -------------------------------------------------------||
-// Temporary class to demostrate some game loop mechanics ||
-// -------------------------------------------------------||
-
-class TempCircle : public SceneObject
-{
-public:
-	TempCircle(float _x, float _y, float _r, sf::Color _color) : SceneObject(_x, _y), r(_r), color(_color) {}
-	void draw(GameWindow* game_window) override;
-	void earlyUpdate(float delta_time) override;
-	void lateUpdate(float delta_time) override;
-	int getEvent() override;
-	int getEventToScene() override;
-
-	void step(float delta_time);
-
-protected:
-	float r;
-	sf::Color color;
-};

@@ -34,6 +34,9 @@
     <Filter Include="Scripts\SceneObjects\Game">
       <UniqueIdentifier>{65e4463b-e2bc-41af-b315-1a2cfba6975e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\SceneObjects\Shapes">
+      <UniqueIdentifier>{726f9a54-f2c4-4e88-acfe-3c5ac1a6269e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -57,9 +60,6 @@
     <ClCompile Include="SceneObject.cpp">
       <Filter>Scripts\SceneObjects\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Rectangle.cpp">
-      <Filter>Scripts\SceneObjects</Filter>
-    </ClCompile>
     <ClCompile Include="Star.cpp">
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
@@ -72,10 +72,7 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Scripts\SceneObjects\Game</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
+    <ClCompile Include="Plate.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClCompile>
     <ClCompile Include="Text.cpp">
@@ -83,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Scripts\SceneObjects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Scripts\SceneObjects\Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Scripts\SceneObjects\Shapes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +110,6 @@
     <ClInclude Include="SceneObject.h">
       <Filter>Scripts\SceneObjects\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Rectangle.h">
-      <Filter>Scripts\SceneObjects</Filter>
-    </ClInclude>
     <ClInclude Include="Star.h">
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
@@ -122,10 +122,7 @@
     <ClInclude Include="Brick.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Scripts\SceneObjects\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="Plate.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
@@ -133,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Scripts\SceneObjects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Scripts\SceneObjects\Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Scripts\SceneObjects\Shapes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

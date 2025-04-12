@@ -1,24 +1,23 @@
 #include "Ball.h"
 #include "GameWindow.h"
+#include "GameScene.h"
 
-Ball::Ball(float pos_x, float pos_y, float _r, int _layer)
-	: SceneObject(pos_x, pos_y,_layer), r(_r), color(sf::Color::Green) {}
+#include <vector>
+#include <cmath>
 
-void Ball::draw(GameWindow* game_window)
+Ball::Ball(float _x, float _y, float _vx, float _vy, int _layer)
+	: Circle(_x, _y, 15, 2, sf::Color::Green, sf::Color::Black, _layer),
+	vx(_vx), vy(_vy) {}
+
+void Ball::step(float delta_time)
 {
-	game_window->drawCircle(x,y, r, color);
+	x += vx * delta_time;
+	y += vy * delta_time;
 }
-void Ball::step(float delta_time) 
-{
-	x += vx*delta_time;
-	y += vy*delta_time;
-}
 
-
-int Ball::getEventToScene()
+void Ball::setVelocityByAngle(float angle, float magnitude)
 {
-	if (y >= RY + r)
-		return 3;
-	else
-		return 0;
+	const float PI = 3.14159;
+	vx = cos(angle * 2 * PI / 180) * magnitude;
+	vy = sin(angle * 2 * PI / 180) * magnitude;
 }
