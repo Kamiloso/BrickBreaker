@@ -24,25 +24,25 @@ MainMenu::MainMenu(int localScene)
 		addObject(new Rectangle(CX, CY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 200, L"BRICK BALL PLATE", 80, sf::Color(255, 255, 255))));
+	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 200, L"PLATE BALL BRICK", 80, sf::Color(255, 255, 255))));
 	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 115, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
-		addObject(new Button(CX - 210, CY + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"LEVELS"))
+		addObject(new Button(CX - 210, CY + 40, 400, 100, COL::buttonBg, COL::buttonBold, L"LEVELS"))
 		); levels->setEvent(1, false);
 
 	endless_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX + 210, CY + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"ENDLESS"))
+		addObject(new Button(CX + 210, CY + 40, 400, 100, COL::buttonBg, COL::buttonBold, L"ENDLESS"))
 		); endless_btn->setEvent(1002, true);
 
 	instruction_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX - 210, CY + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"INSTRUCTION"))
+		addObject(new Button(CX - 210, CY + 160, 400, 100, COL::buttonBg, COL::buttonBold, L"INSTRUCTION"))
 		); 
 	instruction_btn->setEvent(2, false);
 
 	exit_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX + 210, CY + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT"))
+		addObject(new Button(CX + 210, CY + 160, 400, 100, COL::buttonBg, COL::buttonBold, L"EXIT"))
 		); exit_btn->setEvent(2, true);
 
 	menu_object_list = { title, subtitle, levels, endless_btn, instruction_btn, exit_btn };
@@ -66,19 +66,19 @@ MainMenu::MainMenu(int localScene)
 			locked = false;
 		}
 
-		Button* level_btn = new Button(CX + 10000 + x_offset, CY + y_offset, 100, 100, (LevelGetter::isFlagSet(i, 1)) ? sf::Color(111, 170, 201) : sf::Color(3, 252, 102), sf::Color(30, 36, 107), to_wstring(i + 1));
+		Button* level_btn = new Button(CX + 10000 + x_offset, CY + y_offset, 100, 100, (LevelGetter::isFlagSet(i, 1)) ? COL::levelComplete : COL::levelUnlocked, COL::buttonBold, to_wstring(i + 1));
 		addObject(level_btn);
 		menu_object_list.push_back(level_btn);
 
 		if (locked == true) continue;
 		level_btn->setEvent(3000 + i, true);
 	}
-	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 200, 90, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT")));
+	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 215, 90, COL::buttonBg, COL::buttonBold, L"EXIT")));
 	level_menu_exit_btn->setEvent(3, false);
 	menu_object_list.push_back(level_menu_exit_btn);
 
 	// Instruction
-	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 200, 90, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT")));
+	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 215, 90, COL::buttonBg, COL::buttonBold, L"EXIT")));
 	instruction_exit_btn->setEvent(4, false);
 	menu_object_list.push_back(instruction_exit_btn);
 

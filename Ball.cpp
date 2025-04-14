@@ -1,6 +1,7 @@
 #include "Ball.h"
 #include "GameWindow.h"
 #include "GameScene.h"
+#include "Sound.h"
 
 #include <vector>
 #include <cmath>

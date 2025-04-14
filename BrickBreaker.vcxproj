@@ -171,10 +171,6 @@
     <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Changelog.txt" />
-    <Text Include="Instrukcje-PL.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Font Include="PTSans-Bold.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,15 +1,13 @@
 #pragma once
-
 #include "Scene.h"
-#include "Rectangle.h"
-#include "Ball.h"
-#include "Plate.h"
-#include "Sound.h"
 
 class SceneObject;
+class Rectangle;
 class Button;
 class Text;
 class Brick;
+class Plate;
+class Ball;
 
 using namespace std;
 

@@ -1,5 +1,6 @@
 #pragma once
-// DO NOT IMPORT ANYTHING
+#include <SFML/Graphics.hpp>
+// DO NOT IMPORT OUR PRIVATE DEPENDENCIES
 
 class GameWindow;
 
@@ -22,6 +23,15 @@ constexpr float BRICK_WY = 50;	// brick size in y coordinates
 
 // MENU CONSTANTS
 constexpr int LEVELS = 40;	// amount of levels
+
+// COLORS
+namespace COL
+{
+	static const sf::Color buttonBold = sf::Color(30, 36, 107);
+	static const sf::Color buttonBg = sf::Color(38, 226, 255);
+	static const sf::Color levelComplete = sf::Color(38, 175, 255);
+	static const sf::Color levelUnlocked = sf::Color(3, 252, 102);
+}
 
 // DATA STRUCTURES
 struct InputData

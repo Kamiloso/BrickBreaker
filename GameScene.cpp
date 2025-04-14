@@ -6,6 +6,9 @@
 #include "Text.h"
 #include "Brick.h"
 #include "LevelGetter.h"
+#include "Plate.h"
+#include "Ball.h"
+#include "Sound.h"
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
 const float GameScene::border_right = Brick::getBrickPositionByCoordinates(BRICKS_X - 1, 0)[0] + BRICK_WX / 2;
@@ -109,9 +112,6 @@ GameScene::GameScene(int _level)
 		button_retry_defeat
 	};
 	
-	// Sound initialization
-	Sound::init();
-	Sound::setGlobalVolume(80.f);
 	Sound::playMusic("1");
 }
 
@@ -181,6 +181,7 @@ void GameScene::sceneUpdate(float delta_time)
 			std::remove(balls.begin(), balls.end(), ball_rem),
 			balls.end()
 		);
+		Sound::playSound("1"); // ball break sound
 	}
 	if (balls.size() == 0) // end game if no balls on scene
 		end_now = true;
@@ -192,13 +193,22 @@ void GameScene::sceneUpdate(float delta_time)
 			local_screen = 2; // win
 		else
 			local_screen = 3; // defeat
+		Sound::stopMusic();
 	}
 	else
 	{
 		if (pause_now)
 		{
-			if (local_screen == 0) local_screen = 1; // pause
-			else if (local_screen == 1) local_screen = 0; // none
+			if (local_screen == 0)
+			{
+				local_screen = 1; // pause
+				Sound::pauseMusic();
+			}
+			else if (local_screen == 1)
+			{
+				local_screen = 0; // none
+				Sound::resumeMusic();
+			}
 		}
 	}
 
