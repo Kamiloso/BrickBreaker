@@ -7,11 +7,9 @@
 #include <random>
 #include "LevelGetter.h"
 
-//#include <iostream>
-
 MainMenu::MainMenu(int localScene)
 {
-	// Tlo
+	// Background
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<> distRX(0, RX);
@@ -23,35 +21,35 @@ MainMenu::MainMenu(int localScene)
 	}
 	
 	background = dynamic_cast<Rectangle*>(
-		addObject(new Rectangle(RX / 2, RY / 2, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
+		addObject(new Rectangle(CX, CY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	title = dynamic_cast<Text*>(addObject(new Text(RX / 2, RY / 2 - 200, L"BRICK BALL PLATE", 80, sf::Color(255, 255, 255))));
-	subtitle = dynamic_cast<Text*>(addObject(new Text(RX / 2, RY / 2 - 115, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
+	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 200, L"BRICK BALL PLATE", 80, sf::Color(255, 255, 255))));
+	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 115, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 - 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"LEVELS"))
+		addObject(new Button(CX - 210, CY + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"LEVELS"))
 		); levels->setEvent(1, false);
 
 	endless_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 + 210, RY / 2 + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"ENDLESS"))
+		addObject(new Button(CX + 210, CY + 40, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"ENDLESS"))
 		); endless_btn->setEvent(1002, true);
 
 	instruction_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 - 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"INSTRUCTION"))
+		addObject(new Button(CX - 210, CY + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"INSTRUCTION"))
 		); 
 	instruction_btn->setEvent(2, false);
 
 	exit_btn = dynamic_cast<Button*>(
-		addObject(new Button(RX / 2 + 210, RY / 2 + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT"))
+		addObject(new Button(CX + 210, CY + 160, 400, 100, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT"))
 		); exit_btn->setEvent(2, true);
 
 	menu_object_list = { title, subtitle, levels, endless_btn, instruction_btn, exit_btn };
 
 	// Level menu
 
-	// Do usuniecia
+	// To be deleted
 	for (int i = 0; i < 11; i++) {
 		LevelGetter::setLevelFlag(i, 1);
 	}
@@ -61,7 +59,7 @@ MainMenu::MainMenu(int localScene)
 		int row = (i / 8) + 1;
 		int col = (i % 8) + 1;
 		float x_offset = -402.5 + 115 * (col - 1);
-		float y_offset = -230 + 115 * (row - 1);
+		float y_offset = -230 + 115 * (row - 1) - 60;
 
 		bool locked = true;
 		if (i == 0 || LevelGetter::isFlagSet(i - 1, 1)) {
@@ -75,11 +73,17 @@ MainMenu::MainMenu(int localScene)
 		if (locked == true) continue;
 		level_btn->setEvent(3000 + i, true);
 	}
+	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 200, 90, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT")));
+	level_menu_exit_btn->setEvent(3, false);
+	menu_object_list.push_back(level_menu_exit_btn);
 
 	// Instruction
-	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY, 150, 100, sf::Color(232, 26, 187), sf::Color(30, 36, 107), L"EXIT")));
-	instruction_exit_btn->setEvent(3, false);
+	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 200, 90, sf::Color::Cyan, sf::Color(30, 36, 107), L"EXIT")));
+	instruction_exit_btn->setEvent(4, false);
 	menu_object_list.push_back(instruction_exit_btn);
+
+	// Changes local scene
+	changeLocalScene(localScene);
 }
 
 void MainMenu::sceneUpdate(float delta_time)
@@ -91,15 +95,17 @@ void MainMenu::sceneUpdate(float delta_time)
 		int event_number = button->getEventToScene();
 
 		// levels_btn
-		if (event_number == 1) changeView(1);
+		if (event_number == 1) changeLocalScene(1);
 		// instruction_btn
-		if (event_number == 2) changeView(2);
+		if (event_number == 2) changeLocalScene(2);
+		// level_menu_exit_btn
+		if (event_number == 3) changeLocalScene(-1);
 		// instruction_exit_btn
-		if (event_number == 3) changeView(-2);
+		if (event_number == 4) changeLocalScene(-2);
 	}
 }
 
-void MainMenu::changeView(int i) {
+void MainMenu::changeLocalScene(int i) {
 	for (SceneObject* object : menu_object_list) {
 		if (object == nullptr) continue;
 		auto object_pos = object->getPosition();
