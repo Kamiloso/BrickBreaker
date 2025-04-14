@@ -5,7 +5,8 @@
 #include "Ball.h"
 #include "Collider.h"
 #include "Grid.h"
-
+#include "Sound.h"
+#include <SFML/Audio.hpp>
 
 class SceneObject;
 class Button;
@@ -22,7 +23,7 @@ public:
 	GameScene();
 	void sceneUpdate(float delta_time) override;
 	void populateGrid(Grid* grid);
-
+	
 protected:
 	const int ROWS = 15;
 	const int COLS = 10;
@@ -34,5 +35,4 @@ protected:
 	Ball* ball1;
 	Collider* collider1;
 	Grid* grid1;
-	//SceneObject* temp_big_circle;
 };

@@ -28,6 +28,9 @@
     <Filter Include="Scripts\LevelManagement">
       <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\SoundManagement">
+      <UniqueIdentifier>{67a4ddf8-50bc-45ea-854c-b35d99c636d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -78,6 +81,9 @@
     <ClCompile Include="LevelGetter.cpp">
       <Filter>Scripts\LevelManagement</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Scripts\SoundManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -127,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="LevelGetter.h">
       <Filter>Scripts\LevelManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Scripts\SoundManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

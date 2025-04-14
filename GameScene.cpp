@@ -15,6 +15,9 @@ GameScene::GameScene()
 	collider1 = dynamic_cast<Collider*>(addObject(new Collider(RX/2, RY - 20, 100, 10, left_margin, right_margin, sf::Color::Green, 2)));
 	grid1 = dynamic_cast<Grid*>(addObject(new Grid(RX/2,0,RX-left_margin,(RX-left_margin)/4, ROWS,COLS, 1)));
 	populateGrid(grid1);
+	Sound::init();
+	Sound::setGlobalVolume(80.f);
+	Sound::playMusic("1");
 }
 
 void GameScene::sceneUpdate(float delta_time)
@@ -23,6 +26,7 @@ void GameScene::sceneUpdate(float delta_time)
 	{
 		if (ball1->getEventToScene() == 1) 
 		{
+			Sound::playSound("1");
 			markToDelete(ball1);
 			ball1 = nullptr;
 		}
@@ -31,21 +35,6 @@ void GameScene::sceneUpdate(float delta_time)
 			ball1->step(delta_time);
 		}
 	}
-
-	//if (temp_big_circle != nullptr)
-	//{
-	//	if (temp_big_circle->getEventToScene() == 1)
-	//	{
-	//		markToDelete(temp_big_circle);
-	//		temp_big_circle = nullptr; // make sure to reset after deletion (here it is not needed)
-	//		temp_big_circle = addObject(new TempCircle(RX / 2, RY / 2 + 300, 50, sf::Color::Green));
-	//		addObject(new TempCircle(RX / 2, RY / 2 - 300, 50, sf::Color::Green));
-	//	}
-
-	//	TempCircle* temp_circle = dynamic_cast<TempCircle*>(temp_big_circle);
-	//	if (temp_circle != nullptr)
-	//		temp_circle->step(delta_time);
-	//}
 }
 
 void GameScene::populateGrid(Grid* grid)
