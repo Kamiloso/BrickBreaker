@@ -75,7 +75,7 @@ void GameWindow::setScene(int scene_id, int parameter)
 	switch (scene_id)
 	{
 	case 0: // Main Menu
-		scene = new MainMenu();
+		scene = new MainMenu(parameter);
 		break;
 	case 1: // Level Menu
 		scene = new LevelMenu();
