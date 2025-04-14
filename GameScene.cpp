@@ -108,6 +108,11 @@ GameScene::GameScene(int _level)
 		button_menu_defeat,
 		button_retry_defeat
 	};
+	
+	// Sound initialization
+	Sound::init();
+	Sound::setGlobalVolume(80.f);
+	Sound::playMusic("1");
 }
 
 GameScene::~GameScene()

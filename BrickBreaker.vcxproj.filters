@@ -36,6 +36,8 @@
     </Filter>
     <Filter Include="Scripts\SceneObjects\Shapes">
       <UniqueIdentifier>{726f9a54-f2c4-4e88-acfe-3c5ac1a6269e}</UniqueIdentifier>
+    <Filter Include="Scripts\SoundManagement">
+      <UniqueIdentifier>{67a4ddf8-50bc-45ea-854c-b35d99c636d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +88,8 @@
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Scripts\SceneObjects\Shapes</Filter>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Scripts\SoundManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +140,8 @@
     </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>Scripts\SceneObjects\Shapes</Filter>
+    <ClInclude Include="Sound.h">
+      <Filter>Scripts\SoundManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

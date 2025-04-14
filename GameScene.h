@@ -4,6 +4,7 @@
 #include "Rectangle.h"
 #include "Ball.h"
 #include "Plate.h"
+#include "Sound.h"
 
 class SceneObject;
 class Button;

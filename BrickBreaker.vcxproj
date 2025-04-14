@@ -147,6 +147,7 @@
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="Text.h" />
   </ItemGroup>
