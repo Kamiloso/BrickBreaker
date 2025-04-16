@@ -22,7 +22,7 @@
 [Dd]ebug_x86/
 [Dd]evelopment_x64/
 [Dd]evelopment_x86/
-Release/
+/BrickBreaker/Release/
 Release_x64/
 Release_x86/
 x64/

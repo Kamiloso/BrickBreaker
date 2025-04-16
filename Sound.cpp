@@ -1,6 +1,8 @@
 #include "Sound.h"
 
 map<string, sf::SoundBuffer> Sound::soundBuffers;
+map<string, float> Sound::localVolumes;
+map<string, float> Sound::localVolumesMusic;
 vector<sf::Sound> Sound::activeSounds;
 sf::Music Sound::music;
 map<string, string> Sound::musicPaths;
@@ -10,23 +12,25 @@ float Sound::musicVolume;
 
 void Sound::init()
 {
-	globalVolume = 100.f;
-	soundVolume = 100.f;
-	musicVolume = 100.f;
-	loadSound("1", "sound.wav");
-	loadMusic("1", "Music1.mp3");
+	globalVolume = 1.f;
+	soundVolume = 1.f;
+	musicVolume = 1.f;
+	loadSound("1", "sound.wav", 0.45f);
+	loadMusic("1", "Music1.mp3", 0.2f);
 }
 
-void Sound::loadSound(const string& name, const string& path)
+void Sound::loadSound(const string& name, const string& path, float local_volume)
 {
 	sf::SoundBuffer buffer;
 	buffer.loadFromFile(path);
 	soundBuffers[name] = buffer;
+	localVolumes[name] = local_volume;
 }
 
-void Sound::loadMusic(const string& name, const string& path)
+void Sound::loadMusic(const string& name, const string& path, float local_volume)
 {
 	musicPaths[name] = path;
+	localVolumesMusic[name] = local_volume;
 }
 
 void Sound::playSound(const string& name)
@@ -40,7 +44,7 @@ void Sound::playSound(const string& name)
 	activeSounds.emplace_back();
 	sf::Sound& sound = activeSounds.back();
 	sound.setBuffer(soundBuffers[name]);
-	sound.setVolume(soundVolume * (globalVolume / 100.f));
+	sound.setVolume(soundVolume * globalVolume * localVolumes[name] * 100.f);
 	sound.play();
 }
 
@@ -75,6 +79,6 @@ void Sound::playMusic(const string& name, bool loop)
 {
 	music.openFromFile(musicPaths[name]);
 	music.setLoop(loop);
-	music.setVolume(musicVolume * (globalVolume / 100.f));
+	music.setVolume(musicVolume * globalVolume * localVolumesMusic[name] * 100.f);
 	music.play();
 }

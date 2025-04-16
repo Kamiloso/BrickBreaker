@@ -7,7 +7,7 @@ int main()
 {
     // Sound initialization
     Sound::init();
-    Sound::setGlobalVolume(80.f);
+    Sound::setGlobalVolume(0.5f);
 
     // Window settings
     sf::ContextSettings settings;
