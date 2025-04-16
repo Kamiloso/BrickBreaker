@@ -1,6 +1,7 @@
 #include "Button.h"
 #include "GameWindow.h"
 #include "Text.h"
+#include "Input.h"
 
 #include <iostream>
 
@@ -30,18 +31,19 @@ void Button::setEvent(int _event_id, bool _to_window)
 void Button::earlyUpdate(float delta_time)
 {
 	// Button click logic
-	if (event_id != 0 && input_data != nullptr)
+	if (event_id != 0)
 	{
+		auto mvect = Input::getMousePosition();
 		sf::Vector2f mouse_pos = {
-			input_data->mouse_x,
-			input_data->mouse_y
+			mvect[0],
+			mvect[1]
 		};
 
 		bool is_in_area_now = (
 			mouse_pos.x >= x - wx / 2 && mouse_pos.x <= x + wx / 2 &&
 			mouse_pos.y >= y - wy / 2 && mouse_pos.y <= y + wy / 2
 			);
-		bool is_clicked_now = input_data->click_left;
+		bool is_clicked_now = Input::isMousePressed(sf::Mouse::Left);
 
 		if (is_holding)
 		{

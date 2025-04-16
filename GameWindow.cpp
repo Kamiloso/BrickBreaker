@@ -2,11 +2,13 @@
 #include "MainMenu.h"
 #include "LevelMenu.h"
 #include "GameScene.h"
+#include "Input.h"
 
 GameWindow::GameWindow(string _title, sf::ContextSettings _settings)
 {
 	title = _title;
 	settings = _settings;
+	Input::init(this);
 	makeWindow(fullscreen);
 	setScene(0);
 }
@@ -87,7 +89,6 @@ void GameWindow::setScene(int scene_id, int parameter)
 		throw std::invalid_argument("Invalid scene ID");
 	}
 	current_scene = scene_id;
-	scene->inputPropagate(&main_input_data); // propagate input pointer to scene
 }
 
 bool GameWindow::isPause() const
@@ -143,9 +144,9 @@ void GameWindow::makeWindow(bool full)
 
 void GameWindow::eventHandling()
 {
-	// Anytime input reset
-	main_input_data.click_left_start = false;
-	main_input_data.escape_start = false;
+	// "Anytime" input vectors
+	unordered_set<sf::Keyboard::Key> key_anytime; // stores pressed keyboard keys now
+	unordered_set<sf::Mouse::Button> mouse_anytime; // stores pressed mouse buttons now
 
 	// Window events
 	sf::Event event;
@@ -154,40 +155,23 @@ void GameWindow::eventHandling()
 		// MOUSE
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			if (event.mouseButton.button == sf::Mouse::Button::Left)
-			{
-				main_input_data.click_left_start = true;
-				main_input_data.click_left_now = true;
-			}
+			mouse_anytime.insert(event.mouseButton.button);
+			mouse_storage.insert(event.mouseButton.button);
 		}
 		if (event.type == sf::Event::MouseButtonReleased)
 		{
-			if (event.mouseButton.button == sf::Mouse::Button::Left)
-			{
-				main_input_data.click_left_now = false;
-			}
+			mouse_storage.erase(event.mouseButton.button);
 		}
 
 		// KEYS
 		if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::F11 || event.key.code == sf::Keyboard::F)
-			{
-				makeWindow(!fullscreen);
-			}
-
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				main_input_data.escape_start = true;
-				main_input_data.escape_now = true;
-			}
+			key_anytime.insert(event.key.code);
+			key_storage.insert(event.key.code);
 		}
 		if (event.type == sf::Event::KeyReleased)
 		{
-			if (event.key.code == sf::Keyboard::Escape)
-			{
-				main_input_data.escape_now = false;
-			}
+			key_storage.erase(event.key.code);
 		}
 
 		// OTHER EVENTS
@@ -198,14 +182,22 @@ void GameWindow::eventHandling()
 		}
 	}
 
-	// Input to send
+	// Input data update
 	sf::Vector2i pixel_pos = sf::Mouse::getPosition(window); // Mouse position
 	sf::Vector2f mouse_pos = window.mapPixelToCoords(pixel_pos); // Conversion to world coordinates
-	main_input_data.mouse_x = mouse_pos.x;
-	main_input_data.mouse_y = mouse_pos.y;
-	main_input_data.click_left = main_input_data.click_left_start || main_input_data.click_left_now;
-	main_input_data.escape = main_input_data.escape_start || main_input_data.escape_now;
-	main_input_data.game_window = this; // Game window reference add
+
+	key_anytime.insert(key_storage.begin(), key_storage.end());;
+	mouse_anytime.insert(mouse_storage.begin(), mouse_storage.end());
+
+	Input::frameUpdate(
+		mouse_pos.x, mouse_pos.y,
+		key_anytime, mouse_anytime
+	);
+
+	// Full screen instant-after change
+	if (Input::isKeyboardPressed(sf::Keyboard::F11, Input::Down) ||
+		Input::isKeyboardPressed(sf::Keyboard::F, Input::Down))
+		makeWindow(!fullscreen);
 
 	// Game events
 	vector<int> scene_events = scene->getEvents();

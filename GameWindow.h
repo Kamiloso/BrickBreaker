@@ -2,6 +2,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <unordered_set>
 
 #include <SFML/Graphics.hpp>
 #include "common.h"
@@ -38,7 +39,6 @@ private:
 
 	sf::RenderWindow window;
 	sf::ContextSettings settings;
-	InputData main_input_data;
 
 	string title = "";
 	bool fullscreen = true;
@@ -47,6 +47,9 @@ private:
 	Scene* scene = nullptr;
 	int current_scene = 0;
 
+	unordered_set<sf::Keyboard::Key> key_storage; // stores currently pressed keyboard keys
+	unordered_set<sf::Mouse::Button> mouse_storage; // stores currently pressed mouse buttons
+
 	void makeWindow(bool full); // Creates or recreates window
 	void setScene(int scene_id, int parameter = 0); // Sets scene (use only in events)
 
@@ -54,4 +57,3 @@ private:
 	void update(float delta_time); // Runs game logic
 	void render(); // Renders graphics
 };
-

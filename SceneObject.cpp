@@ -22,8 +22,3 @@ void SceneObject::setRotation(float _rot)
 {
 	rot = _rot;
 }
-
-void SceneObject::updateInputData(const InputData* _input_data)
-{
-	input_data = _input_data;
-}

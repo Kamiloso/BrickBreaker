@@ -27,5 +27,7 @@ private:
 	Button* instruction_btn;
 	Button* exit_btn;
 	vector<SceneObject*> menu_object_list;
+
+	int current_local_screen = 0; // current visible screen ID, Kamiloso added this :)
 	void changeLocalScene(int i); // moves everything by i * 10000 pixels forward (backwards if negative)
 };

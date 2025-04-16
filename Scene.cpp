@@ -22,14 +22,6 @@ vector<int> Scene::getEvents()
 	return return_vector;
 }
 
-void Scene::inputPropagate(const InputData* _input_data)
-{
-	// Input propagation (at the end of eventHandling, before earlyUpdate)
-	input_data = _input_data; // in the scene as well
-	for (SceneObject* object : object_list)
-		object->updateInputData(_input_data); // and for scene objects
-}
-
 void Scene::update(float delta_time)
 {
 	// Early update
@@ -51,9 +43,6 @@ void Scene::update(float delta_time)
 
 SceneObject* Scene::addObject(SceneObject* new_ptr)
 {
-	if(input_data != nullptr)
-		new_ptr->updateInputData(input_data);
-
 	object_list.push_back(new_ptr);
 	return new_ptr;
 }

@@ -50,7 +50,4 @@ private:
 	void createDecorationWalls(); // creates flat construction objects like background, walls, roof etc.
 	void populateGrid(int level_id); // initializes bricks from a given level_id on top, if not endless initializes settings
 	void moveDownEverything(float delta_y, bool with_crusher);
-
-	bool was_click_left_pressed = true; // was left mouse button pressed in the frame before?
-	bool was_escape_pressed = true; // was escape pressed in the frame before?
 };

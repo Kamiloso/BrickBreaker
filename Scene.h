@@ -18,7 +18,6 @@ class Scene
 public:
 	virtual ~Scene();
 	vector<int> getEvents(); // returns a list of stored events
-	void inputPropagate(const InputData* _input_data); // propagates input data pointer to objects
 	void update(float delta_time); // updates all objects
 	void drawScene(GameWindow* game_window); // draws all objects on screen
 	void markToDelete(SceneObject* old_ptr); // marks object with a given pointer to deletion in the next frame
@@ -27,8 +26,6 @@ protected:
 	SceneObject* addObject(SceneObject* new_ptr); // adds object (use "new" operand), should be PROTECTED
 	virtual void sceneUpdate(float delta_time) = 0; // overridable scene update
 	vector<SceneObject*> object_list;
-
-	const InputData* input_data = nullptr; // input data from current frame
 
 private:
 	bool deleteObjectByPointer(SceneObject* old_ptr); // deletes object with a given pointer if present on scene (returns success)

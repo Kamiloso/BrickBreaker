@@ -1,6 +1,8 @@
 #pragma once
 #include "Rectangle.h"
 
+using namespace std;
+
 class Plate : public Rectangle
 {
 public:
@@ -10,4 +12,5 @@ public:
 private:
 	const float left_border;
 	const float right_border;
+	float speed = 0.0f; // speed on the X axis
 };

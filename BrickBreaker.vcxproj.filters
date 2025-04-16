@@ -25,9 +25,6 @@
     <Filter Include="Assets\Fonts">
       <UniqueIdentifier>{7d7ab901-79b8-41d5-bcc4-789a0663ece0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\LevelManagement">
-      <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\SceneObjects\UI">
       <UniqueIdentifier>{837519e2-fb6f-4fd2-adce-a3f156171e8c}</UniqueIdentifier>
     </Filter>
@@ -37,8 +34,17 @@
     <Filter Include="Scripts\SceneObjects\Shapes">
       <UniqueIdentifier>{726f9a54-f2c4-4e88-acfe-3c5ac1a6269e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\SoundManagement">
+    <Filter Include="Scripts\Management">
+      <UniqueIdentifier>{8d9c1022-9687-46c2-897e-e465672f78fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Management\SoundManagement">
       <UniqueIdentifier>{67a4ddf8-50bc-45ea-854c-b35d99c636d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Management\InputManagement">
+      <UniqueIdentifier>{ca5e5d36-50db-4c62-827f-d3081c7e526b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\Management\LevelManagement">
+      <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -67,7 +73,7 @@
       <Filter>Scripts\SceneObjects</Filter>
     </ClCompile>
     <ClCompile Include="LevelGetter.cpp">
-      <Filter>Scripts\LevelManagement</Filter>
+      <Filter>Scripts\Management\LevelManagement</Filter>
     </ClCompile>
     <ClCompile Include="Ball.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
@@ -91,7 +97,10 @@
       <Filter>Scripts\SceneObjects\Shapes</Filter>
     </ClCompile>
     <ClCompile Include="Sound.cpp">
-      <Filter>Scripts\SoundManagement</Filter>
+      <Filter>Scripts\Management\SoundManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Scripts\Management\InputManagement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +129,7 @@
       <Filter>Scripts\SceneObjects</Filter>
     </ClInclude>
     <ClInclude Include="LevelGetter.h">
-      <Filter>Scripts\LevelManagement</Filter>
+      <Filter>Scripts\Management\LevelManagement</Filter>
     </ClInclude>
     <ClInclude Include="Ball.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
@@ -144,7 +153,10 @@
       <Filter>Scripts\SceneObjects\Shapes</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
-      <Filter>Scripts\SoundManagement</Filter>
+      <Filter>Scripts\Management\SoundManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Scripts\Management\InputManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

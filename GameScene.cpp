@@ -9,6 +9,7 @@
 #include "Plate.h"
 #include "Ball.h"
 #include "Sound.h"
+#include "Input.h"
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
 const float GameScene::border_right = Brick::getBrickPositionByCoordinates(BRICKS_X - 1, 0)[0] + BRICK_WX / 2;
@@ -118,7 +119,7 @@ GameScene::GameScene(int _level)
 GameScene::~GameScene()
 {
 	// Disable pause after leaving game scene
-	input_data->game_window->setPause(false);
+	Input::getGameWindowPtr()->setPause(false);
 }
 
 void GameScene::sceneUpdate(float delta_time)
@@ -148,7 +149,7 @@ void GameScene::sceneUpdate(float delta_time)
 	}
 
 	// Escape pause toggle
-	if (input_data->escape && !was_escape_pressed)
+	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
 		pause_now = true;
 
 	// Whole level movement (every brick_fall_time miliseconds)
@@ -215,7 +216,7 @@ void GameScene::sceneUpdate(float delta_time)
 	// Local screen togglator
 	if (local_screen_before != local_screen)
 	{
-		input_data->game_window->setPause(local_screen != 0);
+		Input::getGameWindowPtr()->setPause(local_screen != 0);
 
 		float delta_move = -10000.0f * (local_screen - local_screen_before);
 		for (SceneObject* obj : pause_menu_objects)
@@ -227,8 +228,6 @@ void GameScene::sceneUpdate(float delta_time)
 
 	// Past set
 	fall_time_counter += delta_time;
-	was_click_left_pressed = input_data->click_left;
-	was_escape_pressed = input_data->escape;
 	local_screen_before = local_screen;
 }
 

@@ -5,7 +5,9 @@
 #include "Rectangle.h"
 #include "Star.h"
 #include <random>
+
 #include "LevelGetter.h"
+#include "Input.h"
 
 MainMenu::MainMenu(int localScene)
 {
@@ -59,7 +61,7 @@ MainMenu::MainMenu(int localScene)
 		int row = (i / 8) + 1;
 		int col = (i % 8) + 1;
 		float x_offset = -402.5 + 115 * (col - 1);
-		float y_offset = -230 + 115 * (row - 1) - 60;
+		float y_offset = -230 + 115 * (row - 1) - 55;
 
 		bool locked = true;
 		if (i == 0 || LevelGetter::isFlagSet(i - 1, 1)) {
@@ -103,9 +105,17 @@ void MainMenu::sceneUpdate(float delta_time)
 		// instruction_exit_btn
 		if (event_number == 4) changeLocalScene(-2);
 	}
+
+	// Exit with escape
+	if (current_local_screen != 0)
+	{
+		if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
+			changeLocalScene(-current_local_screen);
+	}
 }
 
 void MainMenu::changeLocalScene(int i) {
+	current_local_screen += i;
 	for (SceneObject* object : menu_object_list) {
 		if (object == nullptr) continue;
 		auto object_pos = object->getPosition();
