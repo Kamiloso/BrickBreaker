@@ -18,7 +18,7 @@ void Ball::step(float delta_time)
 
 void Ball::setVelocityByAngle(float angle, float magnitude)
 {
-	const float PI = 3.14159;
-	vx = cos(angle * 2 * PI / 180) * magnitude;
-	vy = sin(angle * 2 * PI / 180) * magnitude;
+	const float PI = 3.14159265;
+	vx = cos(angle * PI / 180) * magnitude;
+	vy = sin(angle * PI / 180) * magnitude;
 }

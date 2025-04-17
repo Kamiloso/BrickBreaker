@@ -50,13 +50,6 @@ MainMenu::MainMenu(int localScene)
 	menu_object_list = { title, subtitle, levels, endless_btn, instruction_btn, exit_btn };
 
 	// Level menu
-
-	// To be deleted
-	for (int i = 0; i < 11; i++) {
-		LevelGetter::setLevelFlag(i, 1);
-	}
-	// *
-
 	for (int i = 0; i < 40; i++) {
 		int row = (i / 8) + 1;
 		int col = (i % 8) + 1;
@@ -75,12 +68,12 @@ MainMenu::MainMenu(int localScene)
 		if (locked == true) continue;
 		level_btn->setEvent(3000 + i, true);
 	}
-	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 215, 90, COL::buttonBg, COL::buttonBold, L"EXIT")));
+	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
 	level_menu_exit_btn->setEvent(3, false);
 	menu_object_list.push_back(level_menu_exit_btn);
 
 	// Instruction
-	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 215, 90, COL::buttonBg, COL::buttonBold, L"EXIT")));
+	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
 	instruction_exit_btn->setEvent(4, false);
 	menu_object_list.push_back(instruction_exit_btn);
 

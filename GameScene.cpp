@@ -40,7 +40,7 @@ GameScene::GameScene(int _level)
 	populateGrid(level);
 
 	// spawn a lot of balls
-	for (int i = 2; i < 5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		Ball* ball = new Ball(CX, CY, 0, 0);
 		addObject(ball);
@@ -148,6 +148,13 @@ void GameScene::sceneUpdate(float delta_time)
 		}
 	}
 
+	// TEMPORARY WIN BY ARROW UP
+	/*if (Input::isKeyboardPressed(sf::Keyboard::Up, Input::Down))
+	{
+		end_now = true;
+		win_now = true;
+	}*/
+
 	// Escape pause toggle
 	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
 		pause_now = true;
@@ -191,9 +198,15 @@ void GameScene::sceneUpdate(float delta_time)
 	if (end_now)
 	{
 		if (win_now)
+		{
 			local_screen = 2; // win
+			if (level >= 0)
+				LevelGetter::setLevelFlag(level, 1); // mark level as complete
+		}
 		else
+		{
 			local_screen = 3; // defeat
+		}
 		Sound::stopMusic();
 	}
 	else
@@ -280,7 +293,7 @@ void GameScene::createDecorationWalls()
 		16
 	));
 
-	// Wall up
+	// Wall up (crusher)
 	crusher = dynamic_cast<Rectangle*>(addObject(new Rectangle(
 		0, border_up - SIZE_MARGIN / 2,
 		SIZE_MARGIN, SIZE_MARGIN,

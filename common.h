@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 // DO NOT IMPORT OUR PRIVATE DEPENDENCIES
 
-class GameWindow;
-
 /*
 This header is not meant to be connected to any .cpp file. It stores global essentials and
 constants for the project.
@@ -24,11 +22,6 @@ constexpr int BRICKS_Y = 13;	// how many bricks there can be vertically
 constexpr float BRICK_WX = 100;	// brick size in x coordinates
 constexpr float BRICK_WY = 50;	// brick size in y coordinates
 
-// PHYSICAL CONSTANTS
-constexpr float PLATE_ACCELERATION = 2.0f;		// Plate acceleration size
-constexpr float PLATE_DRAG = 0.1f;				// Plate drag size
-constexpr float PLATE_MAX_SPEED = 14.0f;		// Plate default max speed
-
 // COLORS
 namespace COL
 {
@@ -36,4 +29,6 @@ namespace COL
 	static const sf::Color buttonBg = sf::Color(38, 226, 255);
 	static const sf::Color levelComplete = sf::Color(38, 175, 255);
 	static const sf::Color levelUnlocked = sf::Color(3, 252, 102);
+	static const sf::Color buttonExit = sf::Color(240, 30, 30);
+	static const sf::Color buttonExitBold = sf::Color(70, 0, 0);
 }
