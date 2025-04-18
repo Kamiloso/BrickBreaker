@@ -7,7 +7,7 @@
 #include <cmath>
 
 Ball::Ball(float _x, float _y, float _vx, float _vy, int _layer)
-	: Circle(_x, _y, 15, 2, sf::Color::Green, sf::Color::Black, _layer),
+	: Circle(_x, _y, 15, 3, sf::Color::Green, sf::Color::Black, _layer),
 	vx(_vx), vy(_vy) {}
 
 void Ball::step(float delta_time)

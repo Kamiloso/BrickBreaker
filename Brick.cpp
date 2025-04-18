@@ -2,7 +2,7 @@
 #include "GameWindow.h"
 
 Brick::Brick(float _x, float _y, int _health, int _layer) : health(_health),
-	Rectangle(_x, _y, BRICK_WX, BRICK_WY, 2, sf::Color::Red, sf::Color::Black, _layer) {}
+	Rectangle(_x, _y, BRICK_WX, BRICK_WY, 3, COL::brick, sf::Color::Black, _layer) {}
 
 void Brick::damage(int dmg)
 {
@@ -11,13 +11,13 @@ void Brick::damage(int dmg)
 
 bool Brick::shouldBreak() const
 {
-	return health == 0;
+	return health <= 0;
 }
 
 void Brick::draw(GameWindow* game_window)
 {
 	// Similar to drawing rectangle, but smaller (will change in the future)
-	const float SMALLER_BY = 5.0f;
+	const float SMALLER_BY = 2.0f;
 	game_window->drawRectangle(x, y, wx - SMALLER_BY, wy - SMALLER_BY, color_bold);
 	game_window->drawRectangle(x, y, wx - bold * 2 - SMALLER_BY, wy - bold * 2 - SMALLER_BY, color);
 }

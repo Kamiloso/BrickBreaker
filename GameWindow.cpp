@@ -22,7 +22,7 @@ void GameWindow::run()
 {
 	sf::Clock clock;
 	float delta_time = 0.0f;
-	const float MAX_DELTA_TIME = 0.1f; // less then 10 FPS --> slow down the game
+	const float MAX_DELTA_TIME = 0.05f; // less then 20 FPS --> slow down the game
 
 	while (true)
 	{

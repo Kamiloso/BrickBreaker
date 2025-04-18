@@ -10,7 +10,7 @@ static int signum(T x) {
 }
 
 Plate::Plate(float _x, float _y, float _left_border, float _right_border, int _layer)
-	: Rectangle(_x, _y, 120, 20, 2, sf::Color::Yellow, sf::Color::Black, _layer),
+	: Rectangle(_x, _y, 120, 20, 3, COL::plate, sf::Color::Black, _layer),
 	left_border(_left_border), right_border(_right_border) {}
 
 void Plate::earlyUpdate(float delta_time)
@@ -20,22 +20,6 @@ void Plate::earlyUpdate(float delta_time)
 	{
 		const float tl_border = left_border + wx / 2;
 		const float tr_border = right_border - wx / 2;
-
-		if (false) // Old control
-		{
-			float mouse_x = Input::getMousePosition()[0];
-			if (mouse_x >= tl_border && mouse_x <= tr_border)
-			{
-				x = mouse_x;
-			}
-			else // outside border correction
-			{
-				if (mouse_x < tl_border)
-					x = tl_border;
-				else
-					x = tr_border;
-			}
-		}
 
 		// Plate constants
 		constexpr float PLATE_ACCELERATION = 1.0f;		// Acceleration size
@@ -51,7 +35,7 @@ void Plate::earlyUpdate(float delta_time)
 		int input_want = want_right - want_left;
 
 		// Acceleration
-		float acceleration = PLATE_ACCELERATION * input_want;
+		float acceleration = PLATE_ACCELERATION * input_want * (60 * delta_time);
 		if (signum(acceleration) != signum(speed))
 			acceleration *= PLATE_BRAKE_FACTOR;
 		speed += acceleration;
@@ -59,7 +43,7 @@ void Plate::earlyUpdate(float delta_time)
 		// Drag
 		if (signum(acceleration) != signum(speed))
 		{
-			float drag_acceleration = PLATE_DRAG * (speed + 1.5f * signum(speed));
+			float drag_acceleration = PLATE_DRAG * (speed + 1.5f * signum(speed)) * (60 * delta_time);
 			if (signum(speed + drag_acceleration) == signum(speed))
 				speed += drag_acceleration;
 			else
@@ -73,7 +57,7 @@ void Plate::earlyUpdate(float delta_time)
 			speed = -PLATE_MAX_SPEED;
 
 		// Moving plate based on speed
-		x += speed;
+		x += speed * (60 * delta_time);
 		if (x < tl_border)
 		{
 			x = tl_border;

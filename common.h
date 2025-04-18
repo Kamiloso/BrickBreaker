@@ -25,10 +25,15 @@ constexpr float BRICK_WY = 50;	// brick size in y coordinates
 // COLORS
 namespace COL
 {
+	// UI colors
 	static const sf::Color buttonBold = sf::Color(30, 36, 107);
 	static const sf::Color buttonBg = sf::Color(38, 226, 255);
 	static const sf::Color levelComplete = sf::Color(38, 175, 255);
 	static const sf::Color levelUnlocked = sf::Color(3, 252, 102);
 	static const sf::Color buttonExit = sf::Color(240, 30, 30);
 	static const sf::Color buttonExitBold = sf::Color(70, 0, 0);
+
+	// Game colors
+	static const sf::Color plate = sf::Color::Yellow;
+	static const sf::Color brick = sf::Color(230, 0, 0);
 }
