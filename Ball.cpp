@@ -16,9 +16,29 @@ void Ball::step(float delta_time)
 	y += vy * delta_time;
 }
 
+void Ball::setVelocity(float _vx, float _vy)
+{
+	vx = _vx;
+	vy = _vy;
+}
+
 void Ball::setVelocityByAngle(float angle, float magnitude)
 {
-	const float PI = 3.14159265;
 	vx = cos(angle * PI / 180) * magnitude;
 	vy = sin(angle * PI / 180) * magnitude;
+}
+
+vector<float> Ball::getVelocity() const
+{
+	return { vx, vy };
+}
+
+float Ball::getVelocityAngle() const
+{
+	return atan2(vy, vx) * 180 / PI;
+}
+
+float Ball::getVelocityMagnitude() const
+{
+	return sqrt(vx * vx + vy * vy);
 }
