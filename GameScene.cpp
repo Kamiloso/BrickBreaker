@@ -10,6 +10,10 @@
 #include "Ball.h"
 #include "Sound.h"
 #include "Input.h"
+#include "CircleCollider.h"
+#include "LineCollider.h"
+
+#include <limits>
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
 const float GameScene::border_right = Brick::getBrickPositionByCoordinates(BRICKS_X - 1, 0)[0] + BRICK_WX / 2;
@@ -40,12 +44,12 @@ GameScene::GameScene(int _level)
 	populateGrid(level);
 
 	// spawn a lot of balls
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 36; i++)
 	{
 		Ball* ball = new Ball(CX, CY, 0, 0);
 		addObject(ball);
 		balls.push_back(ball);
-		ball->setVelocityByAngle(i * 15, 50);
+		ball->setVelocityByAngle(i * 10, 400);
 	}
 
 	// --- Create game UI ---
@@ -148,17 +152,6 @@ void GameScene::sceneUpdate(float delta_time)
 		}
 	}
 
-	// TEMPORARY WIN BY ARROW UP
-	/*if (Input::isKeyboardPressed(sf::Keyboard::Up, Input::Down))
-	{
-		end_now = true;
-		win_now = true;
-	}*/
-
-	// Escape pause toggle
-	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
-		pause_now = true;
-
 	// Whole level movement (every brick_fall_time miliseconds)
 	if (fall_time_counter >= brick_fall_time / 1000.0f)
 	{
@@ -167,17 +160,14 @@ void GameScene::sceneUpdate(float delta_time)
 		brick_falls_done++;
 	}
 
-	// Ball movement (physics will be implemented here or something like that)
-	for (Ball* ball : balls)
-	{
-		ball->step(delta_time);
-	}
+	// Physics
+	handlePhysics(delta_time);
 
 	// Ball position checking and destroying them
 	vector <Ball*> balls_to_remove = {};
 	for (Ball* ball : balls)
 	{
-		if (ball->getPosition()[1] > zone_down) // destroy condition
+		if (ball->getPosition()[1] > zone_down || ball->isMarkedAsTerminated()) // destroy condition
 		{
 			markToDelete(ball);
 			balls_to_remove.push_back(ball);
@@ -193,6 +183,10 @@ void GameScene::sceneUpdate(float delta_time)
 	}
 	if (balls.size() == 0) // end game if no balls on scene
 		end_now = true;
+
+	// Escape pause toggle
+	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
+		pause_now = true;
 
 	// Local screen decide
 	if (end_now)
@@ -359,4 +353,74 @@ void GameScene::moveDownEverything(float delta_y, bool with_crusher)
 
 	// Populate variable change (should populate lower when lowering map)
 	grid_populate_delta_y += delta_y;
+}
+
+void GameScene::handlePhysics(float delta_time)
+{
+	// Declare static map colliders
+	vector<Collider*> colliders = {
+		new LineCollider(border_left + BALL_RADIUS, -10000, border_left + BALL_RADIUS, 10000, LineCollider::Right),
+		new LineCollider(border_right - BALL_RADIUS, -10000, border_right - BALL_RADIUS, 10000, LineCollider::Left),
+		new LineCollider(-10000, border_up + BALL_RADIUS, 10000, border_up + BALL_RADIUS, LineCollider::Down),
+		new LineCollider(-10000, zone_down, 10000, zone_down, LineCollider::Up)
+	};
+
+	// Bounce balls
+	for (Ball* ball : balls)
+	{
+		ball->changeTime(delta_time); // add available movement time
+	}
+	while (true)
+	{
+		// looking for ball with the least time to bounce
+		Ball* best_ball = nullptr;
+		Collider* best_collider = nullptr;
+		float best_time_to_collision = std::numeric_limits<float>::infinity();
+
+		for (Ball* ball : balls)
+		{
+			float time_left = ball->getTimeAvailable();
+			if (time_left <= 0.0f)
+				continue;
+
+			Collider* collider = ball->bestFitCollider(colliders);
+			float time_to_collision = collider != nullptr ? collider->getTimeToCollision(ball) : -1.0f;
+			if (time_to_collision > time_left)
+				time_to_collision = -1.0f;
+
+			if (best_ball == nullptr || (time_to_collision != -1.0f && time_to_collision < best_time_to_collision))
+			{
+				best_ball = ball;
+				best_collider = collider;
+				best_time_to_collision = time_to_collision;
+			}
+		}
+
+		// if cannot find more balls that want to move, just go on
+		if (best_ball == nullptr)
+			break;
+
+		// actual collision
+		if (best_time_to_collision == -1.0f)
+		{
+			best_ball->step(best_ball->getTimeAvailable());
+			best_ball->resetTime();
+		}
+		else
+		{
+			best_ball->step(best_time_to_collision);
+			best_ball->changeTime(-best_time_to_collision);
+
+			// actions on a brick
+			Brick* brick = best_collider->getBrick();
+			if (true)
+			{
+				best_collider->bounceBall(best_ball);
+			}
+		}
+	}
+
+	// clean dynamically allocated colliders
+	for (Collider* collider : colliders)
+		delete collider;
 }

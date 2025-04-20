@@ -2,18 +2,21 @@
 #include "GameWindow.h"
 #include "GameScene.h"
 #include "Sound.h"
+#include "Collider.h"
 
 #include <vector>
 #include <cmath>
+#include <limits>
+#include <iostream>
 
 Ball::Ball(float _x, float _y, float _vx, float _vy, int _layer)
-	: Circle(_x, _y, 15, 3, sf::Color::Green, sf::Color::Black, _layer),
+	: Circle(_x, _y, BALL_RADIUS, 3, sf::Color::Green, sf::Color::Black, _layer),
 	vx(_vx), vy(_vy) {}
 
-void Ball::step(float delta_time)
+void Ball::step(float time)
 {
-	x += vx * delta_time;
-	y += vy * delta_time;
+	x += vx * time;
+	y += vy * time;
 }
 
 void Ball::setVelocity(float _vx, float _vy)
@@ -41,4 +44,47 @@ float Ball::getVelocityAngle() const
 float Ball::getVelocityMagnitude() const
 {
 	return sqrt(vx * vx + vy * vy);
+}
+
+void Ball::resetTime()
+{
+	time_available = 0.0f;
+}
+
+void Ball::changeTime(float time)
+{
+	time_available += time;
+}
+
+float Ball::getTimeAvailable() const
+{
+	return time_available;
+}
+
+void Ball::markToTerminate()
+{
+	terminate = true;
+}
+
+bool Ball::isMarkedAsTerminated() const
+{
+	return terminate;
+}
+
+Collider* Ball::bestFitCollider(const vector<Collider*>& colliders)
+{
+	Collider* best_fit = nullptr;
+	float best_time_to_collision = std::numeric_limits<float>::infinity();
+
+	for (Collider* collider : colliders)
+	{
+		float time_to_collision = collider->getTimeToCollision(this);
+		if (time_to_collision != -1.0f && time_to_collision < best_time_to_collision)
+		{
+			best_fit = collider;
+			best_time_to_collision = time_to_collision;
+		}
+	}
+
+	return best_fit;
 }

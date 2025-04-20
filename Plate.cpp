@@ -22,9 +22,9 @@ void Plate::earlyUpdate(float delta_time)
 		const float tr_border = right_border - wx / 2;
 
 		// Plate constants
-		constexpr float PLATE_ACCELERATION = 1.0f;		// Acceleration size
-		constexpr float PLATE_DRAG = -0.12f;			// Drag size
-		constexpr float PLATE_MAX_SPEED = 16.0f;		// Default max speed
+		constexpr float PLATE_ACCELERATION = 3600.0f;	// Acceleration size
+		constexpr float PLATE_DRAG = -432.0f;			// Drag size
+		constexpr float PLATE_MAX_SPEED = 960.0f;		// Default max speed
 		constexpr float PLATE_BRAKE_FACTOR = 1.5f;		// Deacceleration is multiplied by this
 		constexpr float PLATE_ADDITIVE_DRAG = 1.5f;		// Minimum drag speed coofficient
 
@@ -35,7 +35,7 @@ void Plate::earlyUpdate(float delta_time)
 		int input_want = want_right - want_left;
 
 		// Acceleration
-		float acceleration = PLATE_ACCELERATION * input_want * (60 * delta_time);
+		float acceleration = PLATE_ACCELERATION * input_want * delta_time;
 		if (signum(acceleration) != signum(speed))
 			acceleration *= PLATE_BRAKE_FACTOR;
 		speed += acceleration;
@@ -43,7 +43,7 @@ void Plate::earlyUpdate(float delta_time)
 		// Drag
 		if (signum(acceleration) != signum(speed))
 		{
-			float drag_acceleration = PLATE_DRAG * (speed + 1.5f * signum(speed)) * (60 * delta_time);
+			float drag_acceleration = PLATE_DRAG * (speed / 60.0f + 1.5f * signum(speed)) * delta_time;
 			if (signum(speed + drag_acceleration) == signum(speed))
 				speed += drag_acceleration;
 			else
@@ -57,7 +57,7 @@ void Plate::earlyUpdate(float delta_time)
 			speed = -PLATE_MAX_SPEED;
 
 		// Moving plate based on speed
-		x += speed * (60 * delta_time);
+		x += speed * delta_time;
 		if (x < tl_border)
 		{
 			x = tl_border;

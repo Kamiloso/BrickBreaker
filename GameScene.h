@@ -49,5 +49,6 @@ private:
 
 	void createDecorationWalls(); // creates flat construction objects like background, walls, roof etc.
 	void populateGrid(int level_id); // initializes bricks from a given level_id on top, if not endless initializes settings
-	void moveDownEverything(float delta_y, bool with_crusher);
+	void moveDownEverything(float delta_y, bool with_crusher); // moves down all bricks (and the crusher)
+	void handlePhysics(float delta_time); // ball movement, brick breaking etc.
 };
