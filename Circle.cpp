@@ -10,3 +10,8 @@ void Circle::draw(GameWindow* game_window)
 	if (bold > 0.0f) game_window->drawCircle(x, y, r, color_bold);
 	game_window->drawCircle(x, y, r - bold, color);
 }
+
+float Circle::getRadius() const
+{
+	return r;
+}

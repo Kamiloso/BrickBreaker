@@ -23,7 +23,6 @@ private:
 	Text* title;
 	Text* subtitle;
 	Button* levels;
-	Button* endless_btn;
 	Button* instruction_btn;
 	Button* exit_btn;
 	vector<SceneObject*> menu_object_list;

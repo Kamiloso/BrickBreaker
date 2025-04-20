@@ -10,3 +10,8 @@ void Rectangle::draw(GameWindow* game_window)
 	if(bold > 0.0f) game_window->drawRectangle(x, y, wx, wy, color_bold);
 	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, color);
 }
+
+vector<float> Rectangle::getScale() const
+{
+	return vector<float>{wx, wy};
+}

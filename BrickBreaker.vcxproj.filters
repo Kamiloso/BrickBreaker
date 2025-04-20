@@ -46,11 +46,17 @@
     <Filter Include="Scripts\Management\LevelManagement">
       <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Collisions">
-      <UniqueIdentifier>{4b9b9af6-0e81-435f-b885-b1c741476186}</UniqueIdentifier>
+    <Filter Include="Scripts\Colliders">
+      <UniqueIdentifier>{3536affd-bd3c-444c-a1d1-bef95b52777e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Collisions\Base">
+    <Filter Include="Scripts\Colliders\Base">
       <UniqueIdentifier>{c455c057-b699-4c46-bb67-c686ae24e448}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\SceneObjects\Game\Bricks">
+      <UniqueIdentifier>{13d627f3-0b40-42c4-a64c-38a95c06669d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts\SceneObjects\Game\Bricks\Base">
+      <UniqueIdentifier>{af1cd0bc-bf2b-4d58-997b-9bb3fe24ddc9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +90,6 @@
     <ClCompile Include="Ball.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Scripts\SceneObjects\Game</Filter>
-    </ClCompile>
     <ClCompile Include="Plate.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClCompile>
@@ -109,13 +112,16 @@
       <Filter>Scripts\Management\InputManagement</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
-      <Filter>Scripts\Collisions\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="LineCollider.cpp">
-      <Filter>Scripts\Collisions</Filter>
+      <Filter>Scripts\Colliders\Base</Filter>
     </ClCompile>
     <ClCompile Include="CircleCollider.cpp">
-      <Filter>Scripts\Collisions</Filter>
+      <Filter>Scripts\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="LineCollider.cpp">
+      <Filter>Scripts\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -149,9 +155,6 @@
     <ClInclude Include="Ball.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClInclude>
-    <ClInclude Include="Brick.h">
-      <Filter>Scripts\SceneObjects\Game</Filter>
-    </ClInclude>
     <ClInclude Include="Plate.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClInclude>
@@ -174,13 +177,16 @@
       <Filter>Scripts\Management\InputManagement</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>Scripts\Collisions\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="LineCollider.h">
-      <Filter>Scripts\Collisions</Filter>
+      <Filter>Scripts\Colliders\Base</Filter>
     </ClInclude>
     <ClInclude Include="CircleCollider.h">
-      <Filter>Scripts\Collisions</Filter>
+      <Filter>Scripts\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="LineCollider.h">
+      <Filter>Scripts\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

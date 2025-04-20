@@ -79,7 +79,7 @@ Collider* Ball::bestFitCollider(const vector<Collider*>& colliders)
 	for (Collider* collider : colliders)
 	{
 		float time_to_collision = collider->getTimeToCollision(this);
-		if (time_to_collision != -1.0f && time_to_collision < best_time_to_collision)
+		if (time_to_collision != NO_COLLISION && time_to_collision < best_time_to_collision)
 		{
 			best_fit = collider;
 			best_time_to_collision = time_to_collision;

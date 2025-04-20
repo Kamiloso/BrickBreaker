@@ -8,6 +8,7 @@ class Text;
 class Brick;
 class Plate;
 class Ball;
+class Collider;
 
 using namespace std;
 
@@ -35,20 +36,29 @@ private:
 
 	int local_screen = 0; // 1 = pause, 2 = win screen, 3 = defeat screen (screens are at local_screen * 10000 coordinates)
 	int local_screen_before = 0; // last frame local_screen ID
-	float grid_populate_delta_y = 0.0f; // must add this value to y coordinates when populating grid
 	float fall_time_counter = 0.0f; // time elapsed from last brick fall
 	int brick_falls_done = 0; // brick falls that have been done already
 
 	vector<SceneObject*> pause_menu_objects = {}; // put here all local screen objects
 	Text* level_num_text; // that "01 / 40" thing in the corner
 
-	vector<Brick*> bricks = {}; // brick list
+	// fixed array of all bricks
+	Brick* bricks[BRICKS_X][BRICKS_Y]{};
+
 	Rectangle* crusher; // upper wall, that moves down and you can not do anything about that
 	Plate* plate; // one single movable plate that bounces the ball
 	vector<Ball*> balls; // contains all balls present on a scene
 
-	void createDecorationWalls(); // creates flat construction objects like background, walls, roof etc.
-	void populateGrid(int level_id); // initializes bricks from a given level_id on top, if not endless initializes settings
-	void moveDownEverything(float delta_y, bool with_crusher); // moves down all bricks (and the crusher)
+	vector<Collider*> colliders; // vector of all colliders (changes dynamically on brick update)
+	void updateColliders(); // updates colliders to fit current brick array
+
+	void initializeGame(); // initializes static visible scene objects
+	void initializeUI(); // initializes UI
+	void populateGrid(int level_id); // initializes bricks from a given level_id
+
+	bool canMoveDownEverything(bool with_crusher); // checks if can move the level down
+	void moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher)
+
+	void applyGravity(float g); // applies gravitational force to all balls (experimental)
 	void handlePhysics(float delta_time); // ball movement, brick breaking etc.
 };

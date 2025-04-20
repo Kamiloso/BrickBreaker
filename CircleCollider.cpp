@@ -8,7 +8,22 @@ CircleCollider::CircleCollider(float _x, float _y, float _r, Brick* _brick) :
 
 float CircleCollider::getTimeToCollision(Ball* ball)
 {
-	return -1.0f;
+	auto b_pos = ball->getPosition();
+	auto b_vel = ball->getVelocity();
+
+	float a = b_vel[0] * b_vel[0] + b_vel[1] * b_vel[1];
+	float b = 2 * ((b_pos[0] - x) * b_vel[0] + (b_pos[1] - y) * b_vel[1]);
+	float c = (b_pos[0] - x) * (b_pos[0] - x) + (b_pos[1] - y) * (b_pos[1] - y) - r * r;
+	float delta = b * b - 4 * a * c;
+
+	if (delta < 0.0f)
+		return NO_COLLISION; // will not collide
+	
+	float t1 = (-b - sqrt(delta)) / (2 * a); // only smaller solution
+	if (t1 <= 0.0f)
+		return NO_COLLISION; // detected past collision
+
+	return t1;
 }
 
 void CircleCollider::bounceBall(Ball* ball)

@@ -14,6 +14,9 @@
 #include "LineCollider.h"
 
 #include <limits>
+#include <cmath>
+
+constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
 const float GameScene::border_right = Brick::getBrickPositionByCoordinates(BRICKS_X - 1, 0)[0] + BRICK_WX / 2;
@@ -23,25 +26,11 @@ GameScene::GameScene(int _level)
 	: level(_level),
 	border_up(Brick::getBrickPositionByCoordinates(0, 0)[1] - BRICK_WY / 2)
 {
-	// --- Create game objects ---
-
-	// level number info text
-	wstring level_text = (level + 1) < 10 ? L"0" : L"";
-	level_text += to_wstring(level + 1) + L" / " + to_wstring(LEVELS);
-	level_num_text = dynamic_cast<Text*>(addObject(new Text(
-		RX - 140, 50, level_text, 70
-	)));
-
-	// plate
-	plate = dynamic_cast<Plate*>(addObject(new Plate(
-		RX / 2, RY - 30.0f, border_left, border_right, 2
-	)));
-
-	// walls
-	createDecorationWalls();
-
-	// grid
-	populateGrid(level);
+	initializeGame(); // spawns game objects
+	initializeUI(); // spawns UI scene objects
+	populateGrid(level); // populates scene with bricks and configures level settings
+	
+	Sound::playMusic("1");
 
 	// spawn a lot of balls
 	for (int i = 0; i < 36; i++)
@@ -49,79 +38,16 @@ GameScene::GameScene(int _level)
 		Ball* ball = new Ball(CX, CY, 0, 0);
 		addObject(ball);
 		balls.push_back(ball);
-		ball->setVelocityByAngle(i * 10, 400);
+		ball->setVelocityByAngle(i * 10, 300);
 	}
-
-	// --- Create game UI ---
-	sf::Color pause_color(60, 60, 60, 180);
-	sf::Color win_color(0, 100, 0, 180);
-	sf::Color defeat_color(100, 0, 0, 180);
-	sf::Color empty_color(0, 0, 0, 0);
-
-	const float CPX1 = CX + 10000.0f; // pause middle X
-	const float CPY1 = CY; // pause middle Y
-	const float CPX2 = CX + 20000.0f; // win middle X
-	const float CPY2 = CY; // win middle Y
-	const float CPX3 = CX + 30000.0f; // defeat middle X
-	const float CPY3 = CY; // defeat middle Y
-
-	// Button declarations
-	Button* button_menu_pause = dynamic_cast<Button*>(
-		addObject(new Button(CPX1, CPY1 + 220, 450, 90, sf::Color::White, sf::Color::Black, L"BACK TO MENU"))
-		); button_menu_pause->setEvent(2001, true);
-
-	Button* button_retry_pause = dynamic_cast<Button*>(
-		addObject(new Button(CPX1, CPY1 + 115, 450, 90, sf::Color::White, sf::Color::Black, L"RESET"))
-		); button_retry_pause->setEvent(3000 + level, true);
-
-	Button* button_resume_pause = dynamic_cast<Button*>(
-		addObject(new Button(CPX1, CPY1 + 10, 450, 90, sf::Color::White, sf::Color::Black, L"RESUME"))
-		); button_resume_pause->setEvent(2, false);
-
-	Button* button_menu_win = dynamic_cast<Button*>(
-		addObject(new Button(CPX2 - 210, CPY2 + 150, 400, 100, sf::Color::Green, sf::Color::Black, L"BACK TO MENU"))
-		); button_menu_win->setEvent(2001, true);
-
-	Button* button_next_win = dynamic_cast<Button*>(
-		addObject(new Button(CPX2 + 210, CPY2 + 150, 400, 100, sf::Color::Green, sf::Color::Black, L"NEXT LEVEL"))
-		); if (level + 1 < LEVELS) button_next_win->setEvent(3000 + level + 1, true);
-
-	Button* button_menu_defeat = dynamic_cast<Button*>(
-		addObject(new Button(CPX3 - 210, CPY3 + 150, 400, 100, sf::Color::Red, sf::Color::Black, L"BACK TO MENU"))
-		); button_menu_defeat->setEvent(2001, true);
-
-	Button* button_retry_defeat = dynamic_cast<Button*>(
-		addObject(new Button(CPX3 + 210, CPY3 + 150, 400, 100, sf::Color::Red, sf::Color::Black, L"RETRY"))
-		); button_retry_defeat->setEvent(3000 + level, true);
-
-	// Movable array declaration
-	pause_menu_objects = {
-
-		// PAUSE
-		addObject(new Rectangle(CPX1, CPY1, 3000, 3000, 0.0f, pause_color, empty_color, 18)), // pause background
-		addObject(new Text(CPX1, CPY1 - 175, L"PAUSE", 190, sf::Color::Black)), // pause text
-		button_menu_pause,
-		button_retry_pause,
-		button_resume_pause,
-
-		// WIN
-		addObject(new Rectangle(CPX2, CPY2, 3000, 3000, 0.0f, win_color, empty_color, 18)), // win background
-		addObject(new Text(CPX2, CPY2 - 80, L"YOU WIN", 220, sf::Color::Black)), // win text
-		button_menu_win,
-		button_next_win,
-
-		// DEFEAT
-		addObject(new Rectangle(CPX3, CPY3, 3000, 3000, 0.0f, defeat_color, empty_color, 18)), // defeat background
-		addObject(new Text(CPX3, CPY3 - 80, L"DEFEAT", 220, sf::Color::Black)), // defeat text
-		button_menu_defeat,
-		button_retry_defeat
-	};
-	
-	Sound::playMusic("1");
 }
 
 GameScene::~GameScene()
 {
+	// Get rid of remaining colliders
+	for (Collider* collider : colliders)
+		delete collider;
+
 	// Disable pause after leaving game scene
 	Input::getGameWindowPtr()->setPause(false);
 }
@@ -155,12 +81,17 @@ void GameScene::sceneUpdate(float delta_time)
 	// Whole level movement (every brick_fall_time miliseconds)
 	if (fall_time_counter >= brick_fall_time / 1000.0f)
 	{
-		moveDownEverything(BRICK_WY / 3, true);
-		fall_time_counter -= brick_fall_time / 1000.0f;
-		brick_falls_done++;
+		if (canMoveDownEverything(true))
+		{
+			moveDownEverything(true);
+			fall_time_counter -= brick_fall_time / 1000.0f;
+			brick_falls_done++;
+		}
+		else fall_time_counter = brick_fall_time / 1000.0f; // procrastinate untill possible
 	}
 
 	// Physics
+	applyGravity(0.00f);
 	handlePhysics(delta_time);
 
 	// Ball position checking and destroying them
@@ -238,8 +169,14 @@ void GameScene::sceneUpdate(float delta_time)
 	local_screen_before = local_screen;
 }
 
-void GameScene::createDecorationWalls()
+void GameScene::initializeGame()
 {
+	// plate
+	plate = dynamic_cast<Plate*>(addObject(new Plate(
+		RX / 2, RY - 30.0f, border_left, border_right, 2
+	)));
+
+	// walls
 	const float SIZE_MARGIN = 2000.0f;
 	const sf::Color bg_color = sf::Color(150, 150, 150);
 	const sf::Color zone_color = sf::Color(120, 120, 120);
@@ -298,15 +235,87 @@ void GameScene::createDecorationWalls()
 	)));
 }
 
+void GameScene::initializeUI()
+{
+	// level number info text
+	wstring level_text = (level + 1) < 10 ? L"0" : L"";
+	level_text += to_wstring(level + 1) + L" / " + to_wstring(LEVELS);
+	level_num_text = dynamic_cast<Text*>(addObject(new Text(
+		RX - 140, 50, level_text, 70
+	)));
+
+	// --- movable UI ---
+	sf::Color pause_color(60, 60, 60, 180);
+	sf::Color win_color(0, 100, 0, 180);
+	sf::Color defeat_color(100, 0, 0, 180);
+	sf::Color empty_color(0, 0, 0, 0);
+
+	const float CPX1 = CX + 10000.0f; // pause middle X
+	const float CPY1 = CY; // pause middle Y
+	const float CPX2 = CX + 20000.0f; // win middle X
+	const float CPY2 = CY; // win middle Y
+	const float CPX3 = CX + 30000.0f; // defeat middle X
+	const float CPY3 = CY; // defeat middle Y
+
+	// Button declarations
+	Button* button_menu_pause = dynamic_cast<Button*>(
+		addObject(new Button(CPX1, CPY1 + 220, 450, 90, sf::Color::White, sf::Color::Black, L"BACK TO MENU"))
+		); button_menu_pause->setEvent(2001, true);
+
+	Button* button_retry_pause = dynamic_cast<Button*>(
+		addObject(new Button(CPX1, CPY1 + 115, 450, 90, sf::Color::White, sf::Color::Black, L"RESET"))
+		); button_retry_pause->setEvent(3000 + level, true);
+
+	Button* button_resume_pause = dynamic_cast<Button*>(
+		addObject(new Button(CPX1, CPY1 + 10, 450, 90, sf::Color::White, sf::Color::Black, L"RESUME"))
+		); button_resume_pause->setEvent(2, false);
+
+	Button* button_menu_win = dynamic_cast<Button*>(
+		addObject(new Button(CPX2 - 210, CPY2 + 150, 400, 100, sf::Color::Green, sf::Color::Black, L"BACK TO MENU"))
+		); button_menu_win->setEvent(2001, true);
+
+	Button* button_next_win = dynamic_cast<Button*>(
+		addObject(new Button(CPX2 + 210, CPY2 + 150, 400, 100, sf::Color::Green, sf::Color::Black, L"NEXT LEVEL"))
+		); if (level + 1 < LEVELS) button_next_win->setEvent(3000 + level + 1, true);
+
+	Button* button_menu_defeat = dynamic_cast<Button*>(
+		addObject(new Button(CPX3 - 210, CPY3 + 150, 400, 100, sf::Color::Red, sf::Color::Black, L"BACK TO MENU"))
+		); button_menu_defeat->setEvent(2001, true);
+
+	Button* button_retry_defeat = dynamic_cast<Button*>(
+		addObject(new Button(CPX3 + 210, CPY3 + 150, 400, 100, sf::Color::Red, sf::Color::Black, L"RETRY"))
+		); button_retry_defeat->setEvent(3000 + level, true);
+
+	// Movable array declaration
+	pause_menu_objects = {
+
+		// PAUSE
+		addObject(new Rectangle(CPX1, CPY1, 3000, 3000, 0.0f, pause_color, empty_color, 18)), // pause background
+		addObject(new Text(CPX1, CPY1 - 175, L"PAUSE", 190, sf::Color::Black)), // pause text
+		button_menu_pause,
+		button_retry_pause,
+		button_resume_pause,
+
+		// WIN
+		addObject(new Rectangle(CPX2, CPY2, 3000, 3000, 0.0f, win_color, empty_color, 18)), // win background
+		addObject(new Text(CPX2, CPY2 - 80, L"YOU WIN", 220, sf::Color::Black)), // win text
+		button_menu_win,
+		button_next_win,
+
+		// DEFEAT
+		addObject(new Rectangle(CPX3, CPY3, 3000, 3000, 0.0f, defeat_color, empty_color, 18)), // defeat background
+		addObject(new Text(CPX3, CPY3 - 80, L"DEFEAT", 220, sf::Color::Black)), // defeat text
+		button_menu_defeat,
+		button_retry_defeat
+	};
+}
+
 void GameScene::populateGrid(int level_id)
 {
 	// Level load
 	const LevelData level_data = LevelGetter::getLevel(level_id);
-	if (level >= 0) // if not endless
-	{
-		brick_fall_time = level_data.brick_fall_time;
-		ball_max_speed = level_data.ball_max_speed;
-	}
+	brick_fall_time = level_data.brick_fall_time;
+	ball_max_speed = level_data.ball_max_speed;
 
 	// Populate with bricks
 	for (int x = 0; x < BRICKS_X; x++)
@@ -318,7 +327,7 @@ void GameScene::populateGrid(int level_id)
 
 			auto brick_pos = Brick::getBrickPositionByCoordinates(x, y);
 			float put_x = brick_pos[0];
-			float put_y = brick_pos[1] + grid_populate_delta_y;
+			float put_y = brick_pos[1];
 			Brick* put_brick = nullptr;
 
 			if (brick_id >= '1' && brick_id <= '4')
@@ -327,44 +336,131 @@ void GameScene::populateGrid(int level_id)
 			else throw runtime_error("Unknown brick type!");
 			
 			addObject(put_brick);
-			bricks.push_back(put_brick);
+			bricks[x][y] = put_brick;
 		}
 
-	// Next time must spawn tiles higher
-	grid_populate_delta_y -= BRICKS_Y * BRICK_WY;
+	// Update colliders after populating the grid
+	updateColliders();
 }
 
-void GameScene::moveDownEverything(float delta_y, bool with_crusher)
+bool GameScene::canMoveDownEverything(bool with_crusher)
+{
+	// Construct rectangles table
+	vector<Rectangle*> local_rectangles = {};
+	local_rectangles.reserve(BRICKS_X * BRICKS_Y + with_crusher);
+
+	for (int x = 0; x < BRICKS_X; x++)
+		for (int y = 0; y < BRICKS_Y; y++)
+		{
+			Brick* brick = bricks[x][y];
+			if (brick != nullptr)
+			{
+				local_rectangles.push_back(brick);
+			}
+		}
+	if (with_crusher)
+		local_rectangles.push_back(crusher);
+
+	// Iterate through every rectangle:ball pair end check if can move
+	for (Rectangle* rect : local_rectangles)
+	{
+		auto r_pos = rect->getPosition();
+		auto r_siz = rect->getScale();
+
+		r_pos[1] += FALL_DELTA_Y; // simulate fallen brick
+
+		for (Ball* ball : balls)
+		{
+			auto b_pos = ball->getPosition();
+			float r = ball->getRadius();
+
+			float diff_on_x = abs(r_pos[0] - b_pos[0]) - (r_siz[0] / 2 + r);
+			float diff_on_y = abs(r_pos[1] - b_pos[1]) - (r_siz[1] / 2 + r);
+
+			if (diff_on_x <= 0.0f && diff_on_y <= 0.0f)
+				return false;
+		}
+	}
+
+	return true;
+}
+
+void GameScene::moveDownEverything(bool with_crusher)
 {
 	// Crusher movement
 	if (with_crusher)
 	{
 		auto crusher_pos0 = crusher->getPosition();
-		crusher->setPosition(crusher_pos0[0], crusher_pos0[1] + delta_y);
-		border_up += delta_y; // also change upper border
+		crusher->setPosition(crusher_pos0[0], crusher_pos0[1] + FALL_DELTA_Y);
+		border_up += FALL_DELTA_Y; // also change upper border
 	}
 
 	// Brick movement
-	for (Brick* brick : bricks)
-	{
-		auto pos0 = brick->getPosition();
-		brick->setPosition(pos0[0], pos0[1] + delta_y);
-	}
+	for (int x = 0; x < BRICKS_X; x++)
+		for (int y = 0; y < BRICKS_Y; y++)
+		{
+			Brick* brick = bricks[x][y];
+			if (brick != nullptr)
+			{
+				auto pos0 = brick->getPosition();
+				brick->setPosition(pos0[0], pos0[1] + FALL_DELTA_Y);
+			}
+		}
 
-	// Populate variable change (should populate lower when lowering map)
-	grid_populate_delta_y += delta_y;
+	// Update colliders after everything has moved
+	updateColliders();
+}
+
+void GameScene::updateColliders()
+{
+	// Reset current array
+	for (Collider* collider : colliders)
+		delete collider;
+	colliders.clear();
+
+	// Declare static non-brick colliders (for example walls)
+	colliders = {
+		new LineCollider(border_left + BALL_RADIUS, -10000, border_left + BALL_RADIUS, 10000, LineCollider::Right), // left wall
+		new LineCollider(border_right - BALL_RADIUS, -10000, border_right - BALL_RADIUS, 10000, LineCollider::Left), // right wall
+		new LineCollider(-10000, border_up + BALL_RADIUS, 10000, border_up + BALL_RADIUS, LineCollider::Down), // crusher roof
+	};
+
+	// Create collider for each brick
+	for (int x = 0; x < BRICKS_X; x++)
+		for (int y = 0; y < BRICKS_Y; y++)
+		{
+			Brick* brick = bricks[x][y];
+			if (brick != nullptr)
+			{
+				bool up = (y > 0) && (bricks[x][y - 1] == nullptr);
+				bool down = (y == BRICKS_Y - 1) || (bricks[x][y + 1] == nullptr);
+
+				#pragma warning(suppress: 6201) // it's surely safe
+				bool left = (x > 0) && (bricks[x - 1][y] == nullptr);
+
+				#pragma warning(suppress: 6201) // it's surely safe
+				bool right = (x < BRICKS_X - 1) && (bricks[x + 1][y] == nullptr);
+
+				auto new_colliders = brick->createNewColliders(up, down, left, right);
+				colliders.insert(colliders.begin(), new_colliders.begin(), new_colliders.end());
+			}
+		}
+}
+
+void GameScene::applyGravity(float g)
+{
+	for (Ball* ball : balls)
+	{
+		auto vel0 = ball->getVelocity();
+		ball->setVelocity(
+			vel0[0],
+			vel0[1] + g
+		);
+	}
 }
 
 void GameScene::handlePhysics(float delta_time)
 {
-	// Declare static map colliders
-	vector<Collider*> colliders = {
-		new LineCollider(border_left + BALL_RADIUS, -10000, border_left + BALL_RADIUS, 10000, LineCollider::Right),
-		new LineCollider(border_right - BALL_RADIUS, -10000, border_right - BALL_RADIUS, 10000, LineCollider::Left),
-		new LineCollider(-10000, border_up + BALL_RADIUS, 10000, border_up + BALL_RADIUS, LineCollider::Down),
-		new LineCollider(-10000, zone_down, 10000, zone_down, LineCollider::Up)
-	};
-
 	// Bounce balls
 	for (Ball* ball : balls)
 	{
@@ -384,11 +480,11 @@ void GameScene::handlePhysics(float delta_time)
 				continue;
 
 			Collider* collider = ball->bestFitCollider(colliders);
-			float time_to_collision = collider != nullptr ? collider->getTimeToCollision(ball) : -1.0f;
+			float time_to_collision = collider != nullptr ? collider->getTimeToCollision(ball) : NO_COLLISION;
 			if (time_to_collision > time_left)
-				time_to_collision = -1.0f;
+				time_to_collision = NO_COLLISION;
 
-			if (best_ball == nullptr || (time_to_collision != -1.0f && time_to_collision < best_time_to_collision))
+			if (best_ball == nullptr || (time_to_collision != NO_COLLISION && time_to_collision < best_time_to_collision))
 			{
 				best_ball = ball;
 				best_collider = collider;
@@ -401,7 +497,7 @@ void GameScene::handlePhysics(float delta_time)
 			break;
 
 		// actual collision
-		if (best_time_to_collision == -1.0f)
+		if (best_time_to_collision == NO_COLLISION)
 		{
 			best_ball->step(best_ball->getTimeAvailable());
 			best_ball->resetTime();
@@ -413,14 +509,30 @@ void GameScene::handlePhysics(float delta_time)
 
 			// actions on a brick
 			Brick* brick = best_collider->getBrick();
-			if (true)
+
+			if (brick == nullptr) // no-brick
 			{
 				best_collider->bounceBall(best_ball);
 			}
+
+			else if (true) // normal brick
+			{
+				best_collider->bounceBall(best_ball);
+				brick->damage();
+				if (brick->shouldBreak())
+				{
+					for (int x = 0; x < BRICKS_X; x++)
+						for (int y = 0; y < BRICKS_Y; y++)
+							if (bricks[x][y] == brick)
+							{
+								bricks[x][y] = nullptr;
+								markToDelete(brick);
+								updateColliders();
+								goto break_brick_break_loop;
+							}
+				break_brick_break_loop:;
+				}
+			}
 		}
 	}
-
-	// clean dynamically allocated colliders
-	for (Collider* collider : colliders)
-		delete collider;
 }

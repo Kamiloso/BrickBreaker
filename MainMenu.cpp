@@ -26,28 +26,24 @@ MainMenu::MainMenu(int localScene)
 		addObject(new Rectangle(CX, CY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 200, L"PLATE BALL BRICK", 80, sf::Color(255, 255, 255))));
-	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 115, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
+	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 230, L"PLATE BALL BRICK", 80, sf::Color(255, 255, 255))));
+	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
-		addObject(new Button(CX - 210, CY + 40, 400, 100, COL::buttonBg, COL::buttonBold, L"LEVELS"))
+		addObject(new Button(CX, CY - 10, 500, 95, COL::buttonBg, COL::buttonBold, L"LEVELS"))
 		); levels->setEvent(1, false);
 
-	endless_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX + 210, CY + 40, 400, 100, COL::buttonBg, COL::buttonBold, L"ENDLESS"))
-		); endless_btn->setEvent(1002, true);
-
 	instruction_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX - 210, CY + 160, 400, 100, COL::buttonBg, COL::buttonBold, L"INSTRUCTION"))
+		addObject(new Button(CX, CY + 102, 500, 95, COL::buttonBg, COL::buttonBold, L"INSTRUCTION"))
 		); 
 	instruction_btn->setEvent(2, false);
 
 	exit_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX + 210, CY + 160, 400, 100, COL::buttonBg, COL::buttonBold, L"EXIT"))
+		addObject(new Button(CX, CY + 214, 500, 95, COL::buttonBg, COL::buttonBold, L"EXIT"))
 		); exit_btn->setEvent(2, true);
 
-	menu_object_list = { title, subtitle, levels, endless_btn, instruction_btn, exit_btn };
+	menu_object_list = { title, subtitle, levels, instruction_btn, exit_btn };
 
 	// Level menu
 	for (int i = 0; i < 40; i++) {

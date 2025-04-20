@@ -1,5 +1,8 @@
 #include "Brick.h"
 #include "GameWindow.h"
+#include "LineCollider.h"
+#include "CircleCollider.h"
+#include "Ball.h"
 
 Brick::Brick(float _x, float _y, int _health, int _layer) : health(_health),
 	Rectangle(_x, _y, BRICK_WX, BRICK_WY, 3, COL::brick, sf::Color::Black, _layer) {}
@@ -14,12 +17,53 @@ bool Brick::shouldBreak() const
 	return health <= 0;
 }
 
+vector<Collider*> Brick::createNewColliders(bool up, bool down, bool left, bool right)
+{
+	vector<Collider*> new_colliders = {};
+	new_colliders.reserve(8);
+
+	// calculate vertices coordinates
+	float vx1 = x - wx / 2 + (left * BRICK_SMALLER_BY / 2);
+	float vx2 = x + wx / 2 - (right * BRICK_SMALLER_BY / 2);
+	float vy1 = y - wy / 2 + (up * BRICK_SMALLER_BY / 2);
+	float vy2 = y + wy / 2 - (down * BRICK_SMALLER_BY / 2);
+
+	// create line colliders
+	if (up) new_colliders.push_back(
+		new LineCollider(vx1, vy1 - BALL_RADIUS, vx2, vy1 - BALL_RADIUS, LineCollider::Up, this)
+	);
+	if (down) new_colliders.push_back(
+		new LineCollider(vx1, vy2 + BALL_RADIUS, vx2, vy2 + BALL_RADIUS, LineCollider::Down, this)
+	);
+	if (left) new_colliders.push_back(
+		new LineCollider(vx1 - BALL_RADIUS, vy1, vx1 - BALL_RADIUS, vy2, LineCollider::Left, this)
+	);
+	if (right) new_colliders.push_back(
+		new LineCollider(vx2 + BALL_RADIUS, vy1, vx2 + BALL_RADIUS, vy2, LineCollider::Right, this)
+	);
+
+	// create corner (sphere) colliders
+	if (left && up) new_colliders.push_back(
+		new CircleCollider(vx1, vy1, BALL_RADIUS, this)
+	);
+	if (up && right) new_colliders.push_back(
+		new CircleCollider(vx2, vy1, BALL_RADIUS, this)
+	);
+	if (right && down) new_colliders.push_back(
+		new CircleCollider(vx2, vy2, BALL_RADIUS, this)
+	);
+	if (down && left) new_colliders.push_back(
+		new CircleCollider(vx1, vy2, BALL_RADIUS, this)
+	);
+
+	return new_colliders;
+}
+
 void Brick::draw(GameWindow* game_window)
 {
 	// Similar to drawing rectangle, but smaller (will change in the future)
-	const float SMALLER_BY = 2.0f;
-	game_window->drawRectangle(x, y, wx - SMALLER_BY, wy - SMALLER_BY, color_bold);
-	game_window->drawRectangle(x, y, wx - bold * 2 - SMALLER_BY, wy - bold * 2 - SMALLER_BY, color);
+	game_window->drawRectangle(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, color_bold);
+	game_window->drawRectangle(x, y, wx - bold * 2 - BRICK_SMALLER_BY, wy - bold * 2 - BRICK_SMALLER_BY, color);
 }
 
 vector<float> Brick::getBrickPositionByCoordinates(int x, int y)
