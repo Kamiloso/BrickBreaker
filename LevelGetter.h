@@ -13,7 +13,8 @@ struct LevelData
 {
 	char brick_table[BRICKS_X][BRICKS_Y] = {}; // the brick array
 	int brick_fall_time = 30; // in seconds
-	float ball_max_speed = 1.0f; // how fast can ball move
+	float ball_default_speed = 1.0f; // how fast can ball move
+	float gravity = 0.0f; // gravitational acceleration
 };
 
 struct ProgressData

@@ -123,6 +123,9 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Scripts\SceneObjects\Game\Bricks\Base</Filter>
     </ClCompile>
+    <ClCompile Include="PlateCollider.cpp">
+      <Filter>Scripts\Colliders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -187,6 +190,9 @@
     </ClInclude>
     <ClInclude Include="Brick.h">
       <Filter>Scripts\SceneObjects\Game\Bricks\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="PlateCollider.h">
+      <Filter>Scripts\Colliders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

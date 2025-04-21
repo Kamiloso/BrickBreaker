@@ -2,7 +2,7 @@
 #include "GameWindow.h"
 #include "cmath"
 
-Star::Star(float _x, float _y, float _r, mt19937* _gen, int _layer) : SceneObject(_x, _y, _layer), r(_r), gen(_gen) {
+Star::Star(float _x, float _y, float _r, mt19937* gen, int _layer) : SceneObject(_x, _y, _layer), r(_r) {
 	uniform_real_distribution<> distFirstOpacityPhase(0, 255);
 	opacity_time = distFirstOpacityPhase(*gen);
 	uniform_real_distribution<> distPhase(0.8, 2);

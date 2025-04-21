@@ -28,6 +28,10 @@ public:
 	// returns the earliest collider which the ball will enter, can return nullptr if there is none
 	Collider* bestFitCollider(const vector<Collider*>& colliders);
 
+	// THIS CLASS CAN BE COPIED
+	Ball(const Ball&) = default;
+	Ball& operator=(const Ball&) = default;
+
 protected:
 	float vx;
 	float vy;
@@ -35,4 +39,3 @@ protected:
 	float time_available = 0.0f; // time available for movement
 	bool terminate = false; // is marked to be destroyed
 };
-

@@ -148,6 +148,7 @@
     <ClCompile Include="LevelMenu.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="PlateCollider.cpp" />
     <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="LevelGetter.h" />
     <ClInclude Include="LevelMenu.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="PlateCollider.h" />
     <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />

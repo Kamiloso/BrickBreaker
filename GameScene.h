@@ -31,8 +31,9 @@ private:
 	float border_up; // upper border coords
 
 	const int level; // level ID
-	int brick_fall_time = 0; // settings loaded from level data (choose default endless value)
-	float ball_max_speed = 0.0f; // settings loaded from level data (choose default endless value)
+	int brick_fall_time = 0; // settings loaded from level data
+	float ball_default_speed = 200.0f; // settings loaded from level data
+	float gravity = 0.0f; // settings loaded from level data
 
 	int local_screen = 0; // 1 = pause, 2 = win screen, 3 = defeat screen (screens are at local_screen * 10000 coordinates)
 	int local_screen_before = 0; // last frame local_screen ID
@@ -51,14 +52,16 @@ private:
 
 	vector<Collider*> colliders; // vector of all colliders (changes dynamically on brick update)
 	void updateColliders(); // updates colliders to fit current brick array
+	void updatePlateCollider(); // replaces last element in colliders with plate collider
 
 	void initializeGame(); // initializes static visible scene objects
 	void initializeUI(); // initializes UI
 	void populateGrid(int level_id); // initializes bricks from a given level_id
 
 	bool canMoveDownEverything(bool with_crusher); // checks if can move the level down
-	void moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher)
+	bool moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher), returns whether any brick went too low
 
-	void applyGravity(float g); // applies gravitational force to all balls (experimental)
+	void applyGravity(float delta_time); // applies gravitational force to all balls (experimental)
 	void handlePhysics(float delta_time); // ball movement, brick breaking etc.
+	void breakBrickByPointer(Brick* delete_brick); // breaks brick and updates collider (marks the actual object to delete)
 };
