@@ -26,7 +26,7 @@ GameScene::GameScene(int _level)
 {
 	initializeGame(); // spawns game objects
 	initializeUI(); // spawns UI scene objects
-	populateGrid(level); // populates scene with bricks and configures level settings
+	populateGrid(level); // populates scene with bricks and configures level settings, initializes colliders
 	
 	Sound::playMusic("1");
 
