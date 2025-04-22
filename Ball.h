@@ -22,11 +22,11 @@ public:
 	void changeTime(float time); // changes available time for movement
 	float getTimeAvailable() const; // returns how much time is available for movement
 
-	void markToTerminate(); // marks ball to be destroyed
-	bool isMarkedAsTerminated() const; // should be destroyed?
-
 	// returns the earliest collider which the ball will enter, can return nullptr if there is none
 	Collider* bestFitCollider(const vector<Collider*>& colliders);
+
+	void setBouncedFlag(bool flag); // sets frame_bounced flag to given value
+	bool getBouncedFlag() const; // returns frame_bounced flag
 
 	// THIS CLASS CAN BE COPIED
 	Ball(const Ball&) = default;
@@ -37,5 +37,5 @@ protected:
 	float vy;
 
 	float time_available = 0.0f; // time available for movement
-	bool terminate = false; // is marked to be destroyed
+	bool frame_bounced = false; // was bounced in this frame?
 };

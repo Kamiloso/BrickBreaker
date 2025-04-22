@@ -17,6 +17,20 @@ bool Brick::shouldBreak() const
 	return health <= 0;
 }
 
+bool Brick::touchesRect(const Rectangle* rect) const
+{
+	auto rect_pos = rect->getPosition();
+	auto rect_sca = rect->getScale();
+
+	float cent_diff_x = abs(rect_pos[0] - x);
+	float cent_diff_y = abs(rect_pos[1] - y);
+
+	float filled_x = (rect_sca[0] + wx - BRICK_SMALLER_BY) / 2;
+	float filled_y = (rect_sca[1] + wy - BRICK_SMALLER_BY) / 2;
+
+	return (filled_x > cent_diff_x && filled_y > cent_diff_y);
+}
+
 vector<Collider*> Brick::createNewColliders(bool up, bool down, bool left, bool right)
 {
 	vector<Collider*> new_colliders = {};

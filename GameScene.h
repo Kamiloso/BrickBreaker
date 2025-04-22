@@ -47,19 +47,19 @@ private:
 	Brick* bricks[BRICKS_X][BRICKS_Y]{};
 
 	Rectangle* crusher; // upper wall, that moves down and you can not do anything about that
+	Rectangle* zone_rect; // lower rectangle created at the ball kill zone
 	Plate* plate; // one single movable plate that bounces the ball
 	vector<Ball*> balls; // contains all balls present on a scene
 
 	vector<Collider*> colliders; // vector of all colliders (changes dynamically on brick update)
-	void updateColliders(); // updates colliders to fit current brick array
-	void updatePlateCollider(); // replaces last element in colliders with plate collider
+	void updateColliders(bool full_update); // updates colliders to fit current brick array (choose true to update bricks)
 
 	void initializeGame(); // initializes static visible scene objects
 	void initializeUI(); // initializes UI
 	void populateGrid(int level_id); // initializes bricks from a given level_id
 
 	bool canMoveDownEverything(bool with_crusher); // checks if can move the level down
-	bool moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher), returns whether any brick went too low
+	void moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher)
 
 	void applyGravity(float delta_time); // applies gravitational force to all balls (experimental)
 	void handlePhysics(float delta_time); // ball movement, brick breaking etc.

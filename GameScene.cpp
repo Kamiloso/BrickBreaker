@@ -18,17 +18,18 @@ constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
 const float GameScene::border_right = Brick::getBrickPositionByCoordinates(BRICKS_X - 1, 0)[0] + BRICK_WX / 2;
-const float GameScene::zone_down = RY - 30.0f;
+const float GameScene::zone_down = RY - 27.0f;
 
 GameScene::GameScene(int _level)
 	: level(_level),
 	border_up(Brick::getBrickPositionByCoordinates(0, 0)[1] - BRICK_WY / 2)
 {
+	// Scene initialization
 	initializeGame(); // spawns game objects
 	initializeUI(); // spawns UI scene objects
+
+	// Level initialization (scene initialization should execute before)
 	populateGrid(level); // populates scene with bricks and configures level settings, initializes colliders
-	
-	Sound::playMusic("1");
 
 	// spawn a lot of balls
 	for (int i = 0; i < 6; i++)
@@ -38,6 +39,9 @@ GameScene::GameScene(int _level)
 		balls.push_back(ball);
 		ball->setVelocityByAngle(i * 60 + 90, ball_default_speed);
 	}
+
+	// Start music
+	Sound::playMusic("1");
 }
 
 GameScene::~GameScene()
@@ -76,22 +80,20 @@ void GameScene::sceneUpdate(float delta_time)
 		}
 	}
 
-	// Update plate collider
-	updatePlateCollider();
-
 	// Whole level movement (every brick_fall_time miliseconds)
 	if (fall_time_counter >= brick_fall_time / 1000.0f)
 	{
 		if (canMoveDownEverything(true))
 		{
-			if (!moveDownEverything(true))
-				end_now = true; // if bricks went too low
-
+			moveDownEverything(true);
 			fall_time_counter -= brick_fall_time / 1000.0f;
 			brick_falls_done++;
 		}
 		else fall_time_counter = brick_fall_time / 1000.0f; // procrastinate untill possible
 	}
+
+	// Plate collider update
+	updateColliders(false); // false -> ony plate, no bricks
 
 	// Physics
 	if(false) applyGravity(delta_time); // HIGHLY EXPERIMENTAL, MAKES PHYSICS FRAME INCONSISTENT, JUST FOR FUN
@@ -101,7 +103,7 @@ void GameScene::sceneUpdate(float delta_time)
 	vector <Ball*> balls_to_remove = {};
 	for (Ball* ball : balls)
 	{
-		if (ball->getPosition()[1] > zone_down || ball->isMarkedAsTerminated()) // destroy condition
+		if (ball->getPosition()[1] > zone_down) // destroy condition
 		{
 			markToDelete(ball);
 			balls_to_remove.push_back(ball);
@@ -118,13 +120,18 @@ void GameScene::sceneUpdate(float delta_time)
 	if (balls.size() == 0) // end game if no balls on scene
 		end_now = true;
 
-	// Check bricks and win if there is none
+	// Check bricks and do actions based on their position (or their absence)
 	bool found_any_brick = false;
 	for (int x = 0; x < BRICKS_X; x++)
 		for (int y = 0; y < BRICKS_Y; y++)
 		{
-			if (bricks[x][y] != nullptr)
+			Brick* brick = bricks[x][y];
+			if (brick != nullptr)
+			{
 				found_any_brick = true;
+				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
+					end_now = true; // defeat, touches invalid zone or plate
+			}
 		}
 	if (!found_any_brick)
 	{
@@ -212,14 +219,14 @@ void GameScene::initializeGame()
 	));
 
 	// Down background strip
-	addObject(new Rectangle(
+	zone_rect = dynamic_cast<Rectangle*>(addObject(new Rectangle(
 		0, RY,
 		SIZE_MARGIN, 2 * (RY - zone_down),
 		0,
 		zone_color,
 		sf::Color::Black,
 		-8
-	));
+	)));
 
 	// Wall left
 	addObject(new Rectangle(
@@ -357,8 +364,8 @@ void GameScene::populateGrid(int level_id)
 			bricks[x][y] = put_brick;
 		}
 
-	// Update colliders after populating the grid
-	updateColliders();
+	// Initialize colliders
+	updateColliders(true);
 }
 
 bool GameScene::canMoveDownEverything(bool with_crusher)
@@ -403,10 +410,8 @@ bool GameScene::canMoveDownEverything(bool with_crusher)
 	return true;
 }
 
-bool GameScene::moveDownEverything(bool with_crusher)
+void GameScene::moveDownEverything(bool with_crusher)
 {
-	bool went_too_low = false;
-
 	// Crusher movement
 	if (with_crusher)
 	{
@@ -424,72 +429,76 @@ bool GameScene::moveDownEverything(bool with_crusher)
 			{
 				auto pos0 = brick->getPosition();
 				brick->setPosition(pos0[0], pos0[1] + FALL_DELTA_Y);
-
-				float lower_brick_border = pos0[1] + FALL_DELTA_Y + brick->getScale()[1] / 2;
-				if (lower_brick_border <= zone_down)
-					went_too_low = true;
 			}
 		}
 
-	// Update colliders after everything has moved
-	updateColliders();
-
-	return went_too_low;
+	// Update all colliders
+	updateColliders(true);
 }
 
-void GameScene::updateColliders()
+void GameScene::updateColliders(bool full_update)
 {
-	// Reset current array
-	for (Collider* collider : colliders)
-		delete collider;
-	colliders.clear();
+	if (plate == nullptr)
+		throw runtime_error("Cannot update colliders of a non-existing plate!");
 
-	// Declare static non-brick colliders (for example walls)
-	colliders = {
-		new LineCollider(border_left + BALL_RADIUS, -10000, border_left + BALL_RADIUS, 10000, LineCollider::Right), // left wall
-		new LineCollider(border_right - BALL_RADIUS, -10000, border_right - BALL_RADIUS, 10000, LineCollider::Left), // right wall
-		new LineCollider(-10000, border_up + BALL_RADIUS, 10000, border_up + BALL_RADIUS, LineCollider::Down), // crusher roof
-	};
-
-	// Create collider for each brick
-	for (int x = 0; x < BRICKS_X; x++)
-		for (int y = 0; y < BRICKS_Y; y++)
-		{
-			Brick* brick = bricks[x][y];
-			if (brick != nullptr)
-			{
-				bool up = (y > 0) && (bricks[x][y - 1] == nullptr);
-				bool down = (y == BRICKS_Y - 1) || (bricks[x][y + 1] == nullptr);
-
-				#pragma warning(suppress: 6201) // it's surely safe
-				bool left = (x > 0) && (bricks[x - 1][y] == nullptr);
-
-				#pragma warning(suppress: 6201) // it's surely safe
-				bool right = (x < BRICKS_X - 1) && (bricks[x + 1][y] == nullptr);
-
-				auto new_colliders = brick->createNewColliders(up, down, left, right);
-				colliders.insert(colliders.begin(), new_colliders.begin(), new_colliders.end());
-			}
-		}
-
-	// Update plate collider
-	colliders.push_back(nullptr);
-	updatePlateCollider(); // replaces nullptr with plate collider
-}
-
-void GameScene::updatePlateCollider()
-{
+	// Create new PlateCollider
 	auto plate_pos = plate->getPosition();
 	auto plate_size = plate->getScale();
 
-	int colliders_lngt = colliders.size();
-	delete colliders[colliders_lngt - 1];
-
-	colliders[colliders_lngt - 1] = new PlateCollider(
+	Collider* plate_collider = new PlateCollider(
 		zone_down - plate_size[1] / 2 - BALL_RADIUS,
 		plate_pos[0] - plate_size[0] / 2,
 		plate_pos[0] + plate_size[0] / 2
 	);
+
+	if (!full_update) // update only plate
+	{
+		if (colliders.size() > 0)
+		{
+			delete colliders[0];
+			colliders[0] = plate_collider;
+		}
+		else
+		{
+			colliders.push_back(plate_collider);
+		}
+	}
+	else // update everything
+	{
+		// Reset current array
+		for (Collider* collider : colliders)
+			delete collider;
+		colliders.clear();
+
+		// Add plate as a 0th element
+		colliders.push_back(plate_collider);
+
+		// Declare static non-brick colliders (for example walls)
+		colliders.push_back(new LineCollider(border_left + BALL_RADIUS, -10000, border_left + BALL_RADIUS, 10000, LineCollider::Right)); // left wall
+		colliders.push_back(new LineCollider(border_right - BALL_RADIUS, -10000, border_right - BALL_RADIUS, 10000, LineCollider::Left)); // right wall
+		colliders.push_back(new LineCollider(-10000, border_up + BALL_RADIUS, 10000, border_up + BALL_RADIUS, LineCollider::Down)); // crusher roof
+
+		// Create collider for each brick
+		for (int x = 0; x < BRICKS_X; x++)
+			for (int y = 0; y < BRICKS_Y; y++)
+			{
+				Brick* brick = bricks[x][y];
+				if (brick != nullptr)
+				{
+					bool up = (y > 0) && (bricks[x][y - 1] == nullptr);
+					bool down = (y == BRICKS_Y - 1) || (bricks[x][y + 1] == nullptr);
+
+					#pragma warning(suppress: 6201) // it's surely safe
+					bool left = (x > 0) && (bricks[x - 1][y] == nullptr);
+
+					#pragma warning(suppress: 6201) // it's surely safe
+					bool right = (x < BRICKS_X - 1) && (bricks[x + 1][y] == nullptr);
+
+					auto new_colliders = brick->createNewColliders(up, down, left, right);
+					colliders.insert(colliders.end(), new_colliders.begin(), new_colliders.end());
+				}
+			}
+	}
 }
 
 void GameScene::applyGravity(float delta_time)
@@ -510,6 +519,7 @@ void GameScene::handlePhysics(float delta_time)
 	for (Ball* ball : balls)
 	{
 		ball->changeTime(delta_time); // add available movement time
+		ball->setBouncedFlag(false); // reset bounced flag (new physics frame)
 	}
 	while (true)
 	{
@@ -563,6 +573,7 @@ void GameScene::handlePhysics(float delta_time)
 				{
 					// --- Bounce didn't destroy the brick ---
 					best_collider->bounceBall(best_ball); // bounce
+					best_ball->setBouncedFlag(true);
 					actions = brick->getActionsOnBounce(); // add actions (on bounce)
 				}
 				else
@@ -571,8 +582,10 @@ void GameScene::handlePhysics(float delta_time)
 
 					if (brick->goesThrough()) // ignores last bounce
 						best_collider->pretendBounceBall(best_ball);
-					else
+					else {
 						best_collider->bounceBall(best_ball);
+						best_ball->setBouncedFlag(true);
+					}
 
 					actions = brick->getActionsOnDestroy(); // add actions (on destroy)
 					breakBrickByPointer(brick); // finally break
@@ -620,6 +633,16 @@ void GameScene::handlePhysics(float delta_time)
 			else
 			{
 				// --- the collider was not of a brick type ---
+				if (!best_ball->getBouncedFlag() || dynamic_cast<PlateCollider*>(best_collider) == nullptr)
+				{
+					best_ball->setBouncedFlag(true);
+				}
+				else // wants to be bounced second time in the same frame by a plate
+				{
+					constexpr float MAGIC_DOWN_TELEPORT = 5.0f;
+					auto pos = best_ball->getPosition();
+					best_ball->setPosition(pos[0], pos[1] + MAGIC_DOWN_TELEPORT); // move a bit down to prevent strange behaviour
+				}
 				best_collider->bounceBall(best_ball);
 			}
 		}
@@ -635,5 +658,7 @@ void GameScene::breakBrickByPointer(Brick* delete_brick)
 				bricks[x][y] = nullptr;
 				markToDelete(delete_brick);
 			}
-	updateColliders();
+
+	// Update colliders after modifying grid
+	updateColliders(true);
 }

@@ -16,6 +16,7 @@ public:
 	Brick(float _x, float _y, int _health = 4, int _layer = 10);
 	void damage(int dmg = 1); // damages the brick
 	bool shouldBreak() const; // should scene break this brick in the following sceneUpdate?
+	bool touchesRect(const Rectangle* rect) const; // checks if brick touches a given rect (uses BRICK_SMALLER_BY to be more precise)
 	vector<Collider*> createNewColliders(bool up, bool down, bool left, bool right); // creates brick colliders on heap and returns vector of them
 
 	// Override these methods

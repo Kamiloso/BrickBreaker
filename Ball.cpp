@@ -61,16 +61,6 @@ float Ball::getTimeAvailable() const
 	return time_available;
 }
 
-void Ball::markToTerminate()
-{
-	terminate = true;
-}
-
-bool Ball::isMarkedAsTerminated() const
-{
-	return terminate;
-}
-
 Collider* Ball::bestFitCollider(const vector<Collider*>& colliders)
 {
 	Collider* best_fit = nullptr;
@@ -87,4 +77,14 @@ Collider* Ball::bestFitCollider(const vector<Collider*>& colliders)
 	}
 
 	return best_fit;
+}
+
+void Ball::setBouncedFlag(bool flag)
+{
+	frame_bounced = flag;
+}
+
+bool Ball::getBouncedFlag() const
+{
+	return frame_bounced;
 }
