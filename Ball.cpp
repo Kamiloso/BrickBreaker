@@ -7,7 +7,9 @@
 #include <vector>
 #include <cmath>
 #include <limits>
+
 #include <iostream>
+#include <iomanip>
 
 Ball::Ball(float _x, float _y, float _vx, float _vy, int _layer)
 	: Circle(_x, _y, BALL_RADIUS, 3, sf::Color::Green, sf::Color::Black, _layer),
@@ -23,12 +25,19 @@ void Ball::setVelocity(float _vx, float _vy)
 {
 	vx = _vx;
 	vy = _vy;
+
+	// to prevent velocity plate detours
+	constexpr float VELOCITY_EPSILON = 0.01f;
+	if (abs(vx) < VELOCITY_EPSILON)
+		vx = 0.0f;
 }
 
 void Ball::setVelocityByAngle(float angle, float magnitude)
 {
-	vx = cos(angle * PI / 180) * magnitude;
-	vy = sin(angle * PI / 180) * magnitude;
+	setVelocity(
+		cos(angle * PI / 180) * magnitude,
+		sin(angle * PI / 180) * magnitude
+	);
 }
 
 vector<float> Ball::getVelocity() const
