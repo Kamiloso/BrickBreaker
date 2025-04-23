@@ -523,10 +523,11 @@ void GameScene::handlePhysics(float delta_time)
 	}
 	while (true)
 	{
-		// looking for ball with the least time to bounce
+		// looking for ball with the least time from the beginning of the frame to bounce
 		Ball* best_ball = nullptr;
 		Collider* best_collider = nullptr;
-		float best_time_to_collision = std::numeric_limits<float>::infinity();
+		float best_absolute_frame_time = NO_COLLISION; // time from the beggining of a frame to event
+		float best_time_to_collision = NO_COLLISION; // time from the current ball time to event
 
 		for (Ball* ball : balls)
 		{
@@ -536,14 +537,19 @@ void GameScene::handlePhysics(float delta_time)
 
 			Collider* collider = ball->bestFitCollider(colliders);
 			float time_to_collision = collider != nullptr ? collider->getTimeToCollision(ball) : NO_COLLISION;
-			if (time_to_collision > time_left)
+			float absolute_frame_time = delta_time - (time_left - time_to_collision);
+			if (time_to_collision > time_left || time_to_collision == NO_COLLISION)
+			{
 				time_to_collision = NO_COLLISION;
+				absolute_frame_time = NO_COLLISION;
+			}
 
-			if (best_ball == nullptr || (time_to_collision != NO_COLLISION && time_to_collision < best_time_to_collision))
+			if (best_absolute_frame_time == NO_COLLISION || absolute_frame_time < best_absolute_frame_time)
 			{
 				best_ball = ball;
 				best_collider = collider;
 				best_time_to_collision = time_to_collision;
+				best_absolute_frame_time = absolute_frame_time;
 			}
 		}
 
