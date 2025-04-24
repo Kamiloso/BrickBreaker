@@ -31,15 +31,6 @@ GameScene::GameScene(int _level)
 	// Level initialization (scene initialization should execute before)
 	populateGrid(level); // populates scene with bricks and configures level settings, initializes colliders
 
-	// spawn a lot of balls
-	for (int i = 0; i < 6; i++)
-	{
-		Ball* ball = new Ball(CX, CY, 0, 0);
-		addObject(ball);
-		balls.push_back(ball);
-		ball->setVelocityByAngle(i * 60 + 90, ball_default_speed);
-	}
-
 	// Start music
 	Sound::playMusic("1");
 }
@@ -96,7 +87,6 @@ void GameScene::sceneUpdate(float delta_time)
 	updateColliders(false); // false -> ony plate, no bricks
 
 	// Physics
-	if(false) applyGravity(delta_time); // HIGHLY EXPERIMENTAL, MAKES PHYSICS FRAME INCONSISTENT, JUST FOR FUN
 	handlePhysics(delta_time);
 
 	// Ball position checking and destroying them
@@ -197,7 +187,7 @@ void GameScene::initializeGame()
 {
 	// plate
 	plate = dynamic_cast<Plate*>(addObject(new Plate(
-		RX / 2, zone_down, border_left, border_right, 2
+		RX / 2, zone_down, border_left, border_right
 	)));
 
 	// walls
@@ -340,7 +330,8 @@ void GameScene::populateGrid(int level_id)
 	const LevelData level_data = LevelGetter::getLevel(level_id);
 	brick_fall_time = level_data.brick_fall_time;
 	ball_default_speed = level_data.ball_default_speed;
-	gravity = level_data.gravity;
+	plate_default_width = level_data.plate_default_width;
+	plate->setDefaultWidth(plate_default_width);
 
 	// Populate with bricks
 	for (int x = 0; x < BRICKS_X; x++)
@@ -355,8 +346,17 @@ void GameScene::populateGrid(int level_id)
 			float put_y = brick_pos[1];
 			Brick* put_brick = nullptr;
 
-			if (brick_id >= '1' && brick_id <= '4')
+			if (brick_id >= '1' && brick_id <= '4') // normal brick
 				put_brick = new Brick(put_x, put_y, brick_id - '0');
+
+			else if (brick_id == '*') // ball summon
+			{
+				Ball* ball = new Ball(brick_pos[0], brick_pos[1]);
+				addObject(ball);
+				balls.push_back(ball);
+				ball->setVelocity(0.0f, ball_default_speed);
+				continue;
+			}
 
 			else throw runtime_error("Unknown brick type!");
 			
@@ -498,18 +498,6 @@ void GameScene::updateColliders(bool full_update)
 					colliders.insert(colliders.end(), new_colliders.begin(), new_colliders.end());
 				}
 			}
-	}
-}
-
-void GameScene::applyGravity(float delta_time)
-{
-	for (Ball* ball : balls)
-	{
-		auto vel0 = ball->getVelocity();
-		ball->setVelocity(
-			vel0[0],
-			vel0[1] + gravity * delta_time
-		);
 	}
 }
 

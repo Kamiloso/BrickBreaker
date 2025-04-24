@@ -4,16 +4,9 @@
 #include "Sound.h"
 #include "Collider.h"
 
-#include <vector>
-#include <cmath>
-#include <limits>
-
-#include <iostream>
-#include <iomanip>
-
-Ball::Ball(float _x, float _y, float _vx, float _vy, int _layer)
+Ball::Ball(float _x, float _y, int _layer)
 	: Circle(_x, _y, BALL_RADIUS, 3, sf::Color::Green, sf::Color::Black, _layer),
-	vx(_vx), vy(_vy) {}
+	vx(0), vy(0) {}
 
 void Ball::step(float time)
 {

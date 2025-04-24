@@ -11,7 +11,7 @@ static int signum(T x) {
 
 Plate::Plate(float _x, float _y, float _left_border, float _right_border, int _layer)
 	: Rectangle(_x, _y, 120, 20, 3, COL::plate, sf::Color::Black, _layer),
-	left_border(_left_border), right_border(_right_border) {}
+	left_border(_left_border), right_border(_right_border), default_width(120) {}
 
 void Plate::earlyUpdate(float delta_time)
 {
@@ -22,10 +22,10 @@ void Plate::earlyUpdate(float delta_time)
 		const float tr_border = right_border - wx / 2;
 
 		// Plate constants
-		constexpr float PLATE_ACCELERATION = 3600.0f;	// Acceleration size
-		constexpr float PLATE_DRAG = -432.0f;			// Drag size
-		constexpr float PLATE_MAX_SPEED = 960.0f;		// Default max speed
-		constexpr float PLATE_BRAKE_FACTOR = 1.5f;		// Deacceleration is multiplied by this
+		constexpr float PLATE_ACCELERATION = 4000.0f;	// Acceleration size
+		constexpr float PLATE_DRAG = -500.0f;			// Drag size
+		constexpr float PLATE_MAX_SPEED = 1200.0f;		// Default max speed
+		constexpr float PLATE_BRAKE_FACTOR = 2.0f;		// Deacceleration is multiplied by this
 		constexpr float PLATE_ADDITIVE_DRAG = 1.5f;		// Minimum drag speed coofficient
 
 		// Input read
@@ -36,8 +36,8 @@ void Plate::earlyUpdate(float delta_time)
 
 		// Acceleration
 		float acceleration = PLATE_ACCELERATION * input_want * delta_time;
-		if (signum(acceleration) != signum(speed))
-			acceleration *= PLATE_BRAKE_FACTOR;
+		if (signum(acceleration) != signum(speed) && speed != 0.0f)
+			acceleration = acceleration * PLATE_BRAKE_FACTOR;
 		speed += acceleration;
 
 		// Drag
@@ -69,4 +69,10 @@ void Plate::earlyUpdate(float delta_time)
 			speed = 0.0f;
 		}
 	}
+}
+
+void Plate::setDefaultWidth(float width)
+{
+	default_width = width;
+	wx = width;
 }

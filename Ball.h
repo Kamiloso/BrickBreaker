@@ -9,7 +9,7 @@ static constexpr float BALL_RADIUS = 12.0f; // constant ball radius source
 class Ball : public Circle
 {
 public:
-	Ball(float _x, float _y, float _vx, float _vy, int _layer = 12);
+	Ball(float _x, float _y, int _layer = 12);
 	void step(float time);
 
 	void setVelocity(float _vx, float _vy);

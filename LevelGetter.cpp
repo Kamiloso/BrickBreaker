@@ -33,7 +33,7 @@ LevelData LevelGetter::getLevel(int level_id)
 		}
 		f1 >> construct.brick_fall_time;
 		f1 >> construct.ball_default_speed;
-		f1 >> construct.gravity;
+		f1 >> construct.plate_default_width;
 
 		if (f1.eof())
 		{

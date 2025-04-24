@@ -33,7 +33,7 @@ private:
 	const int level; // level ID
 	int brick_fall_time = 0; // settings loaded from level data
 	float ball_default_speed = 200.0f; // settings loaded from level data
-	float gravity = 0.0f; // settings loaded from level data
+	float plate_default_width = 120.0f; // settings loaded from level data
 
 	int local_screen = 0; // 1 = pause, 2 = win screen, 3 = defeat screen (screens are at local_screen * 10000 coordinates)
 	int local_screen_before = 0; // last frame local_screen ID
@@ -61,7 +61,6 @@ private:
 	bool canMoveDownEverything(bool with_crusher); // checks if can move the level down
 	void moveDownEverything(bool with_crusher); // moves down all bricks (and the crusher)
 
-	void applyGravity(float delta_time); // applies gravitational force to all balls (experimental)
 	void handlePhysics(float delta_time); // ball movement, brick breaking etc.
 	void breakBrickByPointer(Brick* delete_brick); // breaks brick and updates collider (marks the actual object to delete)
 };
