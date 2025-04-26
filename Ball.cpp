@@ -5,7 +5,7 @@
 #include "Collider.h"
 
 Ball::Ball(float _x, float _y, int _layer)
-	: Circle(_x, _y, BALL_RADIUS, 3, sf::Color::Green, sf::Color::Black, _layer),
+	: Circle(_x, _y, BALL_RADIUS, 3, COL::ball, sf::Color::Black, _layer),
 	vx(0), vy(0) {}
 
 void Ball::step(float time)
@@ -40,12 +40,38 @@ vector<float> Ball::getVelocity() const
 
 float Ball::getVelocityAngle() const
 {
-	return atan2(vy, vx) * 180 / PI;
+	if (vx != 0.0f || vy != 0.0f)
+		return atan2(vy, vx) * 180 / PI;
+	else
+		return 90.0f;
 }
 
 float Ball::getVelocityMagnitude() const
 {
 	return sqrt(vx * vx + vy * vy);
+}
+
+void Ball::changeSpeedPowerUps(int delta_speed_modifier)
+{
+	constexpr float SPEED_MODIFIER_FACTOR = 1.2f;
+	constexpr int MIN_SPEED_MODIFIER = -3;
+	constexpr int MAX_SPEED_MODIFIER = 3;
+
+	float old_speed_modifier = speed_modifier;
+	speed_modifier += delta_speed_modifier;
+
+	if (speed_modifier < MIN_SPEED_MODIFIER)
+		speed_modifier = MIN_SPEED_MODIFIER;
+
+	if (speed_modifier > MAX_SPEED_MODIFIER)
+		speed_modifier = MAX_SPEED_MODIFIER;
+
+	float modifier_difference = speed_modifier - old_speed_modifier;
+
+	setVelocityByAngle(
+		getVelocityAngle(),
+		getVelocityMagnitude() * pow(SPEED_MODIFIER_FACTOR, modifier_difference)
+	);
 }
 
 void Ball::resetTime()

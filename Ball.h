@@ -18,6 +18,8 @@ public:
 	float getVelocityAngle() const;
 	float getVelocityMagnitude() const;
 
+	void changeSpeedPowerUps(int delta_speed_modifier); // changes velocity using power up
+
 	void resetTime(); // resets available time for movement
 	void changeTime(float time); // changes available time for movement
 	float getTimeAvailable() const; // returns how much time is available for movement
@@ -38,4 +40,6 @@ protected:
 
 	float time_available = 0.0f; // time available for movement
 	bool frame_bounced = false; // was bounced in this frame?
+
+	int speed_modifier = 0; // current modifier from power-ups
 };

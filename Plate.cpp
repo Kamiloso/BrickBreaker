@@ -18,9 +18,6 @@ void Plate::earlyUpdate(float delta_time)
 	// plate movement
 	if (!Input::getGameWindowPtr()->isPause())
 	{
-		const float tl_border = left_border + wx / 2;
-		const float tr_border = right_border - wx / 2;
-
 		// Plate constants
 		constexpr float PLATE_ACCELERATION = 4000.0f;	// Acceleration size
 		constexpr float PLATE_DRAG = -500.0f;			// Drag size
@@ -32,7 +29,7 @@ void Plate::earlyUpdate(float delta_time)
 		bool special_action = Input::isKeyboardPressed(sf::Keyboard::Up, Input::Down) || Input::isKeyboardPressed(sf::Keyboard::Space, Input::Down);
 		bool want_right = Input::isKeyboardPressed(sf::Keyboard::Right) || Input::isKeyboardPressed(sf::Keyboard::D);
 		bool want_left = Input::isKeyboardPressed(sf::Keyboard::Left) || Input::isKeyboardPressed(sf::Keyboard::A);
-		int input_want = want_right - want_left;
+		int input_want = (want_right - want_left) * (reversed ? -1 : 1);
 
 		// Acceleration
 		float acceleration = PLATE_ACCELERATION * input_want * delta_time;
@@ -58,16 +55,20 @@ void Plate::earlyUpdate(float delta_time)
 
 		// Moving plate based on speed
 		x += speed * delta_time;
-		if (x < tl_border)
-		{
-			x = tl_border;
-			speed = 0.0f;
-		}
-		if (x > tr_border)
-		{
-			x = tr_border;
-			speed = 0.0f;
-		}
+		
+		// Prevent overlapping walls
+		positionCorrection(true);
+	}
+}
+
+void Plate::draw(GameWindow* game_window)
+{
+	game_window->drawRectangle(x, y, wx, wy, color_bold);
+	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, color);
+
+	if (reversed) { // reverse strips
+		game_window->drawRectangle(x, y, wx - (wy - bold), bold, color_bold);
+		game_window->drawRectangle(x, y, (wy - 3 * bold) / 2, bold, color);
 	}
 }
 
@@ -75,4 +76,50 @@ void Plate::setDefaultWidth(float width)
 {
 	default_width = width;
 	wx = width;
+}
+
+void Plate::changeWidth(int delta_width_modifier)
+{
+	float PLATE_SIZES[3] = { 0.70f, 1.00f, 1.40f };
+
+	width_modifier += delta_width_modifier;
+
+	if (width_modifier < -1)
+		width_modifier = -1;
+
+	if (width_modifier > 1)
+		width_modifier = 1;
+
+	wx = default_width * PLATE_SIZES[1 + width_modifier];
+	positionCorrection(false);
+}
+
+void Plate::reverseControl()
+{
+	if (reversed) {
+		reversed = false;
+		color = COL::plate;
+	}
+	else {
+		reversed = true;
+		color = COL::reversedPlate;
+	}
+}
+
+void Plate::positionCorrection(bool reset_velocity)
+{
+	const float tl_border = left_border + wx / 2;
+	const float tr_border = right_border - wx / 2;
+	if (x < tl_border)
+	{
+		x = tl_border;
+		if(reset_velocity)
+			speed = 0.0f;
+	}
+	if (x > tr_border)
+	{
+		x = tr_border;
+		if (reset_velocity)
+			speed = 0.0f;
+	}
 }

@@ -38,5 +38,7 @@ namespace COL
 
 	// Game colors
 	static const sf::Color plate = sf::Color::Yellow;
+	static const sf::Color reversedPlate = sf::Color(255, 193, 0);
+	static const sf::Color ball = sf::Color::Green;
 	static const sf::Color brick = sf::Color(230, 0, 0);
 }

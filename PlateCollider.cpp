@@ -32,7 +32,7 @@ void PlateCollider::bounceBall(Ball* ball)
 	float b_vel_magnitude = ball->getVelocityMagnitude();
 
 	// direction choose
-	constexpr float MAX_BALL_DEVIATION = 70.0f;
+	constexpr float MAX_BALL_DEVIATION = 90.0f - RECOMMENDED_MIN_ANGLE;
 	float x_center = (x1 + x2) / 2;
 	float half_width = x2 - x_center;
 	float center_deviation = (b_pos[0] - x_center) / half_width;

@@ -82,5 +82,23 @@ void LineCollider::bounceBall(Ball* ball)
 			ball->setPosition(b_pos[0] - COLLIDER_EPSILON, b_pos[1] - sign * COLLIDER_EPSILON);
 		else
 			ball->setPosition(b_pos[0] + COLLIDER_EPSILON, b_pos[1] - sign * COLLIDER_EPSILON);
+
+		// prevent parallel ball movement
+		preventHorizontalBallMovement(ball, RECOMMENDED_MIN_ANGLE);
 	}
+}
+
+void LineCollider::preventHorizontalBallMovement(Ball* ball, float min_angle)
+{
+	float angle = ball->getVelocityAngle();
+	float magnitude = ball->getVelocityMagnitude();
+
+	if (angle > -min_angle && angle < min_angle)
+		ball->setVelocityByAngle((angle > 0) ? min_angle : -min_angle, magnitude);
+
+	if (angle > 180.0f - min_angle)
+		ball->setVelocityByAngle(180.0f - min_angle, magnitude);
+
+	if (angle < -180.0f + min_angle)
+		ball->setVelocityByAngle(-180.0f + min_angle, magnitude);
 }

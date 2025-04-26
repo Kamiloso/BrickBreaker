@@ -17,4 +17,6 @@ private:
 	float x1, y1; // first point coordinates
 	float x2, y2; // second point coordinates
 	Side side; // which side of collider is it?
+
+	void preventHorizontalBallMovement(Ball* ball, float min_angle); // prevents ball movement parallel to plate
 };

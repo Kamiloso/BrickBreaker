@@ -604,23 +604,23 @@ void GameScene::handlePhysics(float delta_time)
 					}
 					else if (action == Brick::ReverseControl)
 					{
-						// plate->reverseControl();
+						plate->reverseControl();
 					}
 					else if (action == Brick::SpeedUp)
 					{
-						// best_ball->speedUp();
+						best_ball->changeSpeedPowerUps(1);
 					}
 					else if (action == Brick::SlowDown)
 					{
-						// best_ball->slowDown();
+						best_ball->changeSpeedPowerUps(-1);
 					}
 					else if (action == Brick::WiderPlate)
 					{
-						// plate->makeWider();
+						plate->changeWidth(1);
 					}
 					else if (action == Brick::ShorterPlate)
 					{
-						// plate->makeShorter();
+						plate->changeWidth(-1);
 					}
 				}
 			}
