@@ -22,7 +22,7 @@ public:
 	// Override these methods
 	virtual bool unbreakable() { return false; } // can't be broken and is not needed to win
 	virtual bool goesThrough() { return false; } // doesn't bounce the ball on destroy
-	virtual vector<ActionType> getActionsOnBounce() { return { SpeedUp }; } // returns actions which should be executed on bounce
+	virtual vector<ActionType> getActionsOnBounce() { return {  }; } // returns actions which should be executed on bounce
 	virtual vector<ActionType> getActionsOnDestroy() { return {  }; } // returns actions which should be executed on destroy
 	void draw(GameWindow* game_window) override; // draws the brick, override this once again
 
