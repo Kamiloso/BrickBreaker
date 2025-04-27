@@ -18,11 +18,6 @@ void Ball::setVelocity(float _vx, float _vy)
 {
 	vx = _vx;
 	vy = _vy;
-
-	// to prevent velocity plate detours
-	constexpr float VELOCITY_EPSILON = 0.01f;
-	if (abs(vx) < VELOCITY_EPSILON)
-		vx = 0.0f;
 }
 
 void Ball::setVelocityByAngle(float angle, float magnitude)

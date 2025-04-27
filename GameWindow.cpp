@@ -4,6 +4,8 @@
 #include "GameScene.h"
 #include "Input.h"
 
+#include <random>
+
 GameWindow::GameWindow(string _title, sf::ContextSettings _settings)
 {
 	title = _title;
@@ -69,6 +71,13 @@ sf::RenderWindow& GameWindow::getRenderWindow()
 void GameWindow::setPause(bool enable)
 {
 	game_pause = enable;
+}
+
+int GameWindow::getEntropy()
+{
+	static random_device rd;
+	static mt19937 ms_twister(rd());
+	return ms_twister();
 }
 
 void GameWindow::setScene(int scene_id, int parameter)

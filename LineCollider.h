@@ -19,4 +19,5 @@ private:
 	Side side; // which side of collider is it?
 
 	void preventHorizontalBallMovement(Ball* ball, float min_angle); // prevents ball movement parallel to plate
+	void preventVerticalBallMovement(Ball* ball, float min_angle); // prevents ball movement perpandicular to plate
 };

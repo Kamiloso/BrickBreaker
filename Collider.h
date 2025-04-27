@@ -6,6 +6,7 @@ class Brick;
 constexpr float NO_COLLISION = -1.0f; // this float in collisions generally means, that it can't happen
 constexpr float COLLIDER_EPSILON = 0.01f; // by how much will position additionally change during bouncing
 constexpr float RECOMMENDED_MIN_ANGLE = 20.0f; // minimal angle which is not considered to be paralell to plate
+constexpr float RECOMMENDED_MIN_ANGLE_VERTICAL = 8.0f; // minimal angle which is not considered to be perpandicular to plate
 
 class Collider
 {

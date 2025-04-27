@@ -26,6 +26,7 @@ public:
 	void drawRectangle(float pox_x, float pos_y, float wx, float wy, sf::Color color);
 	sf::RenderWindow& getRenderWindow(); // returns 'window' reference for drawing more complex shapes
 	void setPause(bool enable); // sets pause state to true or false
+	int getEntropy(); // returns a random number
 
 	// Getters
 	bool isPause() const;

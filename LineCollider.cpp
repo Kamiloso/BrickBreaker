@@ -1,5 +1,7 @@
 #include "LineCollider.h"
 #include "Ball.h"
+#include "Input.h"
+#include "GameWindow.h"
 
 LineCollider::LineCollider(float _x1, float _y1, float _x2, float _y2, Side _side, Brick* _brick)
 	: Collider(_brick), x1(_x1), y1(_y1), x2(_x2), y2(_y2), side(_side)
@@ -19,7 +21,7 @@ float LineCollider::getTimeToCollision(Ball* ball)
 	if (side == Up || side == Down)
 	{
 		if (b_vel[1] == 0.0f)
-			return NO_COLLISION; // perpendicular movement
+			return NO_COLLISION; // parallel movement
 
 		float h = b_pos[1] - y1;
 		if ((h >= 0.0f && side != Down) || (h <= 0.0f && side != Up))
@@ -37,7 +39,7 @@ float LineCollider::getTimeToCollision(Ball* ball)
 	if (side == Left || side == Right)
 	{
 		if (b_vel[0] == 0.0f)
-			return NO_COLLISION; // perpendicular movement
+			return NO_COLLISION; // parallel movement
 
 		float w = b_pos[0] - x1;
 		if ((w >= 0.0f && side != Right) || (w <= 0.0f && side != Left))
@@ -69,6 +71,9 @@ void LineCollider::bounceBall(Ball* ball)
 			ball->setPosition(b_pos[0] - sign * COLLIDER_EPSILON, b_pos[1] - COLLIDER_EPSILON);
 		else
 			ball->setPosition(b_pos[0] - sign * COLLIDER_EPSILON, b_pos[1] + COLLIDER_EPSILON);
+
+		// prevent perpandicular ball movement
+		preventVerticalBallMovement(ball, RECOMMENDED_MIN_ANGLE_VERTICAL);
 	}
 
 	if (side == Left || side == Right)
@@ -101,4 +106,27 @@ void LineCollider::preventHorizontalBallMovement(Ball* ball, float min_angle)
 
 	if (angle < -180.0f + min_angle)
 		ball->setVelocityByAngle(-180.0f + min_angle, magnitude);
+}
+
+void LineCollider::preventVerticalBallMovement(Ball* ball, float min_angle)
+{
+	float angle = ball->getVelocityAngle();
+	float magnitude = ball->getVelocityMagnitude();
+
+	// generate entropy to decide in which direction bounce the ball
+	bool entropy = Input::getGameWindowPtr()->getEntropy() % 2;
+
+	// use entropy to randomize movement direction
+	constexpr float LOCAL_EPSILON = 0.0001f;
+	if (angle > 90.0f - LOCAL_EPSILON && angle < 90.0f + LOCAL_EPSILON)
+		angle += entropy ? 3 * LOCAL_EPSILON : -3 * LOCAL_EPSILON;
+	if (angle > -90.0f - LOCAL_EPSILON && angle < -90.0f + LOCAL_EPSILON)
+		angle += entropy ? 3 * LOCAL_EPSILON : -3 * LOCAL_EPSILON;
+
+	// angle correction
+	if (angle > 90.0f -min_angle && angle < 90.0f + min_angle)
+		ball->setVelocityByAngle((angle > 90.0f) ? 90.0f + min_angle : 90.0f - min_angle, magnitude);
+
+	if (angle > -90.0f - min_angle && angle < -90.0f + min_angle)
+		ball->setVelocityByAngle((angle > -90.0f) ? -90.0f + min_angle : -90.0f - min_angle, magnitude);
 }

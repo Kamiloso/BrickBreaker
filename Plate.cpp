@@ -67,8 +67,8 @@ void Plate::draw(GameWindow* game_window)
 	game_window->drawRectangle(x, y, wx - bold * 2, wy - bold * 2, color);
 
 	if (reversed) { // reverse strips
-		game_window->drawRectangle(x, y, wx - (wy - bold), bold, color_bold);
-		game_window->drawRectangle(x, y, (wy - 3 * bold) / 2, bold, color);
+		//game_window->drawRectangle(x, y, wx - (wy - bold), bold, color_bold);
+		//game_window->drawRectangle(x, y, (wy - 3 * bold) / 2, bold, color);
 	}
 }
 

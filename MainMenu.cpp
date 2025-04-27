@@ -8,12 +8,12 @@
 
 #include "LevelGetter.h"
 #include "Input.h"
+#include "GameWindow.h"
 
 MainMenu::MainMenu(int localScene)
 {
 	// Background
-	random_device rd;
-	mt19937 gen(rd());
+	mt19937 gen(Input::getGameWindowPtr()->getEntropy());
 	uniform_int_distribution<> distRX(0, RX);
 	uniform_int_distribution<> distRY(0, RY);
 	uniform_int_distribution<> distNumOfStars(80, 105);
