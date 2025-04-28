@@ -118,7 +118,8 @@ void GameScene::sceneUpdate(float delta_time)
 			Brick* brick = bricks[x][y];
 			if (brick != nullptr)
 			{
-				found_any_brick = true;
+				if (!brick->unbreakable()) 
+					found_any_brick = true;
 				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
 					end_now = true; // defeat, touches invalid zone or plate
 			}
