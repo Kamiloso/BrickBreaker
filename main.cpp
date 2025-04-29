@@ -1,11 +1,13 @@
 #include "GameWindow.h"
 #include "Sound.h"
+#include "Texture.h"
 
 using namespace std;
 
 int main()
 {
     // Sound initialization
+    Texture::init();
     Sound::init();
     Sound::setGlobalVolume(0.5f);
 
