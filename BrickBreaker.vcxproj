@@ -139,8 +139,10 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="FragileBrick.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LineCollider.cpp" />
+    <ClCompile Include="MovementBrick.cpp" />
     <ClCompile Include="Plate.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameWindow.cpp" />
@@ -150,11 +152,16 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="PlateCollider.cpp" />
     <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="ReverseBrick.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneObject.cpp" />
+    <ClCompile Include="SizeBrick.cpp" />
     <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SpawnBrick.cpp" />
     <ClCompile Include="Star.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="UnbreakableBrick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
@@ -163,8 +170,10 @@
     <ClInclude Include="Circle.h" />
     <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="FragileBrick.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LineCollider.h" />
+    <ClInclude Include="MovementBrick.h" />
     <ClInclude Include="Plate.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="GameScene.h" />
@@ -174,11 +183,16 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="PlateCollider.h" />
     <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="ReverseBrick.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
+    <ClInclude Include="SizeBrick.h" />
     <ClInclude Include="Sound.h" />
+    <ClInclude Include="SpawnBrick.h" />
     <ClInclude Include="Star.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="UnbreakableBrick.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="PTSans-Bold.ttf" />

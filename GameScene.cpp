@@ -13,6 +13,12 @@
 #include "CircleCollider.h"
 #include "LineCollider.h"
 #include "PlateCollider.h"
+#include "UnbreakableBrick.h"
+#include "FragileBrick.h"
+#include "MovementBrick.h"
+#include "SizeBrick.h"
+#include "SpawnBrick.h"
+#include "ReverseBrick.h"
 
 constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
@@ -348,7 +354,38 @@ void GameScene::populateGrid(int level_id)
 
 			if (brick_id >= '1' && brick_id <= '4') // normal brick
 				put_brick = new Brick(put_x, put_y, brick_id - '0');
-
+			else if (brick_id == 'u')
+			{
+				put_brick = new UnbreakableBrick(put_x, put_y);
+			}
+			else if (brick_id == 'f')
+			{
+				put_brick = new FragileBrick(put_x, put_y, 1);
+			}
+			else if (brick_id == 'r')
+			{
+				put_brick = new ReverseBrick(put_x, put_y, 1);
+			}
+			else if (brick_id == 'S')
+			{
+				put_brick = new SizeBrick(put_x, put_y, 1, 10, true);
+			}
+			else if (brick_id == 's')
+			{
+				put_brick = new SizeBrick(put_x, put_y, 1, 10, false);
+			}
+			else if (brick_id == '+')
+			{
+				put_brick = new MovementBrick(put_x, put_y, 1,10,true);
+			}
+			else if (brick_id == '-')
+			{
+				put_brick = new MovementBrick(put_x, put_y, 1, 10, false);
+			}
+			else if (brick_id == 'B')
+			{
+				put_brick = new SpawnBrick(put_x, put_y, 1);
+			}
 			else if (brick_id == '*') // ball summon
 			{
 				Ball* ball = new Ball(brick_pos[0], brick_pos[1]);

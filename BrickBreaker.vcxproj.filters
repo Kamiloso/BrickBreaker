@@ -58,6 +58,9 @@
     <Filter Include="Scripts\SceneObjects\Game\Bricks\Base">
       <UniqueIdentifier>{af1cd0bc-bf2b-4d58-997b-9bb3fe24ddc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripts\Management\TextureManagement">
+      <UniqueIdentifier>{c46c5c7f-1f8c-44f3-8baf-2b054152e64b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainMenu.cpp">
@@ -126,6 +129,15 @@
     <ClCompile Include="PlateCollider.cpp">
       <Filter>Scripts\Colliders</Filter>
     </ClCompile>
+    <ClCompile Include="UnbreakableBrick.cpp" />
+    <ClCompile Include="Texture.cpp">
+      <Filter>Scripts\Management\TextureManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="FragileBrick.cpp" />
+    <ClCompile Include="SpawnBrick.cpp" />
+    <ClCompile Include="ReverseBrick.cpp" />
+    <ClCompile Include="MovementBrick.cpp" />
+    <ClCompile Include="SizeBrick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -194,6 +206,15 @@
     <ClInclude Include="PlateCollider.h">
       <Filter>Scripts\Colliders</Filter>
     </ClInclude>
+    <ClInclude Include="UnbreakableBrick.h" />
+    <ClInclude Include="Texture.h">
+      <Filter>Scripts\Management\TextureManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="FragileBrick.h" />
+    <ClInclude Include="SpawnBrick.h" />
+    <ClInclude Include="ReverseBrick.h" />
+    <ClInclude Include="MovementBrick.h" />
+    <ClInclude Include="SizeBrick.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="PTSans-Bold.ttf">

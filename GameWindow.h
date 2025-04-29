@@ -24,6 +24,7 @@ public:
 	void run(); // Starts main game loop
 	void drawCircle(float pos_x, float pos_y, float r, sf::Color color);
 	void drawRectangle(float pox_x, float pos_y, float wx, float wy, sf::Color color);
+	void drawRectangleWithTexture(float pos_x, float pos_y, float wx, float wy,const sf::Texture* texture);
 	sf::RenderWindow& getRenderWindow(); // returns 'window' reference for drawing more complex shapes
 	void setPause(bool enable); // sets pause state to true or false
 
