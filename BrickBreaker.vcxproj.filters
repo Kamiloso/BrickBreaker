@@ -19,12 +19,6 @@
     <Filter Include="Scripts\SceneObjects\Base">
       <UniqueIdentifier>{4f0eab43-0f6b-4c99-a86d-d0f0d0ce12f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{5ed5c4b2-e91a-4b35-863e-d2a9aae5fbd4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\Fonts">
-      <UniqueIdentifier>{7d7ab901-79b8-41d5-bcc4-789a0663ece0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\SceneObjects\UI">
       <UniqueIdentifier>{837519e2-fb6f-4fd2-adce-a3f156171e8c}</UniqueIdentifier>
     </Filter>
@@ -129,15 +123,30 @@
     <ClCompile Include="PlateCollider.cpp">
       <Filter>Scripts\Colliders</Filter>
     </ClCompile>
-    <ClCompile Include="UnbreakableBrick.cpp" />
     <ClCompile Include="Texture.cpp">
       <Filter>Scripts\Management\TextureManagement</Filter>
     </ClCompile>
-    <ClCompile Include="FragileBrick.cpp" />
-    <ClCompile Include="SpawnBrick.cpp" />
-    <ClCompile Include="ReverseBrick.cpp" />
-    <ClCompile Include="MovementBrick.cpp" />
-    <ClCompile Include="SizeBrick.cpp" />
+    <ClCompile Include="UnbreakableBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="SizeBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="ReverseBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="FragileBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalBrick.cpp">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -206,19 +215,29 @@
     <ClInclude Include="PlateCollider.h">
       <Filter>Scripts\Colliders</Filter>
     </ClInclude>
-    <ClInclude Include="UnbreakableBrick.h" />
     <ClInclude Include="Texture.h">
       <Filter>Scripts\Management\TextureManagement</Filter>
     </ClInclude>
-    <ClInclude Include="FragileBrick.h" />
-    <ClInclude Include="SpawnBrick.h" />
-    <ClInclude Include="ReverseBrick.h" />
-    <ClInclude Include="MovementBrick.h" />
-    <ClInclude Include="SizeBrick.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="PTSans-Bold.ttf">
-      <Filter>Assets\Fonts</Filter>
-    </Font>
+    <ClInclude Include="UnbreakableBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="SizeBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="ReverseBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="FragileBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalBrick.h">
+      <Filter>Scripts\SceneObjects\Game\Bricks</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,30 +1,20 @@
 #include "MovementBrick.h"
 #include "GameWindow.h"
 #include "Texture.h"
-MovementBrick::MovementBrick(float _x, float _y, int _health, int _layer,bool _mode) : Brick(_x, _y, _health, _layer), mode(_mode)
+MovementBrick::MovementBrick(float _x, float _y, bool _mode, int _layer) : Brick(_x, _y, 0, _layer), mode(_mode)
 {
 	if (mode)
-	{
 		texture = Texture::GetTexture("SpeedUp");
-	}
 	else
-	{
 		texture = Texture::GetTexture("SlowDown");
-	}
 }
 
-vector<Brick::ActionType> MovementBrick::getActionsOnDestroy()
+vector<Brick::ActionType> MovementBrick::getActionsOnBounce()
 {
-	vector<Brick::ActionType> onDestroy;
 	if (mode)
-	{
-		onDestroy.push_back(SpeedUp);
-	}
+		return { SpeedUp };
 	else
-	{
-		onDestroy.push_back(SlowDown);
-	}
-	return onDestroy;
+		return { SlowDown };
 }
 
 void MovementBrick::draw(GameWindow* game_window)

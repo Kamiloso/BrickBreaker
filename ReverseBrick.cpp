@@ -2,18 +2,10 @@
 #include "GameWindow.h"
 #include "Texture.h"
 
-ReverseBrick::ReverseBrick(float _x, float _y, int _health, int _layer) : Brick(_x,_y,_health,_layer)
+ReverseBrick::ReverseBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _layer)
 {
 	texture = Texture::GetTexture("Reverse");
 }
-
-vector<Brick::ActionType> ReverseBrick::getActionsOnDestroy()
-{
-	vector<Brick::ActionType> onDestroy;
-	onDestroy.push_back(ReverseControl);
-	return onDestroy;
-}
-
 
 void ReverseBrick::draw(GameWindow* game_window)
 {
