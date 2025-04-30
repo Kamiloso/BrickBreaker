@@ -477,8 +477,8 @@ void GameScene::updateColliders(bool full_update)
 
 	Collider* plate_collider = new PlateCollider(
 		zone_down - plate_size[1] / 2 - BALL_RADIUS,
-		plate_pos[0] - plate_size[0] / 2,
-		plate_pos[0] + plate_size[0] / 2
+		plate_pos[0] - plate_size[0] / 2 - BALL_RADIUS,
+		plate_pos[0] + plate_size[0] / 2 + BALL_RADIUS
 	);
 
 	if (!full_update) // update only plate

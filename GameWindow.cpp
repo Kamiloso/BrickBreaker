@@ -62,9 +62,10 @@ void GameWindow::drawRectangle(float pos_x, float pos_y, float wx, float wy, sf:
 	shape.setFillColor(color);
 	window.draw(shape);
 }
-void GameWindow::drawRectangleWithTexture(float pos_x, float pos_y, float wx, float wy,const sf::Texture* texture)
+
+void GameWindow::drawRectangleWithTexture(float pos_x, float pos_y, float wx, float wy, const sf::Texture* texture)
 {
-	sf::RectangleShape shape({ wx, wy });
+	sf::RectangleShape shape({wx, wy});
 	shape.setPosition(pos_x - wx / 2, pos_y - wy / 2);
 	shape.setTexture(texture);
 	window.draw(shape);

@@ -3,8 +3,7 @@
 #include <fstream>
 
 
-const string LevelGetter::levels_path = "./InternalData/Levels/Basic/";
-const string LevelGetter::endless_path = "./InternalData/Levels/Endless/";
+const string LevelGetter::levels_path = "./InternalData/Levels/";
 const string LevelGetter::progress_path = "./InternalData/Progress/";
 
 bool LevelGetter::has_progress = false;
@@ -12,11 +11,7 @@ ProgressData LevelGetter::progress_data = {};
 
 LevelData LevelGetter::getLevel(int level_id)
 {
-	string file_name;
-	if (level_id >= 0)
-		file_name = levels_path + "level_" + to_string(level_id + 1) + ".bbk";
-	else
-		file_name = endless_path + "segment_" + to_string(-level_id) + ".bbk";
+	string file_name = levels_path + "level_" + to_string(level_id + 1) + ".bbk";
 
 	LevelData construct{};
 
@@ -52,11 +47,11 @@ LevelData LevelGetter::getLevel(int level_id)
 	}
 }
 
-const ProgressData* LevelGetter::getProgress()
+const ProgressData& LevelGetter::getProgress()
 {
 	loadProgress();
 
-	return &progress_data;
+	return progress_data;
 }
 
 void LevelGetter::setLevelFlag(int level_id, unsigned char flag_id)
@@ -87,20 +82,26 @@ bool LevelGetter::isFlagSet(int level_id, unsigned char flag_id)
 	return (progress_data.stored_level_data[level_id] & (1 << flag_id)) != 0;
 }
 
-void LevelGetter::setEndlessHighscore(int score)
+void LevelGetter::changeSoundVolume(float value)
 {
 	loadProgress();
 
-	progress_data.highscore = score;
-
-	saveProgress();
+	if (value != progress_data.sound_volume)
+	{
+		progress_data.sound_volume = value;
+		saveProgress();
+	}
 }
 
-int LevelGetter::getEndlessHighscore()
+void LevelGetter::changeMusicVolume(float value)
 {
 	loadProgress();
 
-	return progress_data.highscore;
+	if (value != progress_data.music_volume)
+	{
+		progress_data.music_volume = value;
+		saveProgress();
+	}
 }
 
 void LevelGetter::loadProgress()

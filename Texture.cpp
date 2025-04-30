@@ -20,6 +20,7 @@ void Texture::LoadTexture(const string& name, const string& path)
 {
 	sf::Texture texture;
 	texture.loadFromFile(path);
+	texture.setSmooth(true);
 	Textures[name] = texture;
 }
 

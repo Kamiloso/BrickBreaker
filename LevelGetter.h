@@ -20,21 +20,21 @@ struct LevelData
 struct ProgressData
 {
 	char stored_level_data[LEVELS] = {}; // level data bytes
-	int highscore = 0; // highscore in endless mode
+	float sound_volume = 0.5f;
+	float music_volume = 0.5f;
 };
 
 class LevelGetter
 {
 public:
-	static LevelData getLevel(int level_id); // returns the level based on its id (negative ids are endless segments)
-	static const ProgressData* getProgress(); // returns a const pointer to progress structure
+	static LevelData getLevel(int level_id); // returns the level based on its id
+	static const ProgressData& getProgress(); // returns a const reference to progress structure
 	static void setLevelFlag(int level_id, unsigned char flag_id); // adds a flag (0-7) to level progress
 	static bool isFlagSet(int level_id, unsigned char flag_id); // tells if a specific flag in level is on
-	static void setEndlessHighscore(int score); // updates highscore from endless mode
-	static int getEndlessHighscore(); // returns endless highscore value
+	static void changeSoundVolume(float value); // sets and saves sound volume
+	static void changeMusicVolume(float value); // sets and saves music volume
 
 	const static string levels_path; // path to level files
-	const static string endless_path; // path to endless piece files
 	const static string progress_path; // path to progress read/write folder
 
 private:
