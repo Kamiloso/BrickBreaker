@@ -127,6 +127,11 @@ void GameScene::sceneUpdate(float delta_time)
 				found_any_brick = true;
 				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
 					end_now = true; // defeat, touches invalid zone or plate
+
+				// special movement update for movement brick visuals
+				MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
+				if (movement_brick != nullptr)
+					movement_brick->specialMovementUpdate(delta_time);
 			}
 		}
 	if (!found_any_brick)
@@ -357,7 +362,7 @@ void GameScene::populateGrid(int level_id)
 
 			else if (brick_id == '#') // unbreakable brick
 				put_brick = new UnbreakableBrick(put_x, put_y);
-			
+
 			else if (brick_id == 'o') // fragile brick 1 HP
 				put_brick = new FragileBrick(put_x, put_y);
 
@@ -365,10 +370,10 @@ void GameScene::populateGrid(int level_id)
 				put_brick = new ReverseBrick(put_x, put_y);
 
 			else if (brick_id == 'w') // wider plate brick
-				put_brick = new SizeBrick(put_x, put_y, true);
-			
+				put_brick = new SizeBrick(put_x, put_y, true, plate);
+
 			else if (brick_id == 's') // shorter plate brick
-				put_brick = new SizeBrick(put_x, put_y, false);
+				put_brick = new SizeBrick(put_x, put_y, false, plate);
 			
 			else if (brick_id == '>') // faster ball unbreakable brick
 				put_brick = new MovementBrick(put_x, put_y, true);
@@ -599,6 +604,11 @@ void GameScene::handlePhysics(float delta_time)
 					best_collider->bounceBall(best_ball); // bounce
 					best_ball->setBouncedFlag(true);
 					actions = brick->getActionsOnBounce(); // add actions (on bounce)
+
+					// movement brick visual activation
+					MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
+					if (movement_brick != nullptr)
+						movement_brick->activateVisual();
 				}
 				else
 				{

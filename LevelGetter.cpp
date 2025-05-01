@@ -3,8 +3,8 @@
 #include <fstream>
 
 
-const string LevelGetter::levels_path = "./InternalData/Levels/";
-const string LevelGetter::progress_path = "./InternalData/Progress/";
+const string LevelGetter::levels_path = "./Assets/Levels/";
+const string LevelGetter::progress_path = "./GameData/";
 
 bool LevelGetter::has_progress = false;
 ProgressData LevelGetter::progress_data = {};

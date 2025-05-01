@@ -11,8 +11,7 @@ public:
 	static void init();
 	static sf::Texture* GetTexture(const string& name);
 
-private :
-	static void LoadTexture(const string& name, const string& path);
+private:
+	static void LoadTexture(const string& name, const string& path, bool dont_smooth = false);
 	static map<string, sf::Texture> Textures;
 };
-

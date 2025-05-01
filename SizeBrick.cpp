@@ -1,13 +1,18 @@
 #include "SizeBrick.h"
 #include "GameWindow.h"
 #include "Texture.h"
+#include "Plate.h"
 
-SizeBrick::SizeBrick(float _x, float _y, bool _mode, int _layer) : Brick(_x, _y, 1, _layer), mode(_mode)
+SizeBrick::SizeBrick(float _x, float _y, bool _mode, const Plate* _plate, int _layer) : Brick(_x, _y, 1, _layer), mode(_mode), plate(_plate)
 {
-	if (mode)
+	if (mode) {
 		texture = Texture::GetTexture("SizeUp");
-	else
+		texture2 = Texture::GetTexture("SizeUp2");
+	}
+	else {
 		texture = Texture::GetTexture("SizeDown");
+		texture2 = Texture::GetTexture("SizeDown2");
+	}
 }
 
 vector<Brick::ActionType> SizeBrick::getActionsOnDestroy()
@@ -20,5 +25,8 @@ vector<Brick::ActionType> SizeBrick::getActionsOnDestroy()
 
 void SizeBrick::draw(GameWindow* game_window)
 {
-	game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture);
+	if(plate == nullptr || !plate->isReversed())
+		game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture);
+	else
+		game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture2);
 }

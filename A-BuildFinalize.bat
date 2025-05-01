@@ -5,8 +5,8 @@ if not exist "Release" (
 )
 
 REM Usuwanie starych wersji folderów w Release
-if exist "Release\InternalData" (
-    rmdir /S /Q "Release\InternalData"
+if exist "Release\GameData" (
+    rmdir /S /Q "Release\GameData"
 )
 if exist "Release\Assets" (
     rmdir /S /Q "Release\Assets"
@@ -15,9 +15,9 @@ if exist "Release\Licenses" (
     rmdir /S /Q "Release\Licenses"
 )
 
-REM Kopiowanie folderu InternalData
-if exist "InternalData" (
-    xcopy "InternalData" "Release\InternalData" /E /I /Y
+REM Kopiowanie folderu GameData
+if exist "GameData" (
+    xcopy "GameData" "Release\GameData" /E /I /Y
 )
 
 REM Kopiowanie folderu Assets

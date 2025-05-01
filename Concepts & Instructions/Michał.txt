@@ -1,0 +1,11 @@
+ParticleSystem : SceneObject
+
+- określonym promieniu spawningu cząsteczek
+- losowej i określonej wielkości
+- ustalonym kolorze
+- z losową i określoną prędkością
+- określony czas emisji
+- określona prędkość emisji
+- wyświetlanie cząsteczek
+- dźwięk (string)
+- layer(_layer) ?17
