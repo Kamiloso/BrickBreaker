@@ -13,6 +13,7 @@ public:
 	void setDefaultWidth(float width); // overwrites default_width
 	void changeWidth(int delta_width_modifier); // changes width from power-up
 	void reverseControl(); // reverses control or returns to a normal state
+	bool isReversed() const { return reversed; } // reversed getter
 
 private:
 	const float left_border;

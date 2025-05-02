@@ -38,7 +38,7 @@ sf::Font& Text::getFont()
 
 	if (!configured)
 	{
-		font.loadFromFile("PTSans-Bold.ttf");
+		font.loadFromFile("Assets/Fonts/PTSans-Bold.ttf");
 		configured = true;
 	}
 

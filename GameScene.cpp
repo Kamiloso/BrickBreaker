@@ -4,7 +4,6 @@
 #include "Rectangle.h"
 #include "GameWindow.h"
 #include "Text.h"
-#include "Brick.h"
 #include "LevelGetter.h"
 #include "Plate.h"
 #include "Ball.h"
@@ -13,6 +12,13 @@
 #include "CircleCollider.h"
 #include "LineCollider.h"
 #include "PlateCollider.h"
+#include "NormalBrick.h"
+#include "UnbreakableBrick.h"
+#include "FragileBrick.h"
+#include "MovementBrick.h"
+#include "SizeBrick.h"
+#include "SpawnBrick.h"
+#include "ReverseBrick.h"
 
 constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
@@ -122,6 +128,11 @@ void GameScene::sceneUpdate(float delta_time)
 					found_any_brick = true;
 				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
 					end_now = true; // defeat, touches invalid zone or plate
+
+				// special movement update for movement brick visuals
+				MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
+				if (movement_brick != nullptr)
+					movement_brick->specialMovementUpdate(delta_time);
 			}
 		}
 	if (!found_any_brick)
@@ -348,8 +359,32 @@ void GameScene::populateGrid(int level_id)
 			Brick* put_brick = nullptr;
 
 			if (brick_id >= '1' && brick_id <= '4') // normal brick
-				put_brick = new Brick(put_x, put_y, brick_id - '0');
+				put_brick = new NormalBrick(put_x, put_y, brick_id - '0');
 
+			else if (brick_id == '#') // unbreakable brick
+				put_brick = new UnbreakableBrick(put_x, put_y);
+
+			else if (brick_id == 'o') // fragile brick 1 HP
+				put_brick = new FragileBrick(put_x, put_y);
+
+			else if (brick_id == 'R') // reverse brick 1 HP
+				put_brick = new ReverseBrick(put_x, put_y);
+
+			else if (brick_id == 'w') // wider plate brick
+				put_brick = new SizeBrick(put_x, put_y, true, plate);
+
+			else if (brick_id == 's') // shorter plate brick
+				put_brick = new SizeBrick(put_x, put_y, false, plate);
+			
+			else if (brick_id == '>') // faster ball unbreakable brick
+				put_brick = new MovementBrick(put_x, put_y, true);
+			
+			else if (brick_id == '<') // slower ball unbreakable brick
+				put_brick = new MovementBrick(put_x, put_y, false);
+			
+			else if (brick_id == '%') // spawning brick
+				put_brick = new SpawnBrick(put_x, put_y);
+			
 			else if (brick_id == '*') // ball summon
 			{
 				Ball* ball = new Ball(brick_pos[0], brick_pos[1]);
@@ -448,8 +483,8 @@ void GameScene::updateColliders(bool full_update)
 
 	Collider* plate_collider = new PlateCollider(
 		zone_down - plate_size[1] / 2 - BALL_RADIUS,
-		plate_pos[0] - plate_size[0] / 2,
-		plate_pos[0] + plate_size[0] / 2
+		plate_pos[0] - plate_size[0] / 2 - BALL_RADIUS,
+		plate_pos[0] + plate_size[0] / 2 + BALL_RADIUS
 	);
 
 	if (!full_update) // update only plate
@@ -570,6 +605,11 @@ void GameScene::handlePhysics(float delta_time)
 					best_collider->bounceBall(best_ball); // bounce
 					best_ball->setBouncedFlag(true);
 					actions = brick->getActionsOnBounce(); // add actions (on bounce)
+
+					// movement brick visual activation
+					MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
+					if (movement_brick != nullptr)
+						movement_brick->activateVisual();
 				}
 				else
 				{

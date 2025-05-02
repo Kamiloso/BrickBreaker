@@ -36,7 +36,7 @@ void PlateCollider::bounceBall(Ball* ball)
 	float x_center = (x1 + x2) / 2;
 	float half_width = x2 - x_center;
 	float center_deviation = (b_pos[0] - x_center) / half_width;
-	if (b_pos[1] > y0 + COLLIDER_EPSILON)
+	if (b_pos[1] > y0 + COLLIDER_EPSILON || abs(center_deviation) >= 1.0f)
 	{
 		// after-life bounce
 		center_deviation = center_deviation != 0.0f ? abs(center_deviation) / center_deviation : 0.0f;

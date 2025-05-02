@@ -15,8 +15,8 @@ void Sound::init()
 	globalVolume = 1.f;
 	soundVolume = 1.f;
 	musicVolume = 1.f;
-	loadSound("1", "sound.wav", 0.45f);
-	loadMusic("1", "Music1.mp3", 0.2f);
+	loadSound("1", "Assets/Sounds/Sound1.wav", 0.45f);
+	loadMusic("1", "Assets/Sounds/Music1.mp3", 0.2f);
 }
 
 void Sound::loadSound(const string& name, const string& path, float local_volume)
