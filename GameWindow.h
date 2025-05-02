@@ -27,7 +27,7 @@ public:
 	void drawRectangleWithTexture(float pos_x, float pos_y, float wx, float wy,const sf::Texture* texture);
 	sf::RenderWindow& getRenderWindow(); // returns 'window' reference for drawing more complex shapes
 	void setPause(bool enable); // sets pause state to true or false
-	int getEntropy(); // returns a random number
+	static unsigned int getEntropy(); // returns a random number
 
 	// Getters
 	bool isPause() const;

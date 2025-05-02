@@ -28,7 +28,7 @@ MainMenu::MainMenu(int localScene)
 		);
 
 	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 230, L"PLATE BALL BRICK", 80, sf::Color(255, 255, 255))));
-	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, L"Alpha 0.1", 60, sf::Color(255, 255, 255))));
+	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, L"Release 1.0", 60, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
@@ -77,7 +77,7 @@ MainMenu::MainMenu(int localScene)
 	// Changes local scene
 	changeLocalScene(localScene);
 
-	addObject(new ParticleSystem(CX, CY, 50, sf::Color::Magenta, 10, 0.5, "1", 100));
+	addObject(new ParticleSystem(CX, CY, 50, sf::Color::Magenta, 20, 0.5, 5, 8, "1", this, 100));
 }
 
 void MainMenu::sceneUpdate(float delta_time)
