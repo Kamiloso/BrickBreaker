@@ -81,7 +81,7 @@ void GameWindow::setPause(bool enable)
 	game_pause = enable;
 }
 
-int GameWindow::getEntropy()
+unsigned int GameWindow::getEntropy()
 {
 	static random_device rd;
 	static mt19937 ms_twister(rd());
