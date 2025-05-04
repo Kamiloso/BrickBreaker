@@ -76,6 +76,7 @@ void Scene::drawScene(GameWindow* game_window)
 	for (auto it = layers.begin(); it != layers.end(); ++it)
 	{
 		for (SceneObject* object : it->second)
-			object->draw(game_window);
+			if(object->isVisible())
+				object->draw(game_window);
 	}
 }

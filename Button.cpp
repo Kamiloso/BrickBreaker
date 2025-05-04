@@ -28,6 +28,11 @@ void Button::setEvent(int _event_id, bool _to_window)
 		button_state = Default;
 }
 
+void Button::visualAdvanced(float _bold)
+{
+	bold = _bold;
+}
+
 void Button::earlyUpdate(float delta_time)
 {
 	// Button click logic

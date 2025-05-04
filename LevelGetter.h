@@ -19,9 +19,9 @@ struct LevelData
 
 struct ProgressData
 {
+	char sound_volume = 5; // sound volume settings 0 - 10
+	char music_volume = 5; // music volume settings 0 - 10
 	char stored_level_data[LEVELS] = {}; // level data bytes
-	float sound_volume = 0.5f;
-	float music_volume = 0.5f;
 };
 
 class LevelGetter

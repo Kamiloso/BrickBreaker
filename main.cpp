@@ -9,7 +9,7 @@ int main()
     // Sound initialization
     Texture::init();
     Sound::init();
-    Sound::setGlobalVolume(0.5f);
+    Sound::setGlobalVolume(1.0f); // sound regulation (by default to 0.5f) in MainMenu, leave it as it is
 
     // Window settings
     sf::ContextSettings settings;

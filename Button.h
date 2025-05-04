@@ -22,6 +22,7 @@ public:
 	Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, sf::Color _bold_color, const wstring& _text, int _layer = 20);
 	~Button();
 	void setEvent(int _event_id, bool _to_window); // specifies button event and how publish it after clicking
+	void visualAdvanced(float _bold); // modifies advanced visual components
 	void earlyUpdate(float delta_time) override;
 	void draw(GameWindow* game_window) override;
 	int getEventToScene() override;

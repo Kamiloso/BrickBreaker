@@ -22,6 +22,9 @@ public:
 	virtual int getEvent() { return 0; } // sends event to game window if necessary
 	virtual int getEventToScene() { return 0; } // sends event to scene manager if necessary
 
+	bool isVisible() const { return visible;  } // should be drawn?
+	void setVisible(bool _visible) { visible = _visible; } // change visibility state
+
 	vector<float> getPosition() const;
 	virtual void setPosition(float _x, float _y);
 	float getRotation() const;
@@ -31,4 +34,7 @@ public:
 
 protected:
 	float x, y, rot;
+
+private:
+	bool visible = true;
 };
