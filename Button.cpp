@@ -3,8 +3,6 @@
 #include "Text.h"
 #include "Input.h"
 
-#include <iostream>
-
 Button::Button(float _x, float _y, float _wx, float _wy, sf::Color _button_color, sf::Color _bold_color, const wstring& _text, int _layer)
 	: Rectangle(_x, _y, _wx, _wy, 10.0f, _button_color, _bold_color, _layer)
 {

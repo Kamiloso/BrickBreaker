@@ -1,8 +1,6 @@
 #include "PlateCollider.h"
 #include "Ball.h"
 
-#include <iostream>
-
 PlateCollider::PlateCollider(float _y0, float _x1, float _x2)
 	: Collider(nullptr), y0(_y0), x1(_x1), x2(_x2) {}
 

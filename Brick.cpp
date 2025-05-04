@@ -3,6 +3,8 @@
 #include "LineCollider.h"
 #include "CircleCollider.h"
 #include "Ball.h"
+#include "ParticleSystem.h"
+#include "Scene.h"
 
 Brick::Brick(float _x, float _y, int _health, int _layer) : health(_health),
 	Rectangle(_x, _y, BRICK_WX, BRICK_WY, 3, COL::brick, sf::Color::Black, _layer) {}
@@ -71,6 +73,22 @@ vector<Collider*> Brick::createNewColliders(bool up, bool down, bool left, bool 
 	);
 
 	return new_colliders;
+}
+
+ParticleSystem* Brick::createNewBreakParticles(Scene* scene)
+{
+	auto ret = new ParticleSystem(
+		x, y, 10.0f, color,
+		3.0f, 4.0f,		/* SIZE */
+		30,				/* COUNT */
+		0.01f,			/* EMISSION TIME */
+		0.1f, 0.25f,	/* LIFETIME */
+		40.0f, 80.0f,	/* SPEED */
+		"1", scene,		/* SOUND */
+		15				/* LAYER */
+	);
+	ret->setRectangularSpawn(wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY);
+	return ret;
 }
 
 void Brick::draw(GameWindow* game_window)

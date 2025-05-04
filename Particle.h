@@ -13,11 +13,9 @@ private:
 public:
 	Particle(float _x, float _y, float _radius, float _vx, float _vy, float _lifetime);
 	float remainingLifetime() const { return lifetime; };
-	void moveByDeltaTime();
-	float getX() { return x; }
-	float getY() { return y; }
-	float getRadius() { return radius; }
-	void reduceLifetimeBy(float delta_time);
-	void reduceRadius();
+	float getX() const { return x; }
+	float getY() const { return y; }
+	float getRadius() const { return radius; }
+	void frameUpdate(float delta_time);
 };
 

@@ -19,6 +19,7 @@
 #include "SizeBrick.h"
 #include "SpawnBrick.h"
 #include "ReverseBrick.h"
+#include "ParticleSystem.h"
 
 constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
@@ -103,6 +104,7 @@ void GameScene::sceneUpdate(float delta_time)
 		{
 			markToDelete(ball);
 			balls_to_remove.push_back(ball);
+			addObject(ball->createNewDestroyParticles(this));
 		}
 	}
 	for (Ball* ball_rem : balls_to_remove) // cleaning balls from vector
@@ -158,6 +160,7 @@ void GameScene::sceneUpdate(float delta_time)
 		{
 			local_screen = 3; // defeat
 		}
+
 		Sound::stopMusic();
 	}
 	else
@@ -230,6 +233,16 @@ void GameScene::initializeGame()
 		-8
 	)));
 
+	// Wall up (crusher)
+	crusher = dynamic_cast<Rectangle*>(addObject(new Rectangle(
+		0, border_up - SIZE_MARGIN / 2,
+		SIZE_MARGIN, SIZE_MARGIN,
+		10,
+		bg_up_color,
+		cont_color,
+		16
+	)));
+
 	// Wall left
 	addObject(new Rectangle(
 		border_left - SIZE_MARGIN / 2, 0,
@@ -249,16 +262,6 @@ void GameScene::initializeGame()
 		cont_color,
 		16
 	));
-
-	// Wall up (crusher)
-	crusher = dynamic_cast<Rectangle*>(addObject(new Rectangle(
-		0, border_up - SIZE_MARGIN / 2,
-		SIZE_MARGIN, SIZE_MARGIN,
-		10,
-		bg_up_color,
-		cont_color,
-		15
-	)));
 }
 
 void GameScene::initializeUI()
@@ -688,11 +691,17 @@ void GameScene::breakBrickByPointer(Brick* delete_brick)
 {
 	for (int x = 0; x < BRICKS_X; x++)
 		for (int y = 0; y < BRICKS_Y; y++)
+		{
 			if (bricks[x][y] == delete_brick)
 			{
+				// create particles
+				addObject(delete_brick->createNewBreakParticles(this));
+
+				// delete brick
 				bricks[x][y] = nullptr;
 				markToDelete(delete_brick);
 			}
+		}
 
 	// Update colliders after modifying grid
 	updateColliders(true);

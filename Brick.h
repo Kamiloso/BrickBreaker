@@ -3,6 +3,8 @@
 #include "common.h"
 
 class Collider;
+class Scene;
+class ParticleSystem;
 
 constexpr float BRICK_SMALLER_BY = 4.0f; // width of the gap between bricks
 
@@ -24,6 +26,7 @@ public:
 	virtual bool goesThrough() { return false; } // doesn't bounce the ball on destroy
 	virtual vector<ActionType> getActionsOnBounce() { return {  }; } // returns actions which should be executed on bounce
 	virtual vector<ActionType> getActionsOnDestroy() { return {  }; } // returns actions which should be executed on destroy
+	virtual ParticleSystem* createNewBreakParticles(Scene* scene); // creates destroy particle system
 	void draw(GameWindow* game_window) override; // draws the brick, override this once again
 
 	static vector<float> getBrickPositionByCoordinates(int x, int y); // returns brick positions based on slot coordinates

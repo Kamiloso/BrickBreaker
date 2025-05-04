@@ -7,7 +7,6 @@
 #include "LevelGetter.h"
 #include "Input.h"
 #include "GameWindow.h"
-#include "ParticleSystem.h"
 #include "Sound.h"
 
 #include <random>
@@ -140,8 +139,6 @@ MainMenu::MainMenu(int localScene)
 
 	// Changes local scene
 	changeLocalScene(localScene);
-
-	addObject(new ParticleSystem(CX, CY, 50, sf::Color::Magenta, 20, 0.5, 5, 8, "1", this, 100));
 }
 
 void MainMenu::sceneUpdate(float delta_time)

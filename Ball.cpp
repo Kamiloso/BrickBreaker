@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "Sound.h"
 #include "Collider.h"
+#include "ParticleSystem.h"
 
 Ball::Ball(float _x, float _y, int _layer)
 	: Circle(_x, _y, BALL_RADIUS, 3, COL::ball, sf::Color::Black, _layer),
@@ -82,6 +83,20 @@ void Ball::changeTime(float time)
 float Ball::getTimeAvailable() const
 {
 	return time_available;
+}
+
+ParticleSystem* Ball::createNewDestroyParticles(Scene* scene)
+{
+	return new ParticleSystem(
+		x, y, 10.0f, color,
+		4.0f, 6.0f,		/* SIZE */
+		3,				/* COUNT */
+		0.01f,			/* EMISSION TIME */
+		0.1f, 0.4f,		/* LIFETIME */
+		100.0f, 200.0f, /* SPEED */
+		"1", scene,		/* SOUND */
+		15				/* LAYER */
+	);
 }
 
 Collider* Ball::bestFitCollider(const vector<Collider*>& colliders)

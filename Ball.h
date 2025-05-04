@@ -3,6 +3,8 @@
 #include <vector>
 
 class Collider;
+class ParticleSystem;
+class Scene;
 
 static constexpr float BALL_RADIUS = 12.0f; // constant ball radius source
 
@@ -23,6 +25,9 @@ public:
 	void resetTime(); // resets available time for movement
 	void changeTime(float time); // changes available time for movement
 	float getTimeAvailable() const; // returns how much time is available for movement
+
+	// create destroy particles
+	ParticleSystem* createNewDestroyParticles(Scene* scene);
 
 	// returns the earliest collider which the ball will enter, can return nullptr if there is none
 	Collider* bestFitCollider(const vector<Collider*>& colliders);
