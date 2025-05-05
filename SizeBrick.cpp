@@ -13,6 +13,7 @@ SizeBrick::SizeBrick(float _x, float _y, bool _mode, const Plate* _plate, int _l
 		texture = Texture::GetTexture("SizeDown");
 		texture2 = Texture::GetTexture("SizeDown2");
 	}
+	color = COL::plateParticles;
 }
 
 vector<Brick::ActionType> SizeBrick::getActionsOnDestroy()
@@ -25,8 +26,12 @@ vector<Brick::ActionType> SizeBrick::getActionsOnDestroy()
 
 void SizeBrick::draw(GameWindow* game_window)
 {
-	if(plate == nullptr || !plate->isReversed())
+	if (plate == nullptr || !plate->isReversed()) {
 		game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture);
-	else
+		color = COL::plateParticles;
+	}
+	else {
 		game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture2);
+		color = COL::reverseParticles;
+	}
 }

@@ -41,4 +41,6 @@ namespace COL
 	static const sf::Color reversedPlate = sf::Color(211, 94, 212);
 	static const sf::Color ball = sf::Color::Green;
 	static const sf::Color brick = sf::Color(230, 0, 0);
+	static const sf::Color plateParticles = sf::Color(255, 255, 60);
+	static const sf::Color reverseParticles = sf::Color(205, 80, 207);
 }

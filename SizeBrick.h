@@ -11,8 +11,8 @@ public:
 	void draw(GameWindow* game_window) override;
 
 private:
-	sf::Texture* texture = nullptr;
-	sf::Texture* texture2 = nullptr; // when reversed
+	const sf::Texture* texture = nullptr;
+	const sf::Texture* texture2 = nullptr; // when reversed
 	bool mode;
 	const Plate* plate;
 };

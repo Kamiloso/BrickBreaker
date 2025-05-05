@@ -5,6 +5,7 @@
 ReverseBrick::ReverseBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _layer)
 {
 	texture = Texture::GetTexture("Reverse");
+	color = COL::reverseParticles;
 }
 
 void ReverseBrick::draw(GameWindow* game_window)

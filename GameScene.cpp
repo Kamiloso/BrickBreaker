@@ -52,152 +52,6 @@ GameScene::~GameScene()
 	Input::getGameWindowPtr()->setPause(false);
 }
 
-void GameScene::sceneUpdate(float delta_time)
-{
-	// Event flags
-	bool end_now = false;
-	bool pause_now = false;
-	bool win_now = false;
-
-	// Scene event handling
-	for (SceneObject* obj : object_list)
-	{
-		int event = obj->getEventToScene();
-		if (event == 0)
-			continue;
-
-		if (event == 1) // defeat
-			end_now = true;
-
-		if (event == 2) // pause toggle
-			pause_now = true;
-
-		if (event == 3) { // win
-			end_now = true;
-			win_now = true;
-		}
-	}
-
-	// Whole level movement (every brick_fall_time miliseconds)
-	if (fall_time_counter >= brick_fall_time / 1000.0f)
-	{
-		if (canMoveDownEverything(true))
-		{
-			moveDownEverything(true);
-			fall_time_counter -= brick_fall_time / 1000.0f;
-			brick_falls_done++;
-		}
-		else fall_time_counter = brick_fall_time / 1000.0f; // procrastinate untill possible
-	}
-
-	// Plate collider update
-	updateColliders(false); // false -> ony plate, no bricks
-
-	// Physics
-	handlePhysics(delta_time);
-
-	// Ball position checking and destroying them
-	vector <Ball*> balls_to_remove = {};
-	for (Ball* ball : balls)
-	{
-		if (ball->getPosition()[1] > zone_down) // destroy condition
-		{
-			markToDelete(ball);
-			balls_to_remove.push_back(ball);
-			addObject(ball->createNewDestroyParticles(this));
-		}
-	}
-	for (Ball* ball_rem : balls_to_remove) // cleaning balls from vector
-	{
-		balls.erase(
-			std::remove(balls.begin(), balls.end(), ball_rem),
-			balls.end()
-		);
-		Sound::playSound("1"); // ball break sound
-	}
-	if (balls.size() == 0) // end game if no balls on scene
-		end_now = true;
-
-	// Check bricks and do actions based on their position (or their absence)
-	bool found_any_brick = false;
-	for (int x = 0; x < BRICKS_X; x++)
-		for (int y = 0; y < BRICKS_Y; y++)
-		{
-			Brick* brick = bricks[x][y];
-			if (brick != nullptr)
-			{
-				if (!brick->unbreakable()) 
-					found_any_brick = true;
-				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
-					end_now = true; // defeat, touches invalid zone or plate
-
-				// special movement update for movement brick visuals
-				MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
-				if (movement_brick != nullptr)
-					movement_brick->specialMovementUpdate(delta_time);
-			}
-		}
-	if (!found_any_brick)
-	{
-		end_now = true;
-		win_now = true;
-	}
-
-	// Escape pause toggle
-	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
-		pause_now = true;
-
-	// Local screen decide
-	if (end_now)
-	{
-		if (win_now)
-		{
-			local_screen = 2; // win
-			if (level >= 0)
-				LevelGetter::setLevelFlag(level, 1); // mark level as complete
-		}
-		else
-		{
-			local_screen = 3; // defeat
-		}
-
-		Sound::stopMusic();
-	}
-	else
-	{
-		if (pause_now)
-		{
-			if (local_screen == 0)
-			{
-				local_screen = 1; // pause
-				Sound::pauseMusic();
-			}
-			else if (local_screen == 1)
-			{
-				local_screen = 0; // none
-				Sound::resumeMusic();
-			}
-		}
-	}
-
-	// Local screen togglator
-	if (local_screen_before != local_screen)
-	{
-		Input::getGameWindowPtr()->setPause(local_screen != 0);
-
-		float delta_move = -10000.0f * (local_screen - local_screen_before);
-		for (SceneObject* obj : pause_menu_objects)
-		{
-			auto pos0 = obj->getPosition();
-			obj->setPosition(pos0[0] + delta_move, pos0[1]);
-		}
-	}
-
-	// Past set
-	fall_time_counter += delta_time;
-	local_screen_before = local_screen;
-}
-
 void GameScene::initializeGame()
 {
 	// plate
@@ -378,16 +232,16 @@ void GameScene::populateGrid(int level_id)
 
 			else if (brick_id == 's') // shorter plate brick
 				put_brick = new SizeBrick(put_x, put_y, false, plate);
-			
+
 			else if (brick_id == '>') // faster ball unbreakable brick
 				put_brick = new MovementBrick(put_x, put_y, true);
-			
+
 			else if (brick_id == '<') // slower ball unbreakable brick
 				put_brick = new MovementBrick(put_x, put_y, false);
-			
+
 			else if (brick_id == '%') // spawning brick
 				put_brick = new SpawnBrick(put_x, put_y);
-			
+
 			else if (brick_id == '*') // ball summon
 			{
 				Ball* ball = new Ball(brick_pos[0], brick_pos[1]);
@@ -398,13 +252,153 @@ void GameScene::populateGrid(int level_id)
 			}
 
 			else throw runtime_error("Unknown brick type!");
-			
+
 			addObject(put_brick);
 			bricks[x][y] = put_brick;
 		}
 
 	// Initialize colliders
 	updateColliders(true);
+}
+
+void GameScene::sceneUpdate(float delta_time)
+{
+	// Event flags
+	bool end_now = false;
+	bool pause_now = false;
+	bool win_now = false;
+
+	// Scene event handling
+	for (SceneObject* obj : object_list)
+	{
+		int event = obj->getEventToScene();
+		if (event == 0)
+			continue;
+
+		if (event == 1) // defeat
+			end_now = true;
+
+		if (event == 2) // pause toggle
+			pause_now = true;
+
+		if (event == 3) { // win
+			end_now = true;
+			win_now = true;
+		}
+	}
+
+	// Whole level movement (every brick_fall_time miliseconds)
+	if (fall_time_counter >= brick_fall_time / 1000.0f)
+	{
+		if (canMoveDownEverything(true))
+		{
+			moveDownEverything(true);
+			fall_time_counter -= brick_fall_time / 1000.0f;
+			brick_falls_done++;
+		}
+		else fall_time_counter = brick_fall_time / 1000.0f; // procrastinate untill possible
+	}
+
+	// Plate collider update
+	updateColliders(false); // false -> ony plate, no bricks
+
+	// Physics
+	handlePhysics(delta_time);
+
+	// Ball position checking and destroying them
+	for (Ball* ball : getObjectsOfType<Ball>())
+	{
+		if (ball->getPosition()[1] > zone_down) // destory condition
+		{
+			addObject(ball->createNewDestroyParticles(this)); // particles
+			balls.erase( // clean from vector
+				std::remove(balls.begin(), balls.end(), ball),
+				balls.end()
+			);
+			markToDelete(ball); // clean from scene
+		}
+	}
+	if (balls.size() == 0) // end game if no balls on scene
+		end_now = true;
+
+	// Check bricks and do actions based on their position (or their absence)
+	bool found_any_brick = false;
+	for (int x = 0; x < BRICKS_X; x++)
+		for (int y = 0; y < BRICKS_Y; y++)
+		{
+			Brick* brick = bricks[x][y];
+			if (brick != nullptr)
+			{
+				if (!brick->unbreakable()) 
+					found_any_brick = true;
+				if (brick->touchesRect(plate) || brick->touchesRect(zone_rect))
+					end_now = true; // defeat, touches invalid zone or plate
+
+				// special movement update for movement brick visuals
+				MovementBrick* movement_brick = dynamic_cast<MovementBrick*>(brick);
+				if (movement_brick != nullptr)
+					movement_brick->specialMovementUpdate(delta_time);
+			}
+		}
+	if (!found_any_brick)
+	{
+		end_now = true;
+		win_now = true;
+	}
+
+	// Escape pause toggle
+	if (Input::isKeyboardPressed(sf::Keyboard::Escape, Input::Down))
+		pause_now = true;
+
+	// Local screen decide
+	if (end_now)
+	{
+		if (win_now)
+		{
+			local_screen = 2; // win
+			if (level >= 0)
+				LevelGetter::setLevelFlag(level, 1); // mark level as complete
+		}
+		else
+		{
+			local_screen = 3; // defeat
+		}
+
+		Sound::stopMusic();
+	}
+	else
+	{
+		if (pause_now)
+		{
+			if (local_screen == 0)
+			{
+				local_screen = 1; // pause
+				Sound::pauseMusic();
+			}
+			else if (local_screen == 1)
+			{
+				local_screen = 0; // none
+				Sound::resumeMusic();
+			}
+		}
+	}
+
+	// Local screen togglator
+	if (local_screen_before != local_screen)
+	{
+		Input::getGameWindowPtr()->setPause(local_screen != 0);
+
+		float delta_move = -10000.0f * (local_screen - local_screen_before);
+		for (SceneObject* obj : pause_menu_objects)
+		{
+			auto pos0 = obj->getPosition();
+			obj->setPosition(pos0[0] + delta_move, pos0[1]);
+		}
+	}
+
+	// Past set
+	fall_time_counter += delta_time;
+	local_screen_before = local_screen;
 }
 
 bool GameScene::canMoveDownEverything(bool with_crusher)

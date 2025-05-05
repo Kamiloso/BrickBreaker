@@ -88,12 +88,13 @@ float Ball::getTimeAvailable() const
 ParticleSystem* Ball::createNewDestroyParticles(Scene* scene)
 {
 	return new ParticleSystem(
-		x, y, 10.0f, color,
-		4.0f, 6.0f,		/* SIZE */
+		x, y, 20.0f, color,
+		6.0f, 8.0f,		/* SIZE */
 		3,				/* COUNT */
 		0.01f,			/* EMISSION TIME */
-		0.1f, 0.4f,		/* LIFETIME */
-		100.0f, 200.0f, /* SPEED */
+		0.2f, 0.25f,	/* LIFETIME */
+		150.0f, 200.0f, /* SPEED */
+		0.3f,			/* BOLD */
 		"1", scene,		/* SOUND */
 		15				/* LAYER */
 	);

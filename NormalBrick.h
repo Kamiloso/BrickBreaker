@@ -8,5 +8,5 @@ public:
 	void draw(GameWindow* game_window) override;
 
 private:
-	sf::Texture* textures[5] = {}; // health textures, index 0 is nullptr
+	const sf::Texture* textures[5] = {}; // health textures, index 0 is nullptr
 };

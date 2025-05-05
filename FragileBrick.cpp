@@ -5,6 +5,7 @@
 FragileBrick::FragileBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _layer)
 {
 	texture = Texture::GetTexture("Fragile");
+	color = Texture::GetMainColor(texture);
 }
 
 void FragileBrick::draw(GameWindow* game_window)

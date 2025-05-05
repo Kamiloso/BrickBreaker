@@ -27,9 +27,10 @@ private:
 	float particle_maximum_lifetime;
 	float velocity_min;
 	float velocity_max;
+	float particle_bold;
 	Scene* scene;
 	bool rectangular_spawn = false;
-	float rect_wx, rect_wy;
+	float rect_wx = 0.0f, rect_wy = 0.0f;
 public:
 	ParticleSystem(
 		float _x,
@@ -44,6 +45,7 @@ public:
 		float _particle_maximum_lifetime,
 		float _velocity_min,
 		float _velocity_max,
+		float _particle_bold,
 		string sound_id,
 		Scene* _scene,
 		int _layer

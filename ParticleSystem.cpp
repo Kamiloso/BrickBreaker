@@ -6,6 +6,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <iostream>
 
 ParticleSystem::ParticleSystem(
 	float _x,
@@ -20,6 +21,7 @@ ParticleSystem::ParticleSystem(
 	float _particle_maximum_lifetime,
 	float _velocity_min,
 	float _velocity_max,
+	float _particle_bold,
 	string sound_id,
 	Scene* _scene,
 	int _layer
@@ -35,11 +37,12 @@ ParticleSystem::ParticleSystem(
 	particle_maximum_lifetime(_particle_maximum_lifetime),
 	velocity_min(_velocity_min),
 	velocity_max(_velocity_max),
+	particle_bold(_particle_bold),
 	scene(_scene),
 	ms_twister(new mt19937(GameWindow::getEntropy()))
 {
 	// play sound
-	if(sound_id != "")
+	if (sound_id != "")
 		Sound::playSound(sound_id);
 }
 
@@ -119,7 +122,16 @@ void ParticleSystem::lateUpdate(float delta_time)
 void ParticleSystem::draw(GameWindow* game_window)
 {
 	for (auto& particle : particles) {
-		game_window->drawCircle(particle.getX(), particle.getY(),  particle.getRadius(), color);
+		float px = particle.getX();
+		float py = particle.getY();
+		float pR = particle.getRadius();
+		if (particle_bold != 0.0f) {
+			game_window->drawCircle(px, py, pR, sf::Color::Black);
+			game_window->drawCircle(px, py, pR * (1.0f - particle_bold), color);
+		}
+		else {
+			game_window->drawCircle(px, py, pR, color);
+		}
 	}
 }
 

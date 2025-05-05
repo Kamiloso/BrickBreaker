@@ -8,6 +8,6 @@ public:
 	void draw(GameWindow* game_window) override;
 
 private:
-	sf::Texture* texture = nullptr;
+	const sf::Texture* texture = nullptr;
 };
 

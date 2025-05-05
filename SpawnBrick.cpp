@@ -5,12 +5,14 @@
 SpawnBrick::SpawnBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _layer)
 {
 	texture = Texture::GetTexture("Spawn");
+	color = COL::ball;
 }
 
 void SpawnBrick::draw(GameWindow* game_window)
 {
-	// Generate default image
 	const sf::Color brick_bg(180, 240, 180);
+
+	// Generate default image
 	game_window->drawRectangle(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, color_bold);
 	game_window->drawRectangle(x, y, wx - BRICK_SMALLER_BY - bold * 2, wy - BRICK_SMALLER_BY - bold * 2, brick_bg);
 	for (int i = -1; i <= 1; i++)

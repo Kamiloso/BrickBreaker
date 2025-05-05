@@ -13,8 +13,8 @@ public:
 	void activateVisual(); // activates second texture for some time
 
 private:
-	sf::Texture* texture = nullptr;
-	sf::Texture* texture2 = nullptr; // when active
+	const sf::Texture* texture = nullptr;
+	const sf::Texture* texture2 = nullptr; // when active
 	bool mode;
 	float visual_counter = 0.0f;
 };

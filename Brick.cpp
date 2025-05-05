@@ -78,13 +78,14 @@ vector<Collider*> Brick::createNewColliders(bool up, bool down, bool left, bool 
 ParticleSystem* Brick::createNewBreakParticles(Scene* scene)
 {
 	auto ret = new ParticleSystem(
-		x, y, 10.0f, color,
-		3.0f, 4.0f,		/* SIZE */
-		30,				/* COUNT */
+		x, y, 1.0f, color,
+		4.0f, 6.0f,		/* SIZE */
+		9,				/* COUNT */
 		0.01f,			/* EMISSION TIME */
-		0.1f, 0.25f,	/* LIFETIME */
-		40.0f, 80.0f,	/* SPEED */
-		"1", scene,		/* SOUND */
+		0.12f, 0.2f,	/* LIFETIME */
+		60.0f, 80.0f,	/* SPEED */
+		0.35f,			/* BOLD */
+		"", scene,		/* SOUND */
 		15				/* LAYER */
 	);
 	ret->setRectangularSpawn(wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY);

@@ -8,10 +8,11 @@ NormalBrick::NormalBrick(float _x, float _y, int _health, int _layer) : Brick(_x
 	textures[2] = Texture::GetTexture("Health2");
 	textures[3] = Texture::GetTexture("Health3");
 	textures[4] = Texture::GetTexture("Health4");
+	color = Texture::GetMainColor(textures[1]);
 }
 
 void NormalBrick::draw(GameWindow* game_window)
 {
-	sf::Texture* texture = (health >= 1 && health <= 4) ? textures[health] : nullptr;
+	const sf::Texture* texture = (health >= 1 && health <= 4) ? textures[health] : textures[4];
 	game_window->drawRectangleWithTexture(x, y, wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY, texture);
 }
