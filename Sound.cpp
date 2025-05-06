@@ -1,5 +1,7 @@
 #include "Sound.h"
 
+#include <iostream>
+
 map<string, sf::SoundBuffer> Sound::soundBuffers;
 map<string, float> Sound::localVolumes;
 map<string, float> Sound::localVolumesMusic;
@@ -12,11 +14,12 @@ float Sound::musicVolume;
 
 void Sound::init()
 {
-	globalVolume = 1.f;
-	soundVolume = 1.f;
-	musicVolume = 1.f;
-	loadSound("1", "Assets/Sounds/Sound1.wav", 0.45f);
-	loadMusic("1", "Assets/Sounds/Music1.mp3", 0.2f);
+	globalVolume = 1.0f;
+	soundVolume = 1.0f;
+	musicVolume = 1.0f;
+
+	loadSound("ball-break", "Assets/Sounds/ball-break.wav", 0.4f);
+	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.2f);
 }
 
 void Sound::loadSound(const string& name, const string& path, float local_volume)
@@ -35,6 +38,11 @@ void Sound::loadMusic(const string& name, const string& path, float local_volume
 
 void Sound::playSound(const string& name)
 {
+	if (soundBuffers.find(name) == soundBuffers.end()) {
+		cerr << "Sound \"" << name << "\" doesn't exist! Check file Sound.cpp" << endl;
+		return;
+	}
+
 	activeSounds.erase(remove_if(activeSounds.begin(), activeSounds.end(), [](const sf::Sound& sound) 
 		{
 		return sound.getStatus() == sf::Sound::Stopped;
@@ -77,6 +85,11 @@ void Sound::setMusicVolume(float volume)
 }
 void Sound::playMusic(const string& name, bool loop)
 {
+	if (musicPaths.find(name) == musicPaths.end()) {
+		cerr << "Music \"" << name << "\" doesn't exist! Check file Sound.cpp" << endl;
+		return;
+	}
+
 	music.openFromFile(musicPaths[name]);
 	music.setLoop(loop);
 	music.setVolume(musicVolume * globalVolume * localVolumesMusic[name] * 100.f);

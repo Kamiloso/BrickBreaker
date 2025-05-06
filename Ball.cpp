@@ -95,8 +95,8 @@ ParticleSystem* Ball::createNewDestroyParticles(Scene* scene)
 		0.2f, 0.25f,	/* LIFETIME */
 		150.0f, 200.0f, /* SPEED */
 		0.3f,			/* BOLD */
-		"1", scene,		/* SOUND */
-		15				/* LAYER */
+		"ball-break",	/* SOUND */
+		scene, 15		/* LAYER */
 	);
 }
 

@@ -33,4 +33,5 @@ public:
 
 protected:
 	int health;
+	string break_sound = "brick-break"; // overwrite in derived classes
 };

@@ -39,7 +39,7 @@ GameScene::GameScene(int _level)
 	populateGrid(level); // populates scene with bricks and configures level settings, initializes colliders
 
 	// Start music
-	Sound::playMusic("1");
+	Sound::playMusic("music-1");
 }
 
 GameScene::~GameScene()

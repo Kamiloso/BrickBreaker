@@ -205,31 +205,11 @@ void MainMenu::updateSoundBoxesVisibility()
 	}
 }
 
-void MainMenu::updateRealVolume(bool playtest)
+void MainMenu::updateRealVolume()
 {
 	char sound = LevelGetter::getProgress().sound_volume;
 	char music = LevelGetter::getProgress().music_volume;
 
-	static float sound_remember = -1.0f;
-	static float music_remember = -1.0f;
-
-	float target_sound = sound * 0.1f;
-	float target_music = music * 0.1f;
-
-	Sound::setSoundVolume(target_sound);
-	Sound::setMusicVolume(target_music);
-
-	if (sound_remember != target_sound)
-	{
-		if (sound_remember != -1.0f && playtest)
-			Sound::playSound("1");
-		sound_remember = target_sound;
-	}
-
-	if (music_remember != target_music)
-	{
-		//if (music_remember != -1.0f && playtest)
-			//Sound::playMusic("1");
-		music_remember = target_music;
-	}
+	Sound::setSoundVolume(sound * 0.1f);
+	Sound::setMusicVolume(music * 0.1f);
 }

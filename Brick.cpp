@@ -85,8 +85,8 @@ ParticleSystem* Brick::createNewBreakParticles(Scene* scene)
 		0.12f, 0.2f,	/* LIFETIME */
 		60.0f, 80.0f,	/* SPEED */
 		0.35f,			/* BOLD */
-		"", scene,		/* SOUND */
-		15				/* LAYER */
+		break_sound,	/* SOUND */
+		scene, 15		/* LAYER */
 	);
 	ret->setRectangularSpawn(wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY);
 	return ret;

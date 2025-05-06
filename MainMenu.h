@@ -32,5 +32,5 @@ private:
 	int current_local_screen = 0; // current visible screen ID, Kamiloso added this :)
 	void changeLocalScene(int i); // moves everything by i * 10000 pixels forward (backwards if negative)
 	void updateSoundBoxesVisibility(); // updates visibility of sound rects from instruction
-	void updateRealVolume(bool playtest = false); // updates real volume with LevelGetter:: data
+	void updateRealVolume(); // updates real volume with LevelGetter:: data
 };
