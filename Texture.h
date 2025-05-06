@@ -14,6 +14,7 @@ public:
 	static sf::Color GetMainColor(const sf::Texture* const_texture_ptr);
 
 private:
-	static void LoadTexture(const string& name, const string& path, bool dont_smooth = false);
+	static void LoadTexture(const string& name, const string& path, bool smooth = true);
+	static sf::Image ScaleImageBilinear(const sf::Image& src, unsigned newWidth, unsigned newHeight);
 	static map<string, sf::Texture> Textures;
 };
