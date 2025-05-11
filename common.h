@@ -17,6 +17,8 @@ constexpr int CX = RX / 2;  // screen middle
 constexpr int CY = RY / 2;  // screen middle
 
 // MENU CONSTANTS
+static const std::wstring GAME_NAME = L"BRICK BREAKER"; // game name (title)
+static const std::wstring GAME_VERSION = L"RELEASE 1.0"; // game version (subtitle)
 constexpr int LEVELS = 40;	// amount of levels
 
 // GAMEPLAY CONSTANTS

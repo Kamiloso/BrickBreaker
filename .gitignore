@@ -60,5 +60,4 @@ cmake_install.cmake
 *.msp
 
 # Other files
-Release/BrickBreaker.exe
 Release/BrickBreaker.pdb

@@ -14,21 +14,35 @@
 MainMenu::MainMenu(int localScene)
 {
 	// Background
-	mt19937 gen(Input::getGameWindowPtr()->getEntropy());
+	mt19937 gen(GameWindow::getEntropy());
 	uniform_int_distribution<> distRX(0, RX);
 	uniform_int_distribution<> distRY(0, RY);
-	uniform_int_distribution<> distNumOfStars(80, 105);
+	const int number_of_stars = 120;
 
-	for (int i = 0; i < distNumOfStars(gen); i++) {
+	vector<Rectangle*> star_kill_rects = {
+		dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY - 216, 570, 75, 0, sf::Color::Black, sf::Color::Black, -1000))),
+		dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY - 155, 230, 75, 0, sf::Color::Black, sf::Color::Black, -1000)))
+		//dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY + 102, 520, 340, 0, sf::Color::Black, sf::Color::Black, -1000)))
+	};
+
+	for (int i = 0; i < number_of_stars; i++) {
 		addObject(new Star(distRX(gen), distRY(gen), 2, &gen, 1));
 	}
+
+	// get rid of stars inside of star-killing rectangles
+	for (Star* star : getObjectsOfType<Star>())
+		for(Rectangle* rect : star_kill_rects)
+		{
+			if (star->centerInRect(rect))
+				markToDelete(star); // no problem, can mark the same thing multiple times
+		}
 	
 	background = dynamic_cast<Rectangle*>(
 		addObject(new Rectangle(CX, CY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 230, L"PLATE BALL BRICK", 80, sf::Color(255, 255, 255))));
-	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, L"Release 1.0", 60, sf::Color(255, 255, 255))));
+	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 220, GAME_NAME, 80, sf::Color(255, 255, 255))));
+	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, GAME_VERSION, 40, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
