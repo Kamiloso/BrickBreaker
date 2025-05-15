@@ -1,15 +1,18 @@
 #include "MovementBrick.h"
 #include "GameWindow.h"
 #include "Texture.h"
+
 MovementBrick::MovementBrick(float _x, float _y, bool _mode, int _layer) : Brick(_x, _y, 0, _layer), mode(_mode)
 {
 	if (mode) {
 		texture = Texture::GetTexture("SpeedUp");
 		texture2 = Texture::GetTexture("SpeedUp2");
+		sound = "speed-up";
 	}
 	else {
 		texture = Texture::GetTexture("SlowDown");
 		texture2 = Texture::GetTexture("SlowDown2");
+		sound = "slow-down";
 	}
 }
 

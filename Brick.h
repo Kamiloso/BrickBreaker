@@ -22,8 +22,8 @@ public:
 	vector<Collider*> createNewColliders(bool up, bool down, bool left, bool right); // creates brick colliders on heap and returns vector of them
 
 	// Override these methods
-	virtual bool unbreakable() { return false; } // can't be broken and is not needed to win
-	virtual bool goesThrough() { return false; } // doesn't bounce the ball on destroy
+	virtual bool unbreakable() const { return false; } // can't be broken and is not needed to win
+	virtual bool goesThrough() const { return false; } // doesn't bounce the ball on destroy
 	virtual vector<ActionType> getActionsOnBounce() { return {  }; } // returns actions which should be executed on bounce
 	virtual vector<ActionType> getActionsOnDestroy() { return {  }; } // returns actions which should be executed on destroy
 	virtual ParticleSystem* createNewBreakParticles(Scene* scene); // creates destroy particle system
@@ -33,5 +33,5 @@ public:
 
 protected:
 	int health;
-	string break_sound = "brick-break"; // overwrite in derived classes
+	string sound = ""; // overwrite in derived classes
 };

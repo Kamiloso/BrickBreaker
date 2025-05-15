@@ -8,10 +8,12 @@ SizeBrick::SizeBrick(float _x, float _y, bool _mode, const Plate* _plate, int _l
 	if (mode) {
 		texture = Texture::GetTexture("SizeUp");
 		texture2 = Texture::GetTexture("SizeUp2");
+		sound = "size-up";
 	}
 	else {
 		texture = Texture::GetTexture("SizeDown");
 		texture2 = Texture::GetTexture("SizeDown2");
+		sound = "size-down";
 	}
 	color = COL::plateParticles;
 }

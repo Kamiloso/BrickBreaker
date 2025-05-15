@@ -6,6 +6,7 @@ ReverseBrick::ReverseBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _l
 {
 	texture = Texture::GetTexture("Reverse");
 	color = COL::reverseParticles;
+	sound = "reverse";
 }
 
 void ReverseBrick::draw(GameWindow* game_window)

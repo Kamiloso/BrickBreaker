@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "ParticleSystem.h"
 #include "Scene.h"
+#include "Sound.h"
 
 Brick::Brick(float _x, float _y, int _health, int _layer) : health(_health),
 	Rectangle(_x, _y, BRICK_WX, BRICK_WY, 3, COL::brick, sf::Color::Black, _layer) {}
@@ -12,11 +13,12 @@ Brick::Brick(float _x, float _y, int _health, int _layer) : health(_health),
 void Brick::damage(int dmg)
 {
 	health -= dmg;
+	Sound::playSound(sound);
 }
 
 bool Brick::shouldBreak() const
 {
-	return health <= 0;
+	return health <= 0 && !unbreakable();
 }
 
 bool Brick::touchesRect(const Rectangle* rect) const
@@ -85,7 +87,7 @@ ParticleSystem* Brick::createNewBreakParticles(Scene* scene)
 		0.12f, 0.2f,	/* LIFETIME */
 		60.0f, 80.0f,	/* SPEED */
 		0.35f,			/* BOLD */
-		break_sound,	/* SOUND */
+		"",				/* SOUND */
 		scene, 15		/* LAYER */
 	);
 	ret->setRectangularSpawn(wx - BRICK_SMALLER_BY, wy - BRICK_SMALLER_BY);

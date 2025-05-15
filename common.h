@@ -19,6 +19,7 @@ constexpr int CY = RY / 2;  // screen middle
 // MENU CONSTANTS
 static const std::wstring GAME_NAME = L"BRICK BREAKER"; // game name (title)
 static const std::wstring GAME_VERSION = L"RELEASE 1.0"; // game version (subtitle)
+constexpr bool ENABLE_EXPERIMENTAL_BOUNCE_EFFECT = false; // experimental bounce effect
 constexpr int LEVELS = 40;	// amount of levels
 
 // GAMEPLAY CONSTANTS

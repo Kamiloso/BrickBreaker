@@ -3,6 +3,7 @@
 #include "LevelMenu.h"
 #include "GameScene.h"
 #include "Input.h"
+#include "Sound.h"
 
 #include <random>
 
@@ -108,6 +109,12 @@ void GameWindow::setScene(int scene_id, int parameter)
 	current_scene = scene_id;
 }
 
+void GameWindow::windowClose()
+{
+	window.close();
+	Sound::doSoundCleaning(true);
+}
+
 bool GameWindow::isPause() const
 {
 	return game_pause;
@@ -194,7 +201,7 @@ void GameWindow::eventHandling()
 		// OTHER EVENTS
 		if (event.type == sf::Event::Closed)
 		{
-			window.close();
+			windowClose();
 			return;
 		}
 	}
@@ -224,7 +231,7 @@ void GameWindow::eventHandling()
 			setScene((getScene() + 1) % 3);
 
 		else if(event_id == 2) // window close
-			window.close();
+			windowClose();
 
 		else if (event_id >= 1000 && event_id < 1999) // set scene by ID
 			setScene(event_id - 1000);

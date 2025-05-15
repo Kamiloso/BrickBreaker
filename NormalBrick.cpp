@@ -9,6 +9,7 @@ NormalBrick::NormalBrick(float _x, float _y, int _health, int _layer) : Brick(_x
 	textures[3] = Texture::GetTexture("Health3");
 	textures[4] = Texture::GetTexture("Health4");
 	color = Texture::GetMainColor(textures[1]);
+	sound = "damage";
 }
 
 void NormalBrick::draw(GameWindow* game_window)

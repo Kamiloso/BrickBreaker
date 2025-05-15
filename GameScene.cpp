@@ -20,6 +20,7 @@
 #include "SpawnBrick.h"
 #include "ReverseBrick.h"
 #include "ParticleSystem.h"
+#include "EffectBounce.h"
 
 constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
@@ -596,11 +597,16 @@ void GameScene::handlePhysics(float delta_time)
 			{
 				brick->damage();
 				vector<Brick::ActionType> actions;
-				if (brick->unbreakable() || !brick->shouldBreak())
+				if (!brick->shouldBreak())
 				{
 					// --- Bounce didn't destroy the brick ---
 					best_collider->bounceBall(best_ball); // bounce
 					best_ball->setBouncedFlag(true);
+
+					// bounce effect (1/3)
+					auto ball_pos = best_ball->getPosition();
+					addObject(new EffectBounce(ball_pos[0], ball_pos[1], this));
+
 					actions = brick->getActionsOnBounce(); // add actions (on bounce)
 
 					// movement brick visual activation
@@ -617,6 +623,10 @@ void GameScene::handlePhysics(float delta_time)
 					else {
 						best_collider->bounceBall(best_ball);
 						best_ball->setBouncedFlag(true);
+
+						// bounce effect (2/3)
+						auto ball_pos = best_ball->getPosition();
+						addObject(new EffectBounce(ball_pos[0], ball_pos[1], this));
 					}
 
 					actions = brick->getActionsOnDestroy(); // add actions (on destroy)
@@ -665,17 +675,22 @@ void GameScene::handlePhysics(float delta_time)
 			else
 			{
 				// --- the collider was not of a brick type ---
-				if (!best_ball->getBouncedFlag() || dynamic_cast<PlateCollider*>(best_collider) == nullptr)
+
+				// wants to be bounced second time in the same frame by a plate
+				if (best_ball->getBouncedFlag() && dynamic_cast<PlateCollider*>(best_collider) != nullptr)
 				{
-					best_ball->setBouncedFlag(true);
-				}
-				else // wants to be bounced second time in the same frame by a plate
-				{
-					constexpr float MAGIC_DOWN_TELEPORT = 5.0f;
+					const float MAGIC_DOWN_TELEPORT = 5.0f;
 					auto pos = best_ball->getPosition();
-					best_ball->setPosition(pos[0], pos[1] + MAGIC_DOWN_TELEPORT); // move a bit down to prevent strange behaviour
+					best_ball->setPosition(pos[0], std::min(pos[1] + MAGIC_DOWN_TELEPORT, zone_down - 1.0f)); // move a bit down to prevent strange behaviour
 				}
+
 				best_collider->bounceBall(best_ball);
+				best_ball->setBouncedFlag(true);
+				Sound::playSound("damage");
+
+				// bounce effect (3/3)
+				auto ball_pos = best_ball->getPosition();
+				addObject(new EffectBounce(ball_pos[0], ball_pos[1], this));
 			}
 		}
 	}

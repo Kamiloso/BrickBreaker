@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="EffectBounce.cpp" />
     <ClCompile Include="NormalBrick.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Circle.cpp" />
@@ -169,6 +170,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="EffectBounce.h" />
     <ClInclude Include="NormalBrick.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Circle.h" />

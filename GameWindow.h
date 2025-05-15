@@ -54,6 +54,7 @@ private:
 
 	void makeWindow(bool full); // Creates or recreates window
 	void setScene(int scene_id, int parameter = 0); // Sets scene (use only in events)
+	void windowClose(); // Closes window and does cleaning
 
 	void eventHandling(); // Handles events
 	void update(float delta_time); // Runs game logic

@@ -5,6 +5,7 @@
 UnbreakableBrick::UnbreakableBrick(float _x, float _y, int _layer) : Brick(_x, _y, 0, _layer)
 {
 	texture = Texture::GetTexture("Unbreakable");
+	sound = "metal";
 }
 
 void UnbreakableBrick::draw(GameWindow* game_window)

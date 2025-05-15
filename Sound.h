@@ -18,6 +18,7 @@ public:
 	static void setGlobalVolume(float volume);
 	static void setSoundVolume(float volume);
 	static void setMusicVolume(float volume);
+	static void doSoundCleaning(bool everything = false); // removes all nullptrs from activeSounds
 
 
 private:
@@ -30,7 +31,7 @@ private:
 	static map<string, float> localVolumes;
 	static map<string, float> localVolumesMusic;
 	static map<string, string> musicPaths;
-	static vector<sf::Sound> activeSounds;
+	static vector<sf::Sound*> activeSounds;
 	static sf::Music music;
 };
 

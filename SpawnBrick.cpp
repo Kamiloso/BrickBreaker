@@ -6,6 +6,7 @@ SpawnBrick::SpawnBrick(float _x, float _y, int _layer) : Brick(_x, _y, 1, _layer
 {
 	texture = Texture::GetTexture("Spawn");
 	color = COL::ball;
+	sound = "spawn";
 }
 
 void SpawnBrick::draw(GameWindow* game_window)
