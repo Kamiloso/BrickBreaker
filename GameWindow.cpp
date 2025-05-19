@@ -6,6 +6,7 @@
 #include "Sound.h"
 
 #include <random>
+#include <iostream>
 
 GameWindow::GameWindow(string _title, sf::ContextSettings _settings)
 {
@@ -30,6 +31,7 @@ void GameWindow::run()
 	while (true)
 	{
 		eventHandling(); // handle window & game events
+
 		if (!window.isOpen())
 			break;
 
@@ -92,20 +94,18 @@ unsigned int GameWindow::getEntropy()
 void GameWindow::setScene(int scene_id, int parameter)
 {
 	delete scene; // ok even if scene is nullptr
-	switch (scene_id)
-	{
-	case 0: // Main Menu
+	
+	if (scene_id == 0) {
 		scene = new MainMenu(parameter);
-		break;
-	case 1: // Level Menu
-		scene = new LevelMenu();
-		break;
-	case 2: // Game Scene
-		scene = new GameScene(parameter);
-		break;
-	default:
-		throw std::invalid_argument("Invalid scene ID");
 	}
+	else if (scene_id == 1) {
+		scene = new LevelMenu();
+	}
+	else if (scene_id == 2) {
+		scene = new GameScene(parameter);
+	}
+	else scene = new MainMenu(0); // wrong scene, back to default
+
 	current_scene = scene_id;
 }
 
@@ -230,7 +230,7 @@ void GameWindow::eventHandling()
 		if (event_id == 1) // next scene
 			setScene((getScene() + 1) % 3);
 
-		else if(event_id == 2) // window close
+		else if (event_id == 2) // window close
 			windowClose();
 
 		else if (event_id >= 1000 && event_id < 1999) // set scene by ID
@@ -242,7 +242,7 @@ void GameWindow::eventHandling()
 		else if (event_id >= 3000 && event_id < 3999) // set game scene with parameter (level ID)
 			setScene(2, event_id - 3000);
 
-		else throw exception("Invalid event ID");
+		else std::cerr << "Wrong GameWindow event ID!" << std::endl;
 	}
 }
 

@@ -1,7 +1,7 @@
 #include "LevelGetter.h"
 
 #include <fstream>
-
+#include <iostream>
 
 const string LevelGetter::levels_path = "./Assets/Levels/";
 const string LevelGetter::progress_path = "./GameData/";
@@ -13,11 +13,11 @@ LevelData LevelGetter::getLevel(int level_id)
 {
 	string file_name = levels_path + "level_" + to_string(level_id + 1) + ".bbk";
 
-	LevelData construct{};
+	LevelData construct = LevelData();
 
 	ifstream f1;
 	f1.open(file_name.c_str(), ios::binary);
-	if(f1.is_open())
+	if (f1.is_open())
 	{
 		for (int y = 0; y < BRICKS_Y; y++)
 		{
@@ -33,7 +33,7 @@ LevelData LevelGetter::getLevel(int level_id)
 		if (f1.eof())
 		{
 			f1.close();
-			throw runtime_error("Couldn't load level from file!");
+			goto return_error_level;
 		}
 		else
 		{
@@ -41,10 +41,21 @@ LevelData LevelGetter::getLevel(int level_id)
 			return construct;
 		}
 	}
-	else
+	else goto return_error_level;
+
+return_error_level:
+	std::cerr << "Couldn't load level from file!" << std::endl;
+	construct = LevelData();
+	for (int j = 0; j < BRICKS_X; j++)
 	{
-		throw runtime_error("Couldn't load level from file!");
+		construct.brick_table[j][0] = '4';
+		construct.brick_table[j][1] = '#';
+
+		for (int i = 2; i < BRICKS_Y; i++)
+			construct.brick_table[j][i] = '.';
 	}
+	construct.brick_table[BRICKS_X / 2][3] = '*';
+	return construct;
 }
 
 const ProgressData& LevelGetter::getProgress()
@@ -58,11 +69,11 @@ void LevelGetter::setLevelFlag(int level_id, unsigned char flag_id)
 {
 	loadProgress();
 
-	if (flag_id > 7)
-		throw invalid_argument("Wrong flag ID!");
-
-	if (level_id < 0 || level_id >= LEVELS)
-		throw invalid_argument("Wrong level ID!");
+	if (flag_id >= 8 || level_id < 0 || level_id >= LEVELS)
+	{
+		std::cerr << "Invalid arguments in setLevelFlag(...)" << std::endl;
+		return;
+	}
 
 	progress_data.stored_level_data[level_id] |= (1 << flag_id);
 
@@ -73,11 +84,11 @@ bool LevelGetter::isFlagSet(int level_id, unsigned char flag_id)
 {
 	loadProgress();
 
-	if (flag_id > 7)
-		throw invalid_argument("Wrong flag ID!");
-
-	if (level_id < 0 || level_id >= LEVELS)
-		throw invalid_argument("Wrong level ID!");
+	if (flag_id >= 8 || level_id < 0 || level_id >= LEVELS)
+	{
+		std::cerr << "Invalid arguments in isFlagSet(...)" << std::endl;
+		return false;
+	}
 
 	return (progress_data.stored_level_data[level_id] & (1 << flag_id)) != 0;
 }
@@ -142,6 +153,7 @@ void LevelGetter::saveProgress()
 	}
 	else
 	{
-		throw runtime_error("Couldn't save progress!");
+		std::cerr << "Couldn't save progress to progress.bin file!" << std::endl;
+		return;
 	}
 }

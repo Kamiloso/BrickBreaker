@@ -22,6 +22,8 @@
 #include "ParticleSystem.h"
 #include "EffectBounce.h"
 
+#include <iostream>
+
 constexpr float FALL_DELTA_Y = BRICK_WY / 3;
 
 const float GameScene::border_left = Brick::getBrickPositionByCoordinates(0, 0)[0] - BRICK_WX / 2;
@@ -252,7 +254,10 @@ void GameScene::populateGrid(int level_id)
 				continue;
 			}
 
-			else throw runtime_error("Unknown brick type!");
+			else { // unknown brick
+				std::cerr << "Unknown brick type: " << brick_id << std::endl;
+				continue;
+			}
 
 			addObject(put_brick);
 			bricks[x][y] = put_brick;
@@ -472,9 +477,6 @@ void GameScene::moveDownEverything(bool with_crusher)
 
 void GameScene::updateColliders(bool full_update)
 {
-	if (plate == nullptr)
-		throw runtime_error("Cannot update colliders of a non-existing plate!");
-
 	// Create new PlateCollider
 	auto plate_pos = plate->getPosition();
 	auto plate_size = plate->getScale();

@@ -31,15 +31,6 @@
     <Filter Include="Scripts\Management">
       <UniqueIdentifier>{8d9c1022-9687-46c2-897e-e465672f78fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Management\SoundManagement">
-      <UniqueIdentifier>{67a4ddf8-50bc-45ea-854c-b35d99c636d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Management\InputManagement">
-      <UniqueIdentifier>{ca5e5d36-50db-4c62-827f-d3081c7e526b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts\Management\LevelManagement">
-      <UniqueIdentifier>{4a591f4e-b195-43f1-b5a6-3cebcaec1b2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scripts\Colliders">
       <UniqueIdentifier>{3536affd-bd3c-444c-a1d1-bef95b52777e}</UniqueIdentifier>
     </Filter>
@@ -49,8 +40,8 @@
     <Filter Include="Scripts\SceneObjects\Other">
       <UniqueIdentifier>{a17d5b21-6408-4565-bc95-fe484657ee35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scripts\Management\TextureManagement">
-      <UniqueIdentifier>{c46c5c7f-1f8c-44f3-8baf-2b054152e64b}</UniqueIdentifier>
+    <Filter Include="Scripts\Other">
+      <UniqueIdentifier>{2bd7c8eb-da25-4489-9eda-00d95917b564}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripts\SceneObjects\Bricks">
       <UniqueIdentifier>{13d627f3-0b40-42c4-a64c-38a95c06669d}</UniqueIdentifier>
@@ -81,9 +72,6 @@
     <ClCompile Include="SceneObject.cpp">
       <Filter>Scripts\SceneObjects\Base</Filter>
     </ClCompile>
-    <ClCompile Include="LevelGetter.cpp">
-      <Filter>Scripts\Management\LevelManagement</Filter>
-    </ClCompile>
     <ClCompile Include="Ball.cpp">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClCompile>
@@ -101,12 +89,6 @@
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Scripts\SceneObjects\Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>Scripts\Management\SoundManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Scripts\Management\InputManagement</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
       <Filter>Scripts\Colliders\Base</Filter>
@@ -128,12 +110,6 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Scripts\SceneObjects\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Scripts\SceneObjects\Other</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Scripts\Management\TextureManagement</Filter>
     </ClCompile>
     <ClCompile Include="UnbreakableBrick.cpp">
       <Filter>Scripts\SceneObjects\Bricks</Filter>
@@ -159,6 +135,21 @@
     <ClCompile Include="EffectBounce.cpp">
       <Filter>Scripts\SceneObjects\Other</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Scripts\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Scripts\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Scripts\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelGetter.cpp">
+      <Filter>Scripts\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Scripts\Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenu.h">
@@ -182,9 +173,6 @@
     <ClInclude Include="SceneObject.h">
       <Filter>Scripts\SceneObjects\Base</Filter>
     </ClInclude>
-    <ClInclude Include="LevelGetter.h">
-      <Filter>Scripts\Management\LevelManagement</Filter>
-    </ClInclude>
     <ClInclude Include="Ball.h">
       <Filter>Scripts\SceneObjects\Game</Filter>
     </ClInclude>
@@ -202,12 +190,6 @@
     </ClInclude>
     <ClInclude Include="Circle.h">
       <Filter>Scripts\SceneObjects\Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>Scripts\Management\SoundManagement</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Scripts\Management\InputManagement</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
       <Filter>Scripts\Colliders\Base</Filter>
@@ -230,17 +212,26 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>Scripts\SceneObjects\Other</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Scripts\SceneObjects\Other</Filter>
-    </ClInclude>
     <ClInclude Include="EffectBounce.h">
       <Filter>Scripts\SceneObjects\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Scripts\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Scripts\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Scripts\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelGetter.h">
+      <Filter>Scripts\Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Scripts\Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Texture.h">
-      <Filter>Scripts\Management\TextureManagement</Filter>
-    </ClInclude>
     <ClInclude Include="UnbreakableBrick.h">
       <Filter>Scripts\SceneObjects\Bricks</Filter>
     </ClInclude>

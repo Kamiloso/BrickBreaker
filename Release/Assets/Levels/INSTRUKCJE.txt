@@ -1,0 +1,23 @@
+Każdy poziom obniża się o kolejny co 3 cykle obniżenia.
+Dlatego aby cegiełka zeszła do poziomu paletki potrzebne jest (3h + 1) cykli obniżenia, gdzie h to ilość wolnych pól pod cegiełką.
+Rekomendowany czas trwania poziomu to jakieś 3-4 minuty. Może być oczywiście krócej.
+Obniżenie co 8 sekund w większości przypadków jest ok, ale można tę wartość zmienić, jeśli np. cegiełki występują dość nisko.
+
+Piłka powinna znajdować się jedna, gdzie najlepiej, żeby pod nią było 6 kratek wolnej przestrzeni. Oczywiście piłka na środku.
+Można piłkę dać niżej, jeśli cegiełki będą ją blokować, ale staramy się ją jednak dać najwyżej, jak to możliwe.
+
+Domyślną długość paletki (120) zostawiamy na domyślną wartość, chyba, że zostanie uzgodnione inaczej z pozostałymi członkami zespołu.
+Domyślą prędkość piłki (300) można dostosować w zależności od poziomu np. w celu wymuszenia dynamiki, ale domyślnie raczej trzymajmy się 300.
+
+Planowany schemat budowy poziomów:
+
+1-4: Poziomy wprowadzające, tylko ze zwykłymi cegiełkami
+5-7: Poziomy, wprowadzające niezniszczalne cegiełki (#)
+8-13: Introdukcja spawn brick (%) oraz subtelne zaprezentowanie cegiełek poszerzających i zawężających paletkę (w), (s)
+14-17: Poziomy, wprowadzające cegiełki fragile (o)
+18-21: Poziomy, wprowadzające zmiany prędkości piłeczki (>), (<)
+22-24: Poziomy, wprowadzające reverse cegiełkę (R)
+25-40: Trudniejsze poziomy, będące wyzwaniem dla doświadczonych. Uszeregujemy je później według trudności.
+
+W poziomach staramy się postępować kreatywnie. Możemy używać wszystkich cegiełek, które zostały do tej pory wprowadzone,
+ale raczej (co nie jest regułą) skupiamy się na tych obecnie wprowadzanych. Ciekawe poziomy challengowe wrzucamy do puli 25-40

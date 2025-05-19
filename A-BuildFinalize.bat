@@ -35,5 +35,7 @@ if exist "Release\BrickBreaker.pdb" (
     del "Release\BrickBreaker.pdb"
 )
 
+if exist "Release\GameData\progress.bin" del "Release\GameData\progress.bin"
+
 echo Gotowe!
 pause

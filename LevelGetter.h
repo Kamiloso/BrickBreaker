@@ -12,8 +12,8 @@ using namespace std;
 struct LevelData
 {
 	char brick_table[BRICKS_X][BRICKS_Y] = {}; // the brick array
-	int brick_fall_time = 30; // in seconds
-	float ball_default_speed = 200.0f; // how fast can ball move
+	int brick_fall_time = 1000; // in miliseconds
+	float ball_default_speed = 300.0f; // how fast can ball move
 	float plate_default_width = 120.0f; // plate default width
 };
 

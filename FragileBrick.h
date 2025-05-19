@@ -1,5 +1,6 @@
 #pragma once
 #include "Brick.h"
+
 class FragileBrick : public Brick
 {
 public:
@@ -10,4 +11,3 @@ public:
 private:
 	const sf::Texture* texture = nullptr;
 };
-
