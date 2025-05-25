@@ -18,20 +18,20 @@ void Sound::init()
 	soundVolume = 1.0f;
 	musicVolume = 1.0f;
 
-	loadSound("ball-break", "Assets/Sounds/ball-break.wav", 0.4f);
-	loadSound("damage", "Assets/Sounds/brick-break.wav", 0.4f);
-	loadSound("spawn", "Assets/Sounds/spawn-break.wav", 0.4f);
-	loadSound("fragile", "Assets/Sounds/fragile-break.wav", 0.4f);
-	loadSound("speed-up", "Assets/Sounds/speed-up.wav", 0.4f);
-	loadSound("slow-down", "Assets/Sounds/speed-down.wav", 0.4f);
-	loadSound("reverse", "Assets/Sounds/reverse.wav", 0.4f);
-	loadSound("size-up", "Assets/Sounds/size-up.wav", 0.4f);
-	loadSound("size-down", "Assets/Sounds/size-down.wav", 0.4f);
-	loadSound("metal", "Assets/Sounds/metal.wav", 0.2f);
+	loadSound("ball-break", "Assets/Sounds/ball-break.wav", 0.5f);
+	loadSound("damage", "Assets/Sounds/brick-break.wav", 0.5f);
+	loadSound("spawn", "Assets/Sounds/spawn-break.wav", 0.5f);
+	loadSound("fragile", "Assets/Sounds/fragile-break.wav", 0.5f);
+	loadSound("speed-up", "Assets/Sounds/speed-up.wav", 0.5f);
+	loadSound("slow-down", "Assets/Sounds/speed-down.wav", 0.5f);
+	loadSound("reverse", "Assets/Sounds/reverse.wav", 0.5f);
+	loadSound("size-up", "Assets/Sounds/size-up.wav", 0.5f);
+	loadSound("size-down", "Assets/Sounds/size-down.wav", 0.5f);
+	loadSound("metal", "Assets/Sounds/metal.wav", 0.5f);
 
 	// MUSIC LOOP FIX
 
-	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.2f);
+	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.1f);
 }
 
 void Sound::loadSound(const string& name, const string& path, float local_volume)
