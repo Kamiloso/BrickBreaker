@@ -19,15 +19,15 @@ void Sound::init()
 	musicVolume = 1.0f;
 
 	loadSound("ball-break", "Assets/Sounds/ball-break.wav", 0.4f);
-	loadSound("damage", "Assets/Sounds/SND_pop.wav", 0.4f);
-	loadSound("spawn", "Assets/Sounds/SND_telep.mp3", 0.4f);
-	loadSound("fragile", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("speed-up", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("slow-down", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("reverse", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("size-up", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("size-down", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("metal", "Assets/Sounds/SND_metal2.mp3", 0.2f);
+	loadSound("damage", "Assets/Sounds/brick-break.wav", 0.4f);
+	loadSound("spawn", "Assets/Sounds/spawn-break.wav", 0.4f);
+	loadSound("fragile", "Assets/Sounds/fragile-break.wav", 0.4f);
+	loadSound("speed-up", "Assets/Sounds/speed-up.wav", 0.4f);
+	loadSound("slow-down", "Assets/Sounds/speed-down.wav", 0.4f);
+	loadSound("reverse", "Assets/Sounds/reverse.wav", 0.4f);
+	loadSound("size-up", "Assets/Sounds/size-up.wav", 0.4f);
+	loadSound("size-down", "Assets/Sounds/size-down.wav", 0.4f);
+	loadSound("metal", "Assets/Sounds/metal.wav", 0.2f);
 
 	// MUSIC LOOP FIX
 
