@@ -25,10 +25,11 @@ private:
 	static float globalVolume;
 	static float soundVolume;
 	static float musicVolume;
-	static void loadSound(const string& name, const string& path, float local_volume);
+	static void loadSound(const string& name, const string& path, float local_volume, float local_pitch = 1.0f);
 	static void loadMusic(const string& name, const string& path, float local_volume);
 	static map<string, sf::SoundBuffer> soundBuffers;
 	static map<string, float> localVolumes;
+	static map<string, float> localPitches;
 	static map<string, float> localVolumesMusic;
 	static map<string, string> musicPaths;
 	static vector<sf::Sound*> activeSounds;

@@ -1,0 +1,9 @@
+Files under CC0 license:
+- music-1.mp3
+- ball-die.wav
+
+Files under CC-BY 3.0 license:
+- magic.mp3 (Author: jalastram, https://opengameart.org/content/sound-effects-sfx030)
+
+Files under CC-BY 4.0 license:
+- metal.wav (Author: Mobeyee Sounds, https://opengameart.org/content/metal-click)

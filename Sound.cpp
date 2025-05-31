@@ -1,9 +1,11 @@
 #include "Sound.h"
+#include "GameWindow.h"
 
 #include <iostream>
 
 map<string, sf::SoundBuffer> Sound::soundBuffers;
 map<string, float> Sound::localVolumes;
+map<string, float> Sound::localPitches;
 map<string, float> Sound::localVolumesMusic;
 vector<sf::Sound*> Sound::activeSounds;
 sf::Music Sound::music;
@@ -18,28 +20,27 @@ void Sound::init()
 	soundVolume = 1.0f;
 	musicVolume = 1.0f;
 
-	loadSound("ball-break", "Assets/Sounds/ball-break.wav", 0.4f);
-	loadSound("damage", "Assets/Sounds/SND_pop.wav", 0.4f);
-	loadSound("spawn", "Assets/Sounds/SND_telep.mp3", 0.4f);
-	loadSound("fragile", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("speed-up", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("slow-down", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("reverse", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("size-up", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("size-down", "Assets/Sounds/SND_bush.wav", 0.4f);
-	loadSound("metal", "Assets/Sounds/SND_metal2.mp3", 0.2f);
+	loadSound("ball-break", "Assets/Sounds/ball-die.wav", 0.4f);
+	loadSound("damage", "Assets/Sounds/ball-bounce.mp3", 0.8f);
+	loadSound("spawn", "Assets/Sounds/magic.mp3", 0.4f);
+	loadSound("fragile", "Assets/Sounds/fragile.wav", 0.4f);
+	loadSound("speed-up", "Assets/Sounds/magic.mp3", 0.4f, 1.15f);
+	loadSound("slow-down", "Assets/Sounds/magic.mp3", 0.4f, 0.85f);
+	loadSound("reverse", "Assets/Sounds/magic.mp3", 0.4f);
+	loadSound("size-up", "Assets/Sounds/magic.mp3", 0.4f);
+	loadSound("size-down", "Assets/Sounds/magic.mp3", 0.4f);
+	loadSound("metal", "Assets/Sounds/metal.wav", 0.3f, 0.9f);
 
-	// MUSIC LOOP FIX
-
-	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.2f);
+	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.24f);
 }
 
-void Sound::loadSound(const string& name, const string& path, float local_volume)
+void Sound::loadSound(const string& name, const string& path, float local_volume, float local_pitch)
 {
 	sf::SoundBuffer buffer;
 	buffer.loadFromFile(path);
 	soundBuffers[name] = buffer;
 	localVolumes[name] = local_volume;
+	localPitches[name] = local_pitch;
 }
 
 void Sound::loadMusic(const string& name, const string& path, float local_volume)
@@ -66,6 +67,7 @@ void Sound::playSound(const string& name)
 	sf::Sound& sound = *activeSounds.back();
 	sound.setBuffer(soundBuffers[name]);
 	sound.setVolume(soundVolume * globalVolume * localVolumes[name] * 100.f);
+	sound.setPitch(localPitches[name] * (95 + GameWindow::getEntropy() % 11) / 100.0f);
 	sound.play();
 }
 
