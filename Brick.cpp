@@ -103,7 +103,7 @@ void Brick::draw(GameWindow* game_window)
 
 vector<float> Brick::getBrickPositionByCoordinates(int x, int y)
 {
-	const float COLUMN_0_X = CX - (BRICKS_X - 1) * BRICK_WX / 2;
+	const float COLUMN_0_X = CCX - (BRICKS_X - 1) * BRICK_WX / 2;
 	const float LAYER_0_Y = 50.0f;
 	return {
 		COLUMN_0_X + x * BRICK_WX,

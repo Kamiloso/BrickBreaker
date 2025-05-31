@@ -49,24 +49,42 @@ float Ball::getVelocityMagnitude() const
 
 void Ball::changeSpeedPowerUps(int delta_speed_modifier)
 {
-	constexpr float SPEED_MODIFIER_FACTOR = 1.2f;
+	constexpr float SPEED_MODIFIER_FACTOR_NEGATIVE = 1.12f;
+	constexpr float SPEED_MODIFIER_FACTOR_POSITIVE = 1.20f;
 	constexpr int MIN_SPEED_MODIFIER = -3;
 	constexpr int MAX_SPEED_MODIFIER = 3;
 
-	float old_speed_modifier = speed_modifier;
-	speed_modifier += delta_speed_modifier;
+	int next_speed_modifier = speed_modifier + delta_speed_modifier;
 
-	if (speed_modifier < MIN_SPEED_MODIFIER)
-		speed_modifier = MIN_SPEED_MODIFIER;
+	if (next_speed_modifier < MIN_SPEED_MODIFIER)
+		next_speed_modifier = MIN_SPEED_MODIFIER;
 
-	if (speed_modifier > MAX_SPEED_MODIFIER)
-		speed_modifier = MAX_SPEED_MODIFIER;
+	if (next_speed_modifier > MAX_SPEED_MODIFIER)
+		next_speed_modifier = MAX_SPEED_MODIFIER;
 
-	float modifier_difference = speed_modifier - old_speed_modifier;
+	delta_speed_modifier = next_speed_modifier - speed_modifier;
+
+	int down_speeds = 0, up_speeds = 0;
+	int discrete_delta = delta_speed_modifier > 0 ? 1 : -1;
+
+	while (speed_modifier != next_speed_modifier)
+	{
+		// negative side
+		if (speed_modifier < 0 || (speed_modifier == 0 && discrete_delta == -1))
+			down_speeds += discrete_delta;
+
+		// positive side
+		if (speed_modifier > 0 || (speed_modifier == 0 && discrete_delta == 1))
+			up_speeds += discrete_delta;
+
+		speed_modifier += discrete_delta;
+	}
 
 	setVelocityByAngle(
 		getVelocityAngle(),
-		getVelocityMagnitude() * pow(SPEED_MODIFIER_FACTOR, modifier_difference)
+		getVelocityMagnitude() *
+		pow(SPEED_MODIFIER_FACTOR_NEGATIVE, down_speeds) *
+		pow(SPEED_MODIFIER_FACTOR_POSITIVE, up_speeds)
 	);
 }
 

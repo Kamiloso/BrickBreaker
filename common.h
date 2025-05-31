@@ -13,8 +13,8 @@ constexpr float PI = 3.14159265;	// PI - the famous number
 // SCREEN CONSTANTS
 constexpr int RX = 1280;	// physical screen width (not resolution)
 constexpr int RY = 720;		// physical screen height (not resolution)
-constexpr int CX = RX / 2;  // screen middle
-constexpr int CY = RY / 2;  // screen middle
+constexpr int CCX = RX / 2;  // screen middle
+constexpr int CCY = RY / 2;  // screen middle
 
 // MENU CONSTANTS
 static const std::wstring GAME_NAME = L"BRICK BREAKER"; // game name (title)

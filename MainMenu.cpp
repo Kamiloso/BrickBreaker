@@ -20,9 +20,9 @@ MainMenu::MainMenu(int localScene)
 	const int number_of_stars = 120;
 
 	vector<Rectangle*> star_kill_rects = {
-		dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY - 216, 570, 75, 0, sf::Color::Black, sf::Color::Black, -1000))),
-		dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY - 155, 230, 75, 0, sf::Color::Black, sf::Color::Black, -1000)))
-		//dynamic_cast<Rectangle*>(addObject(new Rectangle(CX, CY + 102, 520, 340, 0, sf::Color::Black, sf::Color::Black, -1000)))
+		dynamic_cast<Rectangle*>(addObject(new Rectangle(CCX, CCY - 216, 570, 75, 0, sf::Color::Black, sf::Color::Black, -1000))),
+		dynamic_cast<Rectangle*>(addObject(new Rectangle(CCX, CCY - 155, 230, 75, 0, sf::Color::Black, sf::Color::Black, -1000)))
+		//dynamic_cast<Rectangle*>(addObject(new Rectangle(CCX, CCY + 102, 520, 340, 0, sf::Color::Black, sf::Color::Black, -1000)))
 	};
 
 	for (int i = 0; i < number_of_stars; i++) {
@@ -38,24 +38,24 @@ MainMenu::MainMenu(int localScene)
 		}
 	
 	background = dynamic_cast<Rectangle*>(
-		addObject(new Rectangle(CX, CY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
+		addObject(new Rectangle(CCX, CCY, RX, RY, 0, sf::Color::Black, sf::Color::Black, 0))
 		);
 
-	title = dynamic_cast<Text*>(addObject(new Text(CX, CY - 220, GAME_NAME, 80, sf::Color(255, 255, 255))));
-	subtitle = dynamic_cast<Text*>(addObject(new Text(CX, CY - 145, GAME_VERSION, 40, sf::Color(255, 255, 255))));
+	title = dynamic_cast<Text*>(addObject(new Text(CCX, CCY - 220, GAME_NAME, 80, sf::Color(255, 255, 255))));
+	subtitle = dynamic_cast<Text*>(addObject(new Text(CCX, CCY - 145, GAME_VERSION, 40, sf::Color(255, 255, 255))));
 	
 	// Main menu
 	levels = dynamic_cast<Button*>(
-		addObject(new Button(CX, CY - 10, 500, 95, COL::buttonBg, COL::buttonBold, L"LEVELS"))
+		addObject(new Button(CCX, CCY - 10, 500, 95, COL::buttonBg, COL::buttonBold, L"LEVELS"))
 		); levels->setEvent(1, false);
 
 	instruction_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX, CY + 102, 500, 95, COL::buttonBg, COL::buttonBold, L"INSTRUCTION"))
+		addObject(new Button(CCX, CCY + 102, 500, 95, COL::buttonBg, COL::buttonBold, L"INSTRUCTION"))
 		); 
 	instruction_btn->setEvent(2, false);
 
 	exit_btn = dynamic_cast<Button*>(
-		addObject(new Button(CX, CY + 214, 500, 95, COL::buttonBg, COL::buttonBold, L"EXIT"))
+		addObject(new Button(CCX, CCY + 214, 500, 95, COL::buttonBg, COL::buttonBold, L"EXIT"))
 		); exit_btn->setEvent(2, true);
 
 	menu_object_list = { title, subtitle, levels, instruction_btn, exit_btn };
@@ -72,7 +72,7 @@ MainMenu::MainMenu(int localScene)
 			locked = false;
 		}
 
-		Button* level_btn = new Button(CX + 10000 + x_offset, CY + y_offset, 100, 100, (LevelGetter::isFlagSet(i, 1)) ? COL::levelComplete : COL::levelUnlocked, COL::buttonBold, to_wstring(i + 1));
+		Button* level_btn = new Button(CCX + 10000 + x_offset, CCY + y_offset, 100, 100, (LevelGetter::isFlagSet(i, 1)) ? COL::levelComplete : COL::levelUnlocked, COL::buttonBold, to_wstring(i + 1));
 		addObject(level_btn);
 		menu_object_list.push_back(level_btn);
 
@@ -81,7 +81,7 @@ MainMenu::MainMenu(int localScene)
 	}
 	
 	/* -- EXIT BUTTON -- */
-	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 10000, CY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
+	Button* level_menu_exit_btn = dynamic_cast<Button*>(addObject(new Button(CCX + 10000, CCY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
 	level_menu_exit_btn->setEvent(3, false);
 	menu_object_list.push_back(level_menu_exit_btn);
 
@@ -89,19 +89,19 @@ MainMenu::MainMenu(int localScene)
 	sf::Color instruction_bg_color = sf::Color(166, 200, 255);
 	sf::Color instruction_title_color = sf::Color(105, 162, 255);
 	sf::Color instruction_down_color = sf::Color(128, 176, 255);
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000, CY - 55, 800, 540, 10, instruction_bg_color, COL::buttonBold, 6)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000, 90, 800, 110, 10, instruction_title_color, COL::buttonBold, 7)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 90, L"INSTRUCTION", 55, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 185, L"1. Use the arrow keys to move the paddle.", 32, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 245, L"2. Change the ball's angle by adjusting", 32, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 285, L"the paddle's position.", 32, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 340, L"3. Clear each level by breaking all the bricks.", 32, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000, 400, L"4. How far can you get? Good luck!", 32, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000, 450, 800, 10, 0, COL::buttonBold, sf::Color::Black, 8)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000, 510, 10, 115, 0, COL::buttonBold, sf::Color::Black, 8)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000 - 200, 485, L"SOUNDS", 35, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Text(CX + 20000 + 200, 485, L"MUSIC", 35, COL::buttonBold, 10)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000, 510, 800, 128, 10, instruction_down_color, COL::buttonBold, 7)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000, CCY - 55, 800, 540, 10, instruction_bg_color, COL::buttonBold, 6)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000, 90, 800, 110, 10, instruction_title_color, COL::buttonBold, 7)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 90, L"INSTRUCTION", 55, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 185, L"1. Use the arrow keys to move the paddle.", 32, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 245, L"2. Change the ball's angle by adjusting", 32, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 285, L"the paddle's position.", 32, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 340, L"3. Clear each level by breaking all the bricks.", 32, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000, 400, L"4. How far can you get? Good luck!", 32, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000, 450, 800, 10, 0, COL::buttonBold, sf::Color::Black, 8)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000, 510, 10, 115, 0, COL::buttonBold, sf::Color::Black, 8)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000 - 200, 485, L"SOUNDS", 35, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Text(CCX + 20000 + 200, 485, L"MUSIC", 35, COL::buttonBold, 10)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000, 510, 800, 128, 10, instruction_down_color, COL::buttonBold, 7)));
 	
 	// volume rects
 	for (int i = 0; i < 10; i++)
@@ -109,13 +109,13 @@ MainMenu::MainMenu(int localScene)
 		float dx = (i - 4.5f) * 26.0f;
 		Rectangle* rect_bg;
 
-		rect_bg = new Rectangle(CX + 20000 - 200 + dx, 528, 30, 26, 4, sf::Color(150, 150, 150), COL::buttonBold, 7);
-		sound_rects[i] = new Rectangle(CX + 20000 - 200 + dx, 528, 30, 26, 4, sf::Color::Green, COL::buttonBold, 8);
+		rect_bg = new Rectangle(CCX + 20000 - 200 + dx, 528, 30, 26, 4, sf::Color(150, 150, 150), COL::buttonBold, 7);
+		sound_rects[i] = new Rectangle(CCX + 20000 - 200 + dx, 528, 30, 26, 4, sf::Color::Green, COL::buttonBold, 8);
 		menu_object_list.push_back(addObject(rect_bg));
 		menu_object_list.push_back(addObject(sound_rects[i]));
 
-		rect_bg = new Rectangle(CX + 20000 + 200 + dx, 528, 30, 26, 4, sf::Color(150, 150, 150), COL::buttonBold, 7);
-		music_rects[i] = new Rectangle(CX + 20000 + 200 + dx, 528, 30, 26, 4, sf::Color::Green, COL::buttonBold, 8);
+		rect_bg = new Rectangle(CCX + 20000 + 200 + dx, 528, 30, 26, 4, sf::Color(150, 150, 150), COL::buttonBold, 7);
+		music_rects[i] = new Rectangle(CCX + 20000 + 200 + dx, 528, 30, 26, 4, sf::Color::Green, COL::buttonBold, 8);
 		menu_object_list.push_back(addObject(rect_bg));
 		menu_object_list.push_back(addObject(music_rects[i]));
 	}
@@ -125,10 +125,10 @@ MainMenu::MainMenu(int localScene)
 	// volume regulation buttons
 	constexpr float BT_OFFSET = 146.0f;
 	constexpr float BT_SIZE = 35.0f;
-	Button* bt1 = new Button(CX + 20000 - 200 - BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // volume -
-	Button* bt2 = new Button(CX + 20000 - 200 + BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // volume +
-	Button* bt3 = new Button(CX + 20000 + 200 - BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // music -
-	Button* bt4 = new Button(CX + 20000 + 200 + BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // music +
+	Button* bt1 = new Button(CCX + 20000 - 200 - BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // volume -
+	Button* bt2 = new Button(CCX + 20000 - 200 + BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // volume +
+	Button* bt3 = new Button(CCX + 20000 + 200 - BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // music -
+	Button* bt4 = new Button(CCX + 20000 + 200 + BT_OFFSET, 528, BT_SIZE, BT_SIZE, COL::buttonBg, COL::buttonBold, L""); // music +
 	bt1->visualAdvanced(4); bt1->setEvent(5, false);
 	bt2->visualAdvanced(4); bt2->setEvent(6, false);
 	bt3->visualAdvanced(4); bt3->setEvent(7, false);
@@ -139,15 +139,15 @@ MainMenu::MainMenu(int localScene)
 	menu_object_list.push_back(addObject(bt4));
 
 	// volume regulation minus and plus
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 - 200 - BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 - 200 + BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 - 200 + BT_OFFSET, 528, 4, 16, 0, COL::buttonBold, sf::Color::Black, 21)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 + 200 - BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 + 200 + BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
-	menu_object_list.push_back(addObject(new Rectangle(CX + 20000 + 200 + BT_OFFSET, 528, 4, 16, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 - 200 - BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 - 200 + BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 - 200 + BT_OFFSET, 528, 4, 16, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 + 200 - BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 + 200 + BT_OFFSET, 528, 16, 4, 0, COL::buttonBold, sf::Color::Black, 21)));
+	menu_object_list.push_back(addObject(new Rectangle(CCX + 20000 + 200 + BT_OFFSET, 528, 4, 16, 0, COL::buttonBold, sf::Color::Black, 21)));
 
 	/* -- EXIT BUTTON -- */
-	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CX + 20000, CY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
+	Button* instruction_exit_btn = dynamic_cast<Button*>(addObject(new Button(CCX + 20000, CCY + 290, 215, 90, COL::buttonExit, COL::buttonExitBold, L"EXIT")));
 	instruction_exit_btn->setEvent(4, false);
 	menu_object_list.push_back(instruction_exit_btn);
 

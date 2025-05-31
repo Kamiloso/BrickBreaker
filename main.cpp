@@ -4,10 +4,21 @@
 
 #include <iostream>
 
+// For console hiding (only Windows)
+#if defined(_WIN32) && defined(NDEBUG)
+#include <windows.h>
+#endif
+
 using namespace std;
 
 int main()
 {
+    // Hide console (only Windows)
+#if defined(_WIN32) && defined(NDEBUG)
+    HWND hwnd = GetConsoleWindow();
+    ShowWindow(hwnd, SW_HIDE);
+#endif
+
     // Static class initialization
     Texture::init();
     Sound::init();

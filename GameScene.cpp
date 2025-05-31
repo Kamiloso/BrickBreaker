@@ -136,12 +136,12 @@ void GameScene::initializeUI()
 	sf::Color defeat_color(100, 0, 0, 180);
 	sf::Color empty_color(0, 0, 0, 0);
 
-	const float CPX1 = CX + 10000.0f; // pause middle X
-	const float CPY1 = CY; // pause middle Y
-	const float CPX2 = CX + 20000.0f; // win middle X
-	const float CPY2 = CY; // win middle Y
-	const float CPX3 = CX + 30000.0f; // defeat middle X
-	const float CPY3 = CY; // defeat middle Y
+	const float CPX1 = CCX + 10000.0f; // pause middle X
+	const float CPY1 = CCY; // pause middle Y
+	const float CPX2 = CCX + 20000.0f; // win middle X
+	const float CPY2 = CCY; // win middle Y
+	const float CPX3 = CCX + 30000.0f; // defeat middle X
+	const float CPY3 = CCY; // defeat middle Y
 
 	// Button declarations
 	Button* button_menu_pause = dynamic_cast<Button*>(
