@@ -21,17 +21,17 @@ void Sound::init()
 	musicVolume = 1.0f;
 
 	loadSound("ball-break", "Assets/Sounds/ball-die.wav", 0.4f);
-	loadSound("damage", "Assets/Sounds/ball-bounce.mp3", 0.8f);
-	loadSound("spawn", "Assets/Sounds/magic.mp3", 0.4f);
-	loadSound("fragile", "Assets/Sounds/fragile.wav", 0.4f);
-	loadSound("speed-up", "Assets/Sounds/magic.mp3", 0.4f, 1.15f);
-	loadSound("slow-down", "Assets/Sounds/magic.mp3", 0.4f, 0.85f);
-	loadSound("reverse", "Assets/Sounds/magic.mp3", 0.4f);
-	loadSound("size-up", "Assets/Sounds/magic.mp3", 0.4f);
-	loadSound("size-down", "Assets/Sounds/magic.mp3", 0.4f);
-	loadSound("metal", "Assets/Sounds/metal.wav", 0.3f, 0.9f);
+	loadSound("damage", "Assets/Sounds/pong.wav", 0.5f, 0.85f);
+	loadSound("spawn", "Assets/Sounds/magic.mp3", 0.37f);
+	loadSound("fragile", "Assets/Sounds/fragile.wav", 0.5f);
+	loadSound("speed-up", "Assets/Sounds/magic.mp3", 0.37f, 1.15f);
+	loadSound("slow-down", "Assets/Sounds/magic.mp3", 0.37f, 0.85f);
+	loadSound("reverse", "Assets/Sounds/magic.mp3", 0.37f);
+	loadSound("size-up", "Assets/Sounds/magic.mp3", 0.37f);
+	loadSound("size-down", "Assets/Sounds/magic.mp3", 0.37f);
+	loadSound("metal", "Assets/Sounds/metal.wav", 0.26f, 0.9f);
 
-	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.24f);
+	loadMusic("music-1", "Assets/Sounds/music-1.mp3", 0.2f);
 }
 
 void Sound::loadSound(const string& name, const string& path, float local_volume, float local_pitch)
